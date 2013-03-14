@@ -116,7 +116,6 @@ public class MainActivity extends ListActivity {
                      * Save the new note then update the list view
                      */
                     JSONArray notes = MainActivity.this.notesManager.getNotesObject();
-                    Date date = new Date();
                     String dateString = android.text.format.DateFormat.format("MM.dd.yy", new java.util.Date()).toString();
                     StringBuilder stringBuilder = new StringBuilder();
                     stringBuilder.append(dateString);
@@ -156,7 +155,7 @@ public class MainActivity extends ListActivity {
 
         if (null != this.notesManager){
 
-            ListView listView = getListView();;
+            ListView listView = getListView();
             JSONArray jsonArray = this.notesManager.getNotesObject();
             if (jsonArray.length() > 0) {
                 listView.setLayoutParams(getLayoutParams());
@@ -168,8 +167,8 @@ public class MainActivity extends ListActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Iterator iterator = currentNote.keys();
-                    while (iterator.hasNext()) {
+                    Iterator iterator = currentNote != null ? currentNote.keys() : null;
+                    while (iterator != null ? iterator.hasNext() : false) {
                         String key = (String)iterator.next();
                         titles.add(key);
                     }
@@ -189,14 +188,14 @@ public class MainActivity extends ListActivity {
                     try {
                         noteObject = notes.getJSONObject(position);
                     } catch (JSONException e) {
-
+                        e.printStackTrace();
                     }
-                    Iterator iterator = noteObject.keys();
+                    Iterator iterator = noteObject != null ? noteObject.keys() : null;
                     while (iterator.hasNext()) {
                         String key = (String)iterator.next();
                         if (null != key) {
                             try {
-                                Toast.makeText(getApplicationContext(), noteObject.getString(key), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), noteObject != null ? noteObject.getString(key) : null, Toast.LENGTH_LONG).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

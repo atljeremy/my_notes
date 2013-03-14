@@ -28,7 +28,7 @@
     <ignored path=".idea/workspace.xml" />
     <file path="/NotesManager.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363223435037" ignored="false" />
     <file path="/Dummy.txt" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363140953542" ignored="false" />
-    <file path="/MainActivity.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363225345355" ignored="false" />
+    <file path="/MainActivity.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363225717495" ignored="false" />
     <file path="/main.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363145313306" ignored="false" />
     <file path="/notes.json" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363221933222" ignored="false" />
     <file path="/fragment.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363225196713" ignored="false" />
@@ -93,7 +93,7 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Activites/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="128" column="19" selection-start="4270" selection-end="4270" vertical-scroll-proportion="0.5268176">
+            <state line="194" column="61" selection-start="7079" selection-end="7079" vertical-scroll-proportion="0.6105845">
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#onCreate#0;class#MainActivity#0" expanded="true" />
@@ -102,10 +102,12 @@
                 <element signature="method#createTextview#0;class#MainActivity#0" expanded="true" />
                 <element signature="method#createTitleTextField#0;class#MainActivity#0" expanded="true" />
                 <element signature="method#createDetailsTextField#0;class#MainActivity#0" expanded="true" />
-                <element signature="e#3095#4730#0" expanded="true" />
-                <element signature="e#4719#4720#0" expanded="true" />
-                <element signature="method#createListView#0;class#MainActivity#0" expanded="true" />
-                <element signature="e#5466#5474#0" expanded="true" />
+                <element signature="method#createButton#0;class#MainActivity#0" expanded="true" />
+                <element signature="e#3095#4686#0" expanded="true" />
+                <element signature="e#4675#4676#0" expanded="true" />
+                <element signature="e#5421#5429#0" expanded="true" />
+                <element signature="e#6397#7529#0" expanded="true" />
+                <element signature="e#7514#7515#0" expanded="true" />
                 <element signature="method#getLayoutParams#0;class#MainActivity#0" expanded="true" />
               </folding>
             </state>
@@ -560,6 +562,7 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3995363" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -575,16 +578,15 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24781226" sideWeight="0.67001545" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32998455" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24781226" sideWeight="0.6004637" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3995363" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998455" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -679,10 +681,12 @@
             <element signature="method#createTextview#0;class#MainActivity#0" expanded="true" />
             <element signature="method#createTitleTextField#0;class#MainActivity#0" expanded="true" />
             <element signature="method#createDetailsTextField#0;class#MainActivity#0" expanded="true" />
-            <element signature="e#3095#4730#0" expanded="true" />
-            <element signature="e#4719#4720#0" expanded="true" />
-            <element signature="method#createListView#0;class#MainActivity#0" expanded="true" />
-            <element signature="e#5466#5474#0" expanded="true" />
+            <element signature="method#createButton#0;class#MainActivity#0" expanded="true" />
+            <element signature="e#3095#4686#0" expanded="true" />
+            <element signature="e#4675#4676#0" expanded="true" />
+            <element signature="e#5421#5429#0" expanded="true" />
+            <element signature="e#6397#7529#0" expanded="true" />
+            <element signature="e#7514#7515#0" expanded="true" />
             <element signature="method#getLayoutParams#0;class#MainActivity#0" expanded="true" />
           </folding>
         </state>
@@ -785,7 +789,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Activites/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="128" column="19" selection-start="4270" selection-end="4270" vertical-scroll-proportion="0.5268176">
+        <state line="194" column="61" selection-start="7079" selection-end="7079" vertical-scroll-proportion="0.6105845">
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#onCreate#0;class#MainActivity#0" expanded="true" />
@@ -794,10 +798,12 @@
             <element signature="method#createTextview#0;class#MainActivity#0" expanded="true" />
             <element signature="method#createTitleTextField#0;class#MainActivity#0" expanded="true" />
             <element signature="method#createDetailsTextField#0;class#MainActivity#0" expanded="true" />
-            <element signature="e#3095#4730#0" expanded="true" />
-            <element signature="e#4719#4720#0" expanded="true" />
-            <element signature="method#createListView#0;class#MainActivity#0" expanded="true" />
-            <element signature="e#5466#5474#0" expanded="true" />
+            <element signature="method#createButton#0;class#MainActivity#0" expanded="true" />
+            <element signature="e#3095#4686#0" expanded="true" />
+            <element signature="e#4675#4676#0" expanded="true" />
+            <element signature="e#5421#5429#0" expanded="true" />
+            <element signature="e#6397#7529#0" expanded="true" />
+            <element signature="e#7514#7515#0" expanded="true" />
             <element signature="method#getLayoutParams#0;class#MainActivity#0" expanded="true" />
           </folding>
         </state>
