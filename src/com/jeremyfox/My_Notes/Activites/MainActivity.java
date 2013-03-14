@@ -9,10 +9,13 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.jeremyfox.My_Notes.Managers.NotesManager;
 import com.jeremyfox.My_Notes.R;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 public class MainActivity extends ListActivity {
@@ -110,19 +113,27 @@ public class MainActivity extends ListActivity {
                 if (MainActivity.this.titleTextField.length() > 0 && MainActivity.this.detailsTextField.length() > 0) {
 
                     /**
-                     * Need to save the new note then update the list view here
+                     * Save the new note then update the list view
                      */
-                    ArrayList notes = MainActivity.this.notesManager.getNotesObject();
+                    JSONArray notes = MainActivity.this.notesManager.getNotesObject();
+                    Date date = new Date();
+                    String dateString = android.text.format.DateFormat.format("MM.dd.yy", new java.util.Date()).toString();
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append(dateString);
+                    stringBuilder.append(" - ");
+                    stringBuilder.append(MainActivity.this.titleTextField.getText().toString());
                     try {
-                        notes.add(new JSONObject().put("", ""));
+                        notes.put(new JSONObject().put(stringBuilder.toString(), MainActivity.this.detailsTextField.getText().toString()));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     createListView();
+                    MainActivity.this.titleTextField.setText("");
+                    MainActivity.this.detailsTextField.setText("");
                     toastMessage = "Note Saved!";
 
                 } else {
-                    toastMessage = "Note Not Saved. All Fields Required";
+                    toastMessage = "Note Not Saved. All Fields Required.";
                 }
 
                 Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
@@ -133,20 +144,30 @@ public class MainActivity extends ListActivity {
     }
 
     private void createListView() {
-        try {
-            this.notesManager = new NotesManager();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (null == this.notesManager) {
+            try {
+                this.notesManager = new NotesManager(getApplicationContext());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
         if (null != this.notesManager){
 
             ListView listView = getListView();;
-            ArrayList arrayList = this.notesManager.getNotesObject();
-            if (arrayList.size() > 0) {
+            JSONArray jsonArray = this.notesManager.getNotesObject();
+            if (jsonArray.length() > 0) {
                 listView.setLayoutParams(getLayoutParams());
-                ArrayList<String> titles = new ArrayList<String>(arrayList.size());
-                for (Object note : arrayList) {
-                    JSONObject currentNote = (JSONObject)note;
+                ArrayList<String> titles = new ArrayList<String>(jsonArray.length());
+                for (int i=0; i<jsonArray.length(); i++) {
+                    JSONObject currentNote = null;
+                    try {
+                        currentNote = jsonArray.getJSONObject(i);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     Iterator iterator = currentNote.keys();
                     while (iterator.hasNext()) {
                         String key = (String)iterator.next();
@@ -163,8 +184,13 @@ public class MainActivity extends ListActivity {
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    ArrayList notes = MainActivity.this.notesManager.getNotesObject();
-                    JSONObject noteObject = (JSONObject)notes.get(position);
+                    JSONArray notes = MainActivity.this.notesManager.getNotesObject();
+                    JSONObject noteObject = null;
+                    try {
+                        noteObject = notes.getJSONObject(position);
+                    } catch (JSONException e) {
+
+                    }
                     Iterator iterator = noteObject.keys();
                     while (iterator.hasNext()) {
                         String key = (String)iterator.next();
