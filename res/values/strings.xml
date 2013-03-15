@@ -3,4 +3,17 @@
     <string name="app_name">My Notes</string>
     <string name="notesTitle">Note Title:</string>
     <string name="notesDetails">Note Details:</string>
+    <string name="newNote">New Note</string>
+    <string name="titleInputHint">Title</string>
+    <string name="detailsInputHint">Note Details</string>
+    <string name="allFeildsRequired">All Fields Required</string>
+    <string name="dateFormat">MM.dd.yy</string>
+    <string name="dash">-</string>
+    <string name="noteSaved">Note Saved!</string>
+    <string name="createNewNote">Create A New Note</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="notes">notes</string>
+    <string name="notesJson">notes.json</string>
 </resources>
