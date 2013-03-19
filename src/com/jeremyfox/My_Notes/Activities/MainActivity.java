@@ -85,13 +85,7 @@ public class MainActivity extends ListActivity {
      */
     private void createListView() {
         if (null == this.notesManager) {
-            try {
-                this.notesManager = new NotesManager(getApplicationContext());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            this.notesManager = new NotesManager(getApplicationContext());
         }
 
         if (null != this.notesManager){
