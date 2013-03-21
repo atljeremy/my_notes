@@ -10,16 +10,25 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,17 +39,34 @@ import java.io.InputStreamReader;
 public class NetworkManager {
 
     /**
+     * The single instance of NetworkManager
+     */
+    private static NetworkManager instance = null;
+    /**
      * The constant FAILURE_UNKNOWN_STATUS. Used to determine if a network request failed without returning a status code.
      */
-    public static int FAILURE_UNKNOWN_STATUS = -1;
+    public static final int FAILURE_UNKNOWN_STATUS = -1;
     /**
      * The constant SUCCESS_STATUS. Used to tell the callback.onFailure(statusCode) was and to compare against returned status codes.
      */
-    public static int SUCCESS_STATUS = 200;
+    public static final int SUCCESS_STATUS = 200;
+    /**
+     * The constant SUCCESS_RECORD_CREATED_STATUS. Used to tell the callback.onFailure(statusCode) was and to compare against returned status codes.
+     */
+    public static final int SUCCESS_RECORD_CREATED_STATUS = 201;
+    /**
+     * The constant SUCCESS_RECORD_DELETED_STATUS. Used to tell the callback.onFailure(statusCode) was and to compare against returned status codes.
+     */
+    public static final int SUCCESS_RECORD_DELETED_STATUS = 204;
     /**
      * The constant NOT_MODIFIED_STATUS. Used to tell the callback.onFailure(statusCode) was and to compare against returned status codes.
      */
-    public static int NOT_MODIFIED_STATUS = 304;
+    public static final int NOT_MODIFIED_STATUS = 304;
+
+    /**
+     * The constant API_HOST.
+     */
+    public static final String API_HOST = "https://young-cove-5823.herokuapp.com";
 
     private enum RequestType {
 
@@ -52,8 +78,31 @@ public class NetworkManager {
         /**
          * Specifies a POST request.
          */
-        POST
+        POST,
+
+        /**
+         * Specifies a DELETE request.
+         */
+        DELETE
     };
+
+    /**
+     * Instantiates a new Network manager.
+     */
+    protected NetworkManager() {
+    }
+
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
+    public static NetworkManager getInstance() {
+        if(instance == null) {
+            instance = new NetworkManager();
+        }
+        return instance;
+    }
 
     /**
      * Is connected helper method. Use this method to determine network connectivity.
@@ -80,20 +129,63 @@ public class NetworkManager {
      * Execute get request.
      *
      * @param url the url
+     * @return the jSON array
+     */
+    public JSONArray executeSynchronousGetRequest(String url) {
+        HttpRequestBase httpRequest = new HttpGet(url);
+        JSONArray jsonArray = null;
+        String jsonString = null;
+        try {
+            jsonString = new NetworkAsyncTask().execute(httpRequest, null).get(20, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+
+        if (null != jsonString && jsonString.length() > 0) {
+            try {
+                jsonArray = new JSONArray(jsonString);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return jsonArray;
+    }
+
+    /**
+     * Execute get request.
+     *
+     * @param url the url
      * @param callback the callback
      */
     public void executeGetRequest(String url, NetworkCallback callback) {
-        NetworkManager.executeRequest(url, RequestType.GET, callback);
+        NetworkManager.executeRequest(url, null, RequestType.GET, callback);
     }
 
     /**
      * Execute post request.
      *
      * @param url the url
+     * @param params the params
      * @param callback the callback
      */
-    public void executePostRequest(String url, NetworkCallback callback) {
-        NetworkManager.executeRequest(url, RequestType.POST, callback);
+    public void executePostRequest(String url, JSONObject params, NetworkCallback callback) {
+        NetworkManager.executeRequest(url, params, RequestType.POST, callback);
+    }
+
+    /**
+     * Execute post request.
+     *
+     * @param url the url
+     * @param params the params
+     * @param callback the callback
+     */
+    public void executeDeleteRequest(String url, JSONObject params, NetworkCallback callback) {
+        NetworkManager.executeRequest(url, params, RequestType.DELETE, callback);
     }
 
     /**
@@ -103,14 +195,30 @@ public class NetworkManager {
      * @param requestType the RequestType
      * @param callback the callback
      */
-    private static void executeRequest(String url, RequestType requestType, NetworkCallback callback) {
+    private static void executeRequest(String url, JSONObject params, RequestType requestType, NetworkCallback callback) {
 
-        if (null != url || null != callback) {
+        if (null != url) {
 
             HttpRequestBase httpRequest;
             switch (requestType) {
                 case POST:
                     httpRequest = new HttpPost(url);
+                    if (null != params && params.length() > 0) {
+                        StringEntity se = null;
+                        try {
+                            se = new StringEntity(params.toString());
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+                        ((HttpPost)httpRequest).setEntity(se);
+                        httpRequest.setHeader("Accept", "application/json");
+                        httpRequest.setHeader("Content-type", "application/json");
+                    }
+                    break;
+
+                case DELETE:
+                    httpRequest = new HttpDelete(url);
                     break;
 
                 case GET:
@@ -136,25 +244,28 @@ class NetworkAsyncTask extends AsyncTask<Object, Integer, String> {
         StringBuilder stringBuilder = new StringBuilder();
         HttpClient httpClient = new DefaultHttpClient();
         try {
-            HttpResponse response = httpClient.execute((HttpRequestBase)params[0]);
+            HttpResponse response = httpClient.execute(httpRequestBase);
             StatusLine statusLine = response.getStatusLine();
             int statusCode = statusLine.getStatusCode();
             boolean received200Status = (statusCode == NetworkManager.SUCCESS_STATUS);
+            boolean received201Status = (statusCode == NetworkManager.SUCCESS_RECORD_CREATED_STATUS);
+            boolean received204Status = (statusCode == NetworkManager.SUCCESS_RECORD_DELETED_STATUS);
             boolean received304Status = (statusCode == NetworkManager.NOT_MODIFIED_STATUS);
 
-            if (received200Status || received304Status) {
+            if (received200Status || received201Status || received204Status || received304Status) {
 
                 HttpEntity entity = response.getEntity();
-                InputStream inputStream = entity.getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
+                if (null != entity) {
+                    InputStream inputStream = entity.getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                    String line;
 
-                while ((line = reader.readLine()) != null) {
-                    stringBuilder.append(line);
+                    while ((line = reader.readLine()) != null) {
+                        stringBuilder.append(line);
+                    }
+
+                    inputStream.close();
                 }
-
-                inputStream.close();
-
             }
         } catch (Exception e) {
             Log.d("executeGetRequest", e.getLocalizedMessage());
@@ -164,15 +275,16 @@ class NetworkAsyncTask extends AsyncTask<Object, Integer, String> {
     }
 
     protected void onPostExecute(String result) {
-        if (null != result && result.length() > 0 && null != this.callback) {
+        if (null != this.callback) {
+            if (null == result || result.length() == 0) {
+                result = "{}";
+            }
             try {
                 this.callback.onSuccess(new JSONObject(result));
             } catch (JSONException e) {
                 e.printStackTrace();
                 this.callback.onFailure(NetworkManager.FAILURE_UNKNOWN_STATUS);
             }
-        } else {
-            this.callback.onFailure(NetworkManager.FAILURE_UNKNOWN_STATUS);
         }
     }
 }

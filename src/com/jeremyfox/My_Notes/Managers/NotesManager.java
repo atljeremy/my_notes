@@ -1,17 +1,12 @@
 package com.jeremyfox.My_Notes.Managers;
 
 import android.content.Context;
-import android.content.res.AssetManager;
-import android.util.Log;
 import com.jeremyfox.My_Notes.Classes.BasicNote;
-import com.jeremyfox.My_Notes.Interfaces.NetworkCallback;
+import com.jeremyfox.My_Notes.Helpers.PrefsHelper;
 import com.jeremyfox.My_Notes.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,6 +16,7 @@ import java.util.Iterator;
  */
 public class NotesManager {
 
+    private static NotesManager instance = null;
     private final static String NOTES_KEY = "notes";
     private JSONArray notes = new JSONArray();
 
@@ -29,41 +25,52 @@ public class NotesManager {
      *
      * @throws JSONException the jSON exception
      */
-    public NotesManager(Context context) {
+    protected NotesManager() {
+    }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
+    public static NotesManager getInstance() {
+        if(instance == null) {
+            instance = new NotesManager();
+        }
+        return instance;
+    }
+
+    /**
+     * Synchronously retrieves notes from API.
+     *
+     * @param context the context
+     * @return the boolean
+     */
+    public void retrieveNotesFromAPI(Context context) {
         if (NetworkManager.isConnected(context)) {
-            NetworkManager networkManager = new NetworkManager();
-            networkManager.executeGetRequest("https://graph.facebook.com/707705507?fields=id,name,movies", new NetworkCallback() {
-                @Override
-                public void onSuccess(JSONObject json) {
-                    Log.d("NotesManager", "onSuccess fired!");
+            NetworkManager networkManager = NetworkManager.getInstance();
+            String user_id = PrefsHelper.getPref(context, context.getString(R.string.user_id));
+            String query = NetworkManager.API_HOST + "/notes.json?unique_id=" + user_id;
+            JSONArray notesArray = networkManager.executeSynchronousGetRequest(query);
 
-                    try {
-                        JSONArray notesArray = json.getJSONArray(NotesManager.NOTES_KEY);
-                        if (null != notesArray && notesArray.length() > 0) {
-                            for (int i=0; i<notesArray.length(); i++) {
-                                JSONObject currentNote = notesArray.getJSONObject(i);
-                                Iterator iterator = currentNote != null ? currentNote.keys() : null;
-                                while (iterator != null ? iterator.hasNext() : false) {
-                                    String title = (String)iterator.next();
-                                    String details = currentNote.getString(title);
+            if (null != notesArray) {
+                try {
+                    if (null != notesArray && notesArray.length() > 0) {
+                        NotesManager.this.notes = new JSONArray();
+                        for (int i=0; i<notesArray.length(); i++) {
+                            JSONObject currentNote = notesArray.getJSONObject(i);
+                            String title = currentNote.getString("title");
+                            String details = currentNote.getString("details");
+                            int recordId = currentNote.getInt("id");
 
-                                    BasicNote basicNote = new BasicNote(title, details);
-
-                                    NotesManager.this.notes.put(basicNote);
-                                }
-                            }
+                            BasicNote basicNote = new BasicNote(title, details, recordId);
+                            NotesManager.this.notes.put(basicNote);
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
-                @Override
-                public void onFailure(int statusCode) {
-                    Log.d("NotesManager", "onFailure fired!");
-                }
-            });
+            }
         }
     }
 
@@ -76,33 +83,26 @@ public class NotesManager {
         return this.notes;
     }
 
-    private void createJSON(Context context) throws JSONException, IOException {
-
-        AssetManager manager = context.getAssets();
-        InputStream notesFile = manager.open(context.getString(R.string.notesJson));
-        byte[] data = new byte[notesFile.available()];
-
-        if (null != data) {
-            notesFile.read(data);
-            notesFile.close();
-
-            String notesString = new String(data);
-            JSONObject notesObject = new JSONObject(notesString);
-            JSONArray notesArray = notesObject.getJSONArray(context.getString(R.string.notes));
-            if (null != notesArray && notesArray.length() > 0) {
-                for (int i=0; i<notesArray.length(); i++) {
-                    JSONObject currentNote = notesArray.getJSONObject(i);
-                    Iterator iterator = currentNote != null ? currentNote.keys() : null;
-                    while (iterator != null ? iterator.hasNext() : false) {
-                        String title = (String)iterator.next();
-                        String details = currentNote.getString(title);
-
-                        BasicNote basicNote = new BasicNote(title, details);
-
-                        this.notes.put(basicNote);
+    public boolean removeNote(BasicNote note) {
+        boolean removed = false;
+        if (null != note) {
+            JSONArray newArray = new JSONArray();
+            for (int i=0; i<this.notes.length(); i++) {
+                try {
+                    BasicNote currentNote = ((BasicNote)this.notes.get(i));
+                    if (note.getRecordId() != currentNote.getRecordId()) {
+                        newArray.put(currentNote);
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
+
+            if (newArray.length() == (this.notes.length() - 1)) {
+                removed = true;
+                this.notes = newArray;
+            }
         }
+        return removed;
     }
 }

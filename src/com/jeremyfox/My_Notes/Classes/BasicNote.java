@@ -12,10 +12,12 @@ public class BasicNote implements Note {
 
     private String title;
     private String details;
+    private int recordId;
 
-    public BasicNote(String title, String details) {
+    public BasicNote(String title, String details, int recordId) {
         this.title = title;
         this.details = details;
+        this.recordId = recordId;
     }
 
     @Override
@@ -36,5 +38,13 @@ public class BasicNote implements Note {
     @Override
     public String getDetails() {
         return this.details;
+    }
+
+    public int getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(int recordId) {
+        this.recordId = recordId;
     }
 }
