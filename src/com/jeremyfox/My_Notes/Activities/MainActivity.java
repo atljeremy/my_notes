@@ -1,7 +1,9 @@
 package com.jeremyfox.My_Notes.Activities;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,41 +49,32 @@ public class MainActivity extends ListActivity {
     }
 
     private void registerWIthAPI() {
-        if (NetworkManager.isConnected(this)) {
-            NetworkManager networkManager = NetworkManager.getInstance();
-            networkManager.executePostRequest(NetworkManager.API_HOST + "/users.json", null, new NetworkCallback() {
-                @Override
-                public void onSuccess(JSONObject json) {
-                    Log.d("MainActivity", "onSuccess");
-                    try {
-                        String unique_id = json.getString(getString(R.string.unique_id));
-                        PrefsHelper.setPref(getBaseContext(), getString(R.string.user_id), unique_id);
-                        createListView();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+        NetworkManager networkManager = NetworkManager.getInstance();
+        networkManager.executePostRequest(MainActivity.this, NetworkManager.API_HOST + "/users.json", null, new NetworkCallback() {
+            @Override
+            public void onSuccess(Object json) {
+                Log.d("MainActivity", "onSuccess");
+                try {
+                    String unique_id = ((JSONObject)json).getString(getString(R.string.unique_id));
+                    PrefsHelper.setPref(getBaseContext(), getString(R.string.user_id), unique_id);
+                    createListView();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+            }
 
-                @Override
-                public void onFailure(int statusCode) {
-                    Log.d("MainActivity", "onFailure");
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setTitle("Sorry!")
-                            .setMessage("We were unable to register you with the API at this time. Please try again later by simply relaunching the application.")
-                            .setNegativeButton("Ok", null)
-                            .create()
-                            .show();
+            @Override
+            public void onFailure(int statusCode) {
+                Log.d("MainActivity", "onFailure");
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Sorry!")
+                        .setMessage("We were unable to register you with the API at this time. Please try again later by simply relaunching the application.")
+                        .setNegativeButton("Ok", null)
+                        .create()
+                        .show();
 
-                }
-            });
-        } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle("Offline")
-                    .setMessage("You are currently not connected to the internet. Please connect to a network with internet access and relaunch the application.")
-                    .setNegativeButton("Ok", null)
-                    .create()
-                    .show();
-        }
+            }
+        });
     }
 
     @Override
@@ -128,22 +121,26 @@ public class MainActivity extends ListActivity {
                             }
 
                             NetworkManager networkManager = NetworkManager.getInstance();
-                            networkManager.executePostRequest(NetworkManager.API_HOST + "/notes.json", params, new NetworkCallback() {
+                            networkManager.executePostRequest(MainActivity.this, NetworkManager.API_HOST + "/notes.json", params, new NetworkCallback() {
                                 @Override
-                                public void onSuccess(JSONObject json) {
+                                public void onSuccess(Object json) {
                                     createListView();
-                                    Toast.makeText(MainActivity.this, getString(R.string.noteSaved), Toast.LENGTH_SHORT);
+                                    Toast.makeText(MainActivity.this, getString(R.string.noteSaved), Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
                                 public void onFailure(int statusCode) {
-                                    Toast.makeText(MainActivity.this, "Error: Note Not Saved. Please Try Again.", Toast.LENGTH_LONG);
+                                    Toast.makeText(MainActivity.this, "Error: Note Not Saved. Please Try Again.", Toast.LENGTH_LONG).show();
                                 }
                             });
                         }
                     }
                 });
                 newNoteDialog.showDialog();
+                break;
+
+            case R.id.sync_notes:
+                createListView();
                 break;
         }
         return true;
@@ -153,67 +150,88 @@ public class MainActivity extends ListActivity {
      * Sets up the listView
      */
     private void createListView() {
-        AlertDialog dialog = showLoadingDialog();
+        final ProgressDialog dialog = showLoadingDialog();
 
         if (null == this.notesManager) {
             this.notesManager = NotesManager.getInstance();
         }
-        this.notesManager.retrieveNotesFromAPI(this);
 
-        dialog.dismiss();
-
-        final ListView listView = getListView();
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
-
+        this.notesManager.retrieveNotesFromAPI(MainActivity.this, new NetworkCallback() {
             @Override
-            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-                int count = listView.getCheckedItemCount();
-                mode.setTitle(count + " selected");
-            }
+            public void onSuccess(Object json) {
+                final ListView listView = getListView();
+                listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+                listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
 
-            @Override
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.trash:
-                        deleteSelectedNotes();
-                        mode.finish();
+                    @Override
+                    public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+                        int count = listView.getCheckedItemCount();
+                        mode.setTitle(count + " selected");
+                    }
+
+                    @Override
+                    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.trash:
+                                deleteSelectedNotes();
+                                mode.finish();
+                                return true;
+                            case R.id.edit:
+                                editSelectedNotes();
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+
+                    @Override
+                    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                        MenuInflater inflater = mode.getMenuInflater();
+                        inflater.inflate(R.menu.context_menu, menu);
                         return true;
-                    default:
+                    }
+
+                    @Override
+                    public void onDestroyActionMode(ActionMode mode) {
+                    }
+
+                    @Override
+                    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
                         return false;
-                }
+                    }
+                });
+
+                setListViewItems();
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        JSONArray notes = MainActivity.this.notesManager.getNotes();
+                        BasicNote note = null;
+                        try {
+                            note = (BasicNote)notes.get(position);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        new NoteDetailsDialog(MainActivity.this, note.getTitle(), note.getDetails()).showDialog();
+
+                    }
+                });
+
+                dialog.dismiss();
             }
 
             @Override
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                MenuInflater inflater = mode.getMenuInflater();
-                inflater.inflate(R.menu.context_menu, menu);
-                return true;
-            }
+            public void onFailure(int statusCode) {
+                dialog.dismiss();
 
-            @Override
-            public void onDestroyActionMode(ActionMode mode) {
-            }
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Error")
+                        .setMessage("Couldn't load your notes. Please check your network connection and try again.")
+                        .setNegativeButton("Ok", null)
+                        .create()
+                        .show();
 
-            @Override
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-        });
-
-        setListViewItems();
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                JSONArray notes = MainActivity.this.notesManager.getNotes();
-                BasicNote note = null;
-                try {
-                    note = (BasicNote)notes.get(position);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                new NoteDetailsDialog(MainActivity.this, note.getTitle(), note.getDetails()).showDialog();
             }
         });
     }
@@ -251,9 +269,9 @@ public class MainActivity extends ListActivity {
                 final BasicNote note = (BasicNote)listView.getItemAtPosition(i);
                 NetworkManager networkManager = NetworkManager.getInstance();
                 String url = NetworkManager.API_HOST+"/notes/"+note.getRecordId()+".json?unique_id="+PrefsHelper.getPref(this, getString(R.string.user_id));
-                networkManager.executeDeleteRequest(url, null, new NetworkCallback() {
+                networkManager.executeDeleteRequest(MainActivity.this, url, null, new NetworkCallback() {
                     @Override
-                    public void onSuccess(JSONObject json) {
+                    public void onSuccess(Object json) {
                         MainActivity.this.notesManager.removeNote(note);
                         setListViewItems();
                         Toast.makeText(MainActivity.this, "Selected Notes Deleted", Toast.LENGTH_SHORT).show();
@@ -268,16 +286,69 @@ public class MainActivity extends ListActivity {
         }
     }
 
-    private AlertDialog showLoadingDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Loading Notes...")
-                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+    private void editSelectedNotes() {
+        ListView listView = getListView();
+        SparseBooleanArray checked = listView.getCheckedItemPositions();
+        for (int i = 0; i < listView.getCount(); i++) {
+            if (checked.get(i)) {
+                final BasicNote note = (BasicNote)listView.getItemAtPosition(i);
+                final EditText titleInput = new EditText(this);
+                titleInput.setText(note.getTitle());
+                final EditText detailsInput = new EditText(this);
+                detailsInput.setText(note.getDetails());
+
+                NewNoteDialog newNoteDialog = new NewNoteDialog(this, titleInput, detailsInput, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
+                        boolean titleEmpty = titleInput.getText().toString().length() == 0;
+                        boolean detailsEmpty = detailsInput.getText().toString().length() == 0;
+                        if (titleEmpty || detailsEmpty) {
+                            Toast.makeText(MainActivity.this, getString(R.string.allFeildsRequired), Toast.LENGTH_SHORT).show();
+                        } else {
+                            /**
+                             * Save the edited note then update the list view
+                             */
+                            String title = titleInput.getText().toString();
+                            String details = detailsInput.getText().toString();
+
+                            JSONObject innerParams = new JSONObject();
+                            JSONObject params = new JSONObject();
+                            try {
+                                innerParams.put("title", title);
+                                innerParams.put("details", details);
+                                params.put("note", innerParams);
+                                params.put(getString(R.string.unique_id), PrefsHelper.getPref(MainActivity.this, getString(R.string.user_id)));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            NetworkManager networkManager = NetworkManager.getInstance();
+                            networkManager.executePutRequest(MainActivity.this, NetworkManager.API_HOST + "/notes/" + note.getRecordId() + ".json", params, new NetworkCallback() {
+                                @Override
+                                public void onSuccess(Object json) {
+                                    createListView();
+                                    Toast.makeText(MainActivity.this, getString(R.string.noteSaved), Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode) {
+                                    Toast.makeText(MainActivity.this, "Error: Note Not Saved. Please Check Your Network Connection and Try Again.", Toast.LENGTH_LONG).show();
+                                }
+                            });
+
+                        }
                     }
                 });
-        AlertDialog dialog = builder.create();
+                newNoteDialog.showDialog();
+            }
+        }
+    }
+
+    private ProgressDialog showLoadingDialog() {
+        ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage("Loading Notes...");
+        dialog.setCancelable(false);
         dialog.show();
         return dialog;
     }

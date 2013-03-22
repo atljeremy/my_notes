@@ -3,9 +3,14 @@
       android:layout_height="wrap_content"
       android:layout_width="fill_parent">
 
+    <item android:id="@+id/edit"
+          android:icon="@drawable/edit"
+          android:title="@string/editNote"
+          android:showAsAction="ifRoom|withText" />
+
     <item android:id="@+id/trash"
           android:icon="@drawable/trashicon"
-          android:title="@string/newNote"
+          android:title="@string/deleteNote"
           android:showAsAction="ifRoom|withText" />
 
 </menu>

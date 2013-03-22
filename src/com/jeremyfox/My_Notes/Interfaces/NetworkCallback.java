@@ -14,7 +14,7 @@ public interface NetworkCallback {
     /**
      * On success callback.
      */
-    public void onSuccess(JSONObject json);
+    public void onSuccess(Object json);
 
     /**
      * On failure callback.

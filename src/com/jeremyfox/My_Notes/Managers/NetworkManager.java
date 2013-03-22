@@ -10,10 +10,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
@@ -81,6 +78,11 @@ public class NetworkManager {
         POST,
 
         /**
+         * Specifies a PUT request.
+         */
+        PUT,
+
+        /**
          * Specifies a DELETE request.
          */
         DELETE
@@ -131,7 +133,7 @@ public class NetworkManager {
      * @param url the url
      * @return the jSON array
      */
-    public JSONArray executeSynchronousGetRequest(String url) {
+    public JSONArray executeSynchronousGetRequest(Context context, String url) {
         HttpRequestBase httpRequest = new HttpGet(url);
         JSONArray jsonArray = null;
         String jsonString = null;
@@ -162,8 +164,8 @@ public class NetworkManager {
      * @param url the url
      * @param callback the callback
      */
-    public void executeGetRequest(String url, NetworkCallback callback) {
-        NetworkManager.executeRequest(url, null, RequestType.GET, callback);
+    public void executeGetRequest(Context context, String url, NetworkCallback callback) {
+        executeRequest(context, url, null, RequestType.GET, callback);
     }
 
     /**
@@ -173,19 +175,30 @@ public class NetworkManager {
      * @param params the params
      * @param callback the callback
      */
-    public void executePostRequest(String url, JSONObject params, NetworkCallback callback) {
-        NetworkManager.executeRequest(url, params, RequestType.POST, callback);
+    public void executePostRequest(Context context, String url, JSONObject params, NetworkCallback callback) {
+        executeRequest(context, url, params, RequestType.POST, callback);
     }
 
     /**
-     * Execute post request.
+     * Execute put request.
      *
      * @param url the url
      * @param params the params
      * @param callback the callback
      */
-    public void executeDeleteRequest(String url, JSONObject params, NetworkCallback callback) {
-        NetworkManager.executeRequest(url, params, RequestType.DELETE, callback);
+    public void executePutRequest(Context context, String url, JSONObject params, NetworkCallback callback) {
+        executeRequest(context, url, params, RequestType.PUT, callback);
+    }
+
+    /**
+     * Execute delete request.
+     *
+     * @param url the url
+     * @param params the params
+     * @param callback the callback
+     */
+    public void executeDeleteRequest(Context context, String url, JSONObject params, NetworkCallback callback) {
+        executeRequest(context, url, params, RequestType.DELETE, callback);
     }
 
     /**
@@ -195,9 +208,9 @@ public class NetworkManager {
      * @param requestType the RequestType
      * @param callback the callback
      */
-    private static void executeRequest(String url, JSONObject params, RequestType requestType, NetworkCallback callback) {
+    private void executeRequest(Context context, String url, JSONObject params, RequestType requestType, NetworkCallback callback) {
 
-        if (null != url) {
+        if (isConnected(context) && null != url) {
 
             HttpRequestBase httpRequest;
             switch (requestType) {
@@ -217,6 +230,22 @@ public class NetworkManager {
                     }
                     break;
 
+                case PUT:
+                    httpRequest = new HttpPut(url);
+                    if (null != params && params.length() > 0) {
+                        StringEntity se = null;
+                        try {
+                            se = new StringEntity(params.toString());
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+                        ((HttpPut)httpRequest).setEntity(se);
+                        httpRequest.setHeader("Accept", "application/json");
+                        httpRequest.setHeader("Content-type", "application/json");
+                    }
+                    break;
+
                 case DELETE:
                     httpRequest = new HttpDelete(url);
                     break;
@@ -228,6 +257,8 @@ public class NetworkManager {
             }
 
             new NetworkAsyncTask().execute(httpRequest, callback);
+        } else {
+            callback.onFailure(NetworkManager.FAILURE_UNKNOWN_STATUS);
         }
     }
 }
@@ -275,12 +306,24 @@ class NetworkAsyncTask extends AsyncTask<Object, Integer, String> {
     }
 
     protected void onPostExecute(String result) {
+        final String JSON_ARRAY_OPEN_BRACKET = "[";
+        boolean isJsonArray = false;
+
         if (null != this.callback) {
             if (null == result || result.length() == 0) {
                 result = "{}";
+            } else {
+                int index = JSON_ARRAY_OPEN_BRACKET.indexOf(result.charAt(0));
+                if (index >= 0) {
+                    isJsonArray = true;
+                }
             }
             try {
-                this.callback.onSuccess(new JSONObject(result));
+                if (isJsonArray) {
+                    this.callback.onSuccess(new JSONArray(result));
+                } else {
+                    this.callback.onSuccess(new JSONObject(result));
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
                 this.callback.onFailure(NetworkManager.FAILURE_UNKNOWN_STATUS);

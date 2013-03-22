@@ -30,12 +30,12 @@
     <list default="true" id="373370d0-9813-4bb5-9c5f-517de1471963" name="Default" comment="" />
     <ignored path="My Notes.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/NotesManager.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363837242640" ignored="false" />
+    <file path="/NotesManager.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363916916883" ignored="false" />
     <file path="/Dummy.txt" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363829973502" ignored="false" />
-    <file path="/MainActivity.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363839132853" ignored="false" />
+    <file path="/MainActivity.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363917423829" ignored="false" />
     <file path="/main.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363312755883" ignored="false" />
     <file path="/notes.json" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363221933222" ignored="false" />
-    <file path="/fragment.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363835314173" ignored="false" />
+    <file path="/fragment.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363916343508" ignored="false" />
     <file path="/a.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363294648832" ignored="false" />
     <file path="/sample.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363294667567" ignored="false" />
     <file path="/Note.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363295351131" ignored="false" />
@@ -46,11 +46,11 @@
     <file path="/AndroidManifest.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363306949311" ignored="false" />
     <file path="/strings.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363306008946" ignored="false" />
     <file path="/NewNoteDialog.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363312068843" ignored="false" />
-    <file path="/menu.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363312935522" ignored="false" />
-    <file path="/NetworkManager.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363835601332" ignored="false" />
-    <file path="/NetworkCallback.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363657896184" ignored="false" />
+    <file path="/menu.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363913842194" ignored="false" />
+    <file path="/NetworkManager.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363917917418" ignored="false" />
+    <file path="/NetworkCallback.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363916851640" ignored="false" />
     <file path="/PrefsHelper.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363738110678" ignored="false" />
-    <file path="/context_menu.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363828424457" ignored="false" />
+    <file path="/context_menu.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363902908660" ignored="false" />
     <file path="/my_notes_list_item.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363830622184" ignored="false" />
     <file path="/NotesAdapter.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363833301764" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -78,7 +78,6 @@
   </component>
   <component name="DebuggerManager">
     <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -113,6 +112,7 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -122,36 +122,42 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MainActivity.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Activities/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="249" column="0" selection-start="10116" selection-end="10116" vertical-scroll-proportion="0.49582836">
+            <state line="348" column="0" selection-start="15279" selection-end="15279" vertical-scroll-proportion="-14.0">
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#onCreate#0;class#MainActivity#0" expanded="true" />
                 <element signature="method#registerWIthAPI#0;class#MainActivity#0" expanded="true" />
-                <element signature="method#onSuccess#0;class#1697:2859" expanded="true" />
-                <element signature="method#onFailure#0;class#1697:2859" expanded="true" />
+                <element signature="method#onSuccess#0;class#1722:2806" expanded="true" />
+                <element signature="method#onFailure#0;class#1722:2806" expanded="true" />
                 <element signature="method#onCreateOptionsMenu#0;class#MainActivity#0" expanded="true" />
                 <element signature="method#onOptionsItemSelected#0;class#MainActivity#0" expanded="true" />
-                <element signature="e#4001#6442#0" expanded="true" />
-                <element signature="method#onSuccess#0;class#5717:6374" expanded="true" />
-                <element signature="method#onFailure#0;class#5717:6374" expanded="true" />
-                <element signature="e#6423#6424#0" expanded="true" />
+                <element signature="e#3522#5992#0" expanded="true" />
+                <element signature="method#onSuccess#0;class#5257:5924" expanded="true" />
+                <element signature="method#onFailure#0;class#5257:5924" expanded="true" />
+                <element signature="e#5973#5974#0" expanded="true" />
                 <element signature="method#createListView#0;class#MainActivity#0" expanded="true" />
-                <element signature="method#onItemCheckedStateChanged#0;class#7040:8265" expanded="true" />
-                <element signature="method#onActionItemClicked#0;class#7040:8265" expanded="true" />
-                <element signature="method#onCreateActionMode#0;class#7040:8265" expanded="true" />
-                <element signature="method#onDestroyActionMode#0;class#7040:8265" expanded="true" />
-                <element signature="method#onPrepareActionMode#0;class#7040:8265" expanded="true" />
-                <element signature="e#8338#8904#0" expanded="true" />
-                <element signature="e#8893#8894#0" expanded="true" />
+                <element signature="method#onSuccess#0;class#6514:9673" expanded="true" />
+                <element signature="method#onItemCheckedStateChanged#0;class#6795:8402" expanded="true" />
+                <element signature="method#onActionItemClicked#0;class#6795:8402" expanded="true" />
+                <element signature="method#onCreateActionMode#0;class#6795:8402" expanded="true" />
+                <element signature="method#onDestroyActionMode#0;class#6795:8402" expanded="true" />
+                <element signature="method#onPrepareActionMode#0;class#6795:8402" expanded="true" />
+                <element signature="e#8491#9146#0" expanded="true" />
+                <element signature="e#9127#9128#0" expanded="true" />
+                <element signature="method#onFailure#0;class#6514:9673" expanded="true" />
                 <element signature="method#setListViewItems#0;class#MainActivity#0" expanded="true" />
-                <element signature="e#9204#9215#0" expanded="true" />
-                <element signature="method#onSuccess#0;class#10533:11137" expanded="true" />
-                <element signature="method#onFailure#0;class#10533:11137" expanded="true" />
-                <element signature="method#showLoadingDialog#0;class#MainActivity#0" expanded="true" />
-                <element signature="method#onClick#0;class#11376:11564" expanded="true" />
+                <element signature="e#9973#9984#0" expanded="true" />
+                <element signature="method#deleteSelectedNotes#0;class#MainActivity#0" expanded="true" />
+                <element signature="method#onSuccess#0;class#11321:11921" expanded="true" />
+                <element signature="method#onFailure#0;class#11321:11921" expanded="true" />
+                <element signature="method#editSelectedNotes#0;class#MainActivity#0" expanded="true" />
+                <element signature="e#12618#15152#0" expanded="true" />
+                <element signature="method#onSuccess#0;class#14382:15083" expanded="true" />
+                <element signature="method#onFailure#0;class#14382:15083" expanded="true" />
+                <element signature="e#15133#15134#0" expanded="true" />
                 <element signature="method#getLayoutParams#0;class#MainActivity#0" expanded="true" />
               </folding>
             </state>
@@ -161,33 +167,51 @@
       <file leaf-file-name="NotesManager.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/NotesManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="86" column="0" selection-start="2645" selection-end="2645" vertical-scroll-proportion="0.0">
+            <state line="84" column="0" selection-start="3046" selection-end="3046" vertical-scroll-proportion="0.0">
               <folding>
-                <element signature="imports" expanded="true" />
                 <element signature="method#NotesManager#0;class#NotesManager#0" expanded="true" />
                 <element signature="method#getInstance#0;class#NotesManager#0" expanded="true" />
-                <element signature="method#retrieveNotesFromAPI#0;class#NotesManager#0" expanded="true" />
+                <element signature="method#onSuccess#0;class#1656:3129" expanded="true" />
+                <element signature="method#removeNote#0;class#NotesManager#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NetworkManager.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="NetworkManager.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/NetworkManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="86" column="6" selection-start="2840" selection-end="2840" vertical-scroll-proportion="0.0">
+            <state line="293" column="64" selection-start="9860" selection-end="9860" vertical-scroll-proportion="0.3823065">
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#NetworkManager#0;class#NetworkManager#0" expanded="true" />
-                <element signature="method#getInstance#0;class#NetworkManager#0" expanded="true" />
                 <element signature="method#isConnected#0;class#NetworkManager#0" expanded="true" />
                 <element signature="method#executeSynchronousGetRequest#0;class#NetworkManager#0" expanded="true" />
                 <element signature="method#executeGetRequest#0;class#NetworkManager#0" expanded="true" />
                 <element signature="method#executePostRequest#0;class#NetworkManager#0" expanded="true" />
+                <element signature="method#executePutRequest#0;class#NetworkManager#0" expanded="true" />
                 <element signature="method#executeDeleteRequest#0;class#NetworkManager#0" expanded="true" />
                 <element signature="method#executeRequest#0;class#NetworkManager#0" expanded="true" />
-                <element signature="method#doInBackground#0;class#NetworkAsyncTask#0" expanded="true" />
                 <element signature="method#onPostExecute#0;class#NetworkAsyncTask#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NetworkCallback.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Interfaces/NetworkCallback.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="7" selection-start="270" selection-end="270" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JSONObject.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/org/json/JSONObject.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="11" selection-start="451" selection-end="451" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="method#JSONObject#0;class#JSONObject#0" expanded="true" />
+                <element signature="method#JSONObject#3;class#JSONObject#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -206,19 +230,19 @@
         <option value="$PROJECT_DIR$/res/layout/menu.xml" />
         <option value="$PROJECT_DIR$/project.properties" />
         <option value="$PROJECT_DIR$/res/layout/main.xml" />
-        <option value="$PROJECT_DIR$/res/menu/menu.xml" />
         <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Dialogs/NewNoteDialog.java" />
         <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Dialogs/NoteDetailsDialog.java" />
-        <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Interfaces/NetworkCallback.java" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Helpers/PrefsHelper.java" />
-        <option value="$PROJECT_DIR$/res/menu/context_menu.xml" />
         <option value="$PROJECT_DIR$/res/layout/my_notes_list_item.xml" />
         <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Classes/BasicNote.java" />
         <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Adapters/NotesAdapter.java" />
-        <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/NetworkManager.java" />
+        <option value="$PROJECT_DIR$/res/menu/context_menu.xml" />
+        <option value="$PROJECT_DIR$/res/menu/menu.xml" />
+        <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Interfaces/NetworkCallback.java" />
         <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/NotesManager.java" />
         <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Activities/MainActivity.java" />
+        <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/NetworkManager.java" />
       </list>
     </option>
   </component>
@@ -259,7 +283,6 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -520,6 +543,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -541,8 +565,8 @@
     <property name="restartRequiresConfirmation" value="true" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -574,14 +598,6 @@
       <option name="CLEAR_LOGCAT" value="false" />
       <method />
     </configuration>
-    <configuration default="true" type="Remote" factoryName="Remote">
-      <option name="USE_SOCKET_TRANSPORT" value="true" />
-      <option name="SERVER_MODE" value="false" />
-      <option name="SHMEM_ADDRESS" value="javadebug" />
-      <option name="HOST" value="localhost" />
-      <option name="PORT" value="5005" />
-      <method />
-    </configuration>
     <configuration default="true" type="Applet" factoryName="Applet">
       <module name="" />
       <option name="MAIN_CLASS_NAME" />
@@ -593,34 +609,6 @@
       <option name="VM_PARAMETERS" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
-    <configuration default="true" type="TestNG" factoryName="TestNG">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="GROUP_NAME" />
-      <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="OUTPUT_DIRECTORY" />
-      <option name="ANNOTATION_TYPE" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <option name="USE_DEFAULT_REPORTERS" value="false" />
-      <option name="PROPERTIES_FILE" />
-      <envs />
-      <properties />
-      <listeners />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -727,14 +715,11 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="2560" height="1414" extended-state="6" />
+    <frame x="0" y="22" width="2560" height="1414" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32961783" sideWeight="0.67001545" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -751,11 +736,14 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12688942" sideWeight="0.67001545" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12688942" sideWeight="0.6004637" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998455" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24980111" sideWeight="0.67001545" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32998455" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32961783" sideWeight="0.67001545" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3995363" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -824,26 +812,46 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/res/layout/my_notes_list_item.xml">
+    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/android/widget/ListView.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="36" selection-start="448" selection-end="448" vertical-scroll-proportion="0.12602966">
-          <folding />
-        </state>
+        <state line="32" column="38" selection-start="1337" selection-end="1337" vertical-scroll-proportion="0.33244327" />
       </provider>
-      <provider editor-type-id="android-designer">
-        <state />
+    </entry>
+    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/android/widget/Adapter.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="17" selection-start="161" selection-end="161" vertical-scroll-proportion="0.11348464" />
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/android/widget/ListAdapter.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="55" selection-start="199" selection-end="199" vertical-scroll-proportion="0.11348464" />
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/android/app/ListActivity.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="31" selection-start="980" selection-end="980" vertical-scroll-proportion="0.59012014" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/menu/context_menu.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="32" selection-start="222" selection-end="222" vertical-scroll-proportion="0.06849315">
+        <state line="13" column="51" selection-start="534" selection-end="534" vertical-scroll-proportion="0.1780822">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Helpers/PrefsHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="13" selection-start="263" selection-end="263" vertical-scroll-proportion="0.1342812">
+          <folding>
+            <element signature="method#setPref#0;class#PrefsHelper#0" expanded="true" />
+            <element signature="method#getPref#0;class#PrefsHelper#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Dialogs/NewNoteDialog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="41" selection-start="784" selection-end="784" vertical-scroll-proportion="0.30173776">
+        <state line="16" column="13" selection-start="411" selection-end="411" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#showDialog#0;class#NewNoteDialog#0" expanded="true" />
@@ -852,148 +860,119 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Classes/BasicNote.java">
+    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/android/content/DialogInterface.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="33" selection-start="461" selection-end="461" vertical-scroll-proportion="0.25513428">
+        <state line="18" column="25" selection-start="412" selection-end="412" vertical-scroll-proportion="0.3122765">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/android/widget/AbsListView.class">
+    <entry file="file://$PROJECT_DIR$/res/menu/menu.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="43" selection-start="1544" selection-end="1544" vertical-scroll-proportion="0.33280128">
-          <folding>
-            <element signature="method#getCheckedItemPositions#0;class#AbsListView#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/android/util/SparseBooleanArray.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="13" selection-start="155" selection-end="155" vertical-scroll-proportion="0.0671406">
+        <state line="7" column="37" selection-start="312" selection-end="312" vertical-scroll-proportion="0.14619164">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/android/widget/AdapterView.class">
+    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/org/json/JSONObject.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="81" column="28" selection-start="3504" selection-end="3504" vertical-scroll-proportion="0.34202212">
+        <state line="15" column="11" selection-start="451" selection-end="451" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="method#getItemAtPosition#0;class#AdapterView#0" expanded="true" />
+            <element signature="method#JSONObject#0;class#JSONObject#0" expanded="true" />
+            <element signature="method#JSONObject#3;class#JSONObject#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Adapters/NotesAdapter.java">
+    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/java/lang/ClassLoader.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="0" selection-start="843" selection-end="843" vertical-scroll-proportion="0.41627172">
+        <state line="45" column="30" selection-start="2418" selection-end="2418" vertical-scroll-proportion="0.33288044">
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#NotesAdapter#0;class#NotesAdapter#0" expanded="true" />
+            <element signature="method#loadClass#0;class#ClassLoader#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/org/json/JSONArray.class">
+    <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Interfaces/NetworkCallback.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="13" selection-start="151" selection-end="151" vertical-scroll-proportion="0.11348464">
+        <state line="13" column="7" selection-start="270" selection-end="270" vertical-scroll-proportion="0.0">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/NetworkManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="86" column="6" selection-start="2840" selection-end="2840" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#NetworkManager#0;class#NetworkManager#0" expanded="true" />
-            <element signature="method#getInstance#0;class#NetworkManager#0" expanded="true" />
-            <element signature="method#isConnected#0;class#NetworkManager#0" expanded="true" />
-            <element signature="method#executeSynchronousGetRequest#0;class#NetworkManager#0" expanded="true" />
-            <element signature="method#executeGetRequest#0;class#NetworkManager#0" expanded="true" />
-            <element signature="method#executePostRequest#0;class#NetworkManager#0" expanded="true" />
-            <element signature="method#executeDeleteRequest#0;class#NetworkManager#0" expanded="true" />
-            <element signature="method#executeRequest#0;class#NetworkManager#0" expanded="true" />
-            <element signature="method#doInBackground#0;class#NetworkAsyncTask#0" expanded="true" />
-            <element signature="method#onPostExecute#0;class#NetworkAsyncTask#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/android/widget/ListView.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="38" selection-start="1337" selection-end="1337" vertical-scroll-proportion="0.33244327">
-          <folding>
-            <element signature="method#getAdapter#0;class#ListView#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/android/widget/Adapter.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="17" selection-start="161" selection-end="161" vertical-scroll-proportion="0.11348464">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/android/widget/ListAdapter.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="55" selection-start="199" selection-end="199" vertical-scroll-proportion="0.11348464">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/android/app/ListActivity.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="31" selection-start="980" selection-end="980" vertical-scroll-proportion="0.59012014">
-          <folding>
-            <element signature="method#getListAdapter#0;class#ListActivity#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/NotesManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="86" column="0" selection-start="2645" selection-end="2645" vertical-scroll-proportion="0.0">
+        <state line="84" column="0" selection-start="3046" selection-end="3046" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="method#NotesManager#0;class#NotesManager#0" expanded="true" />
             <element signature="method#getInstance#0;class#NotesManager#0" expanded="true" />
-            <element signature="method#retrieveNotesFromAPI#0;class#NotesManager#0" expanded="true" />
+            <element signature="method#onSuccess#0;class#1656:3129" expanded="true" />
+            <element signature="method#removeNote#0;class#NotesManager#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/java/lang/String.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="81" column="15" selection-start="3021" selection-end="3021" vertical-scroll-proportion="0.33253872">
+          <folding>
+            <element signature="method#indexOf#0;class#String#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Activities/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="249" column="0" selection-start="10116" selection-end="10116" vertical-scroll-proportion="0.49582836">
+        <state line="348" column="0" selection-start="15279" selection-end="15279" vertical-scroll-proportion="-14.0">
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#onCreate#0;class#MainActivity#0" expanded="true" />
             <element signature="method#registerWIthAPI#0;class#MainActivity#0" expanded="true" />
-            <element signature="method#onSuccess#0;class#1697:2859" expanded="true" />
-            <element signature="method#onFailure#0;class#1697:2859" expanded="true" />
+            <element signature="method#onSuccess#0;class#1722:2806" expanded="true" />
+            <element signature="method#onFailure#0;class#1722:2806" expanded="true" />
             <element signature="method#onCreateOptionsMenu#0;class#MainActivity#0" expanded="true" />
             <element signature="method#onOptionsItemSelected#0;class#MainActivity#0" expanded="true" />
-            <element signature="e#4001#6442#0" expanded="true" />
-            <element signature="method#onSuccess#0;class#5717:6374" expanded="true" />
-            <element signature="method#onFailure#0;class#5717:6374" expanded="true" />
-            <element signature="e#6423#6424#0" expanded="true" />
+            <element signature="e#3522#5992#0" expanded="true" />
+            <element signature="method#onSuccess#0;class#5257:5924" expanded="true" />
+            <element signature="method#onFailure#0;class#5257:5924" expanded="true" />
+            <element signature="e#5973#5974#0" expanded="true" />
             <element signature="method#createListView#0;class#MainActivity#0" expanded="true" />
-            <element signature="method#onItemCheckedStateChanged#0;class#7040:8265" expanded="true" />
-            <element signature="method#onActionItemClicked#0;class#7040:8265" expanded="true" />
-            <element signature="method#onCreateActionMode#0;class#7040:8265" expanded="true" />
-            <element signature="method#onDestroyActionMode#0;class#7040:8265" expanded="true" />
-            <element signature="method#onPrepareActionMode#0;class#7040:8265" expanded="true" />
-            <element signature="e#8338#8904#0" expanded="true" />
-            <element signature="e#8893#8894#0" expanded="true" />
+            <element signature="method#onSuccess#0;class#6514:9673" expanded="true" />
+            <element signature="method#onItemCheckedStateChanged#0;class#6795:8402" expanded="true" />
+            <element signature="method#onActionItemClicked#0;class#6795:8402" expanded="true" />
+            <element signature="method#onCreateActionMode#0;class#6795:8402" expanded="true" />
+            <element signature="method#onDestroyActionMode#0;class#6795:8402" expanded="true" />
+            <element signature="method#onPrepareActionMode#0;class#6795:8402" expanded="true" />
+            <element signature="e#8491#9146#0" expanded="true" />
+            <element signature="e#9127#9128#0" expanded="true" />
+            <element signature="method#onFailure#0;class#6514:9673" expanded="true" />
             <element signature="method#setListViewItems#0;class#MainActivity#0" expanded="true" />
-            <element signature="e#9204#9215#0" expanded="true" />
-            <element signature="method#onSuccess#0;class#10533:11137" expanded="true" />
-            <element signature="method#onFailure#0;class#10533:11137" expanded="true" />
-            <element signature="method#showLoadingDialog#0;class#MainActivity#0" expanded="true" />
-            <element signature="method#onClick#0;class#11376:11564" expanded="true" />
+            <element signature="e#9973#9984#0" expanded="true" />
+            <element signature="method#deleteSelectedNotes#0;class#MainActivity#0" expanded="true" />
+            <element signature="method#onSuccess#0;class#11321:11921" expanded="true" />
+            <element signature="method#onFailure#0;class#11321:11921" expanded="true" />
+            <element signature="method#editSelectedNotes#0;class#MainActivity#0" expanded="true" />
+            <element signature="e#12618#15152#0" expanded="true" />
+            <element signature="method#onSuccess#0;class#14382:15083" expanded="true" />
+            <element signature="method#onFailure#0;class#14382:15083" expanded="true" />
+            <element signature="e#15133#15134#0" expanded="true" />
             <element signature="method#getLayoutParams#0;class#MainActivity#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/NetworkManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="293" column="64" selection-start="9860" selection-end="9860" vertical-scroll-proportion="0.3823065">
+          <folding>
+            <element signature="method#isConnected#0;class#NetworkManager#0" expanded="true" />
+            <element signature="method#executeSynchronousGetRequest#0;class#NetworkManager#0" expanded="true" />
+            <element signature="method#executeGetRequest#0;class#NetworkManager#0" expanded="true" />
+            <element signature="method#executePostRequest#0;class#NetworkManager#0" expanded="true" />
+            <element signature="method#executePutRequest#0;class#NetworkManager#0" expanded="true" />
+            <element signature="method#executeDeleteRequest#0;class#NetworkManager#0" expanded="true" />
+            <element signature="method#executeRequest#0;class#NetworkManager#0" expanded="true" />
+            <element signature="method#onPostExecute#0;class#NetworkAsyncTask#0" expanded="true" />
           </folding>
         </state>
       </provider>

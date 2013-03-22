@@ -18,4 +18,7 @@
     <string name="notesJson">notes.json</string>
     <string name="user_id">user_id</string>
     <string name="unique_id">unique_id</string>
+    <string name="deleteNote">Delete Note</string>
+    <string name="editNote">Edit Note</string>
+    <string name="syncNotes">Sync Notes</string>
 </resources>

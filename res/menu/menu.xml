@@ -3,8 +3,13 @@
         android:layout_height="wrap_content"
         android:layout_width="fill_parent">
 
+    <item android:id="@+id/sync_notes"
+          android:icon="@drawable/reload"
+          android:title="@string/syncNotes"
+          android:showAsAction="ifRoom|withText" />
+
     <item android:id="@+id/new_note"
-          android:icon="@drawable/editnotes"
+          android:icon="@drawable/newnote"
           android:title="@string/newNote"
           android:showAsAction="ifRoom|withText" />
 
