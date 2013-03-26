@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Application's Main Theme -->
+    <style name="MyNotesThemeDefault" parent="android:Theme.Holo">
+        <item name="android:buttonStyle">@style/DefaultButton</item>
+        <item name="android:textAppearance">@style/DefaultTextView</item>
+        <item name="android:textAppearanceButton">@style/DefaultButtonText</item>
+    </style>
+
+    <!-- Default Styles -->
+    <style name="DefaultTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">6dip</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+
+    <style name="DefaultTextViewBold">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">6dip</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DefaultButtonText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DefaultButton">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:background">@drawable/default_button</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textAppearance">@style/DefaultButtonText</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+    </style>
+
+    <!-- Dark Styles -->
+    <style name="DarkTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">6dip</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+
+    <style name="DarkTextViewBold">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">6dip</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+</resources>

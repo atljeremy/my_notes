@@ -31,6 +31,10 @@ import java.util.ArrayList;
 public class MainActivity extends ListActivity {
 
     private NotesManager notesManager;
+    private ViewFlipper viewFlipper;
+    private TextView noteTitle;
+    private TextView noteDetails;
+    private Button dismissNoteButton;
 
     /**
      * Called when the activity is first created.
@@ -39,6 +43,18 @@ public class MainActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        this.viewFlipper = (ViewFlipper)findViewById(R.id.ViewFlipper);
+        this.noteTitle = (TextView)findViewById(R.id.note_title);
+        this.noteDetails = (TextView)findViewById(R.id.note_details);
+        this.dismissNoteButton = (Button)findViewById(R.id.dismiss_note_button);
+        this.dismissNoteButton.setText(getString(R.string.dismiss));
+        this.dismissNoteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.this.viewFlipper.setDisplayedChild(0);
+            }
+        });
 
         String user_id = PrefsHelper.getPref(this, getString(R.string.user_id));
         if (null == user_id || user_id.length() == 0) {
@@ -213,8 +229,9 @@ public class MainActivity extends ListActivity {
                             e.printStackTrace();
                         }
 
-                        new NoteDetailsDialog(MainActivity.this, note.getTitle(), note.getDetails()).showDialog();
-
+                        MainActivity.this.noteTitle.setText(note.getTitle());
+                        MainActivity.this.noteDetails.setText(note.getDetails());
+                        MainActivity.this.viewFlipper.setDisplayedChild(1);
                     }
                 });
 
@@ -240,7 +257,6 @@ public class MainActivity extends ListActivity {
         ListView listView = getListView();
         JSONArray jsonArray = this.notesManager.getNotes();
         if (jsonArray.length() > 0) {
-            listView.setLayoutParams(getLayoutParams());
             ArrayList<BasicNote> notes = new ArrayList<BasicNote>(jsonArray.length());
             for (int i=0; i<jsonArray.length(); i++) {
                 try {

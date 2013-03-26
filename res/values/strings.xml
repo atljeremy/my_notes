@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">My Notes</string>
-    <string name="notesTitle">Note Title:</string>
+    <string name="notesTitle">Note Title: </string>
     <string name="notesDetails">Note Details:</string>
     <string name="newNote">New Note</string>
     <string name="titleInputHint">Title</string>
