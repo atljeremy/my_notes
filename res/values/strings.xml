@@ -13,7 +13,7 @@
     <string name="createNewNote">Create A New Note</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
-    <string name="dismiss">Dismiss</string>
+    <string name="dismiss">Dismiss Note</string>
     <string name="notes">notes</string>
     <string name="notesJson">notes.json</string>
     <string name="user_id">user_id</string>

@@ -4,7 +4,7 @@
       android:layout_width="fill_parent">
 
     <item android:id="@+id/edit"
-          android:icon="@drawable/edit"
+          android:icon="@drawable/newnote"
           android:title="@string/editNote"
           android:showAsAction="ifRoom|withText" />
 

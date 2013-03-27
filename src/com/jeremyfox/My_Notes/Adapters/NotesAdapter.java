@@ -1,6 +1,7 @@
 package com.jeremyfox.My_Notes.Adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,8 @@ public class NotesAdapter extends ArrayAdapter<BasicNote> {
         BasicNote note = notes.get(position);
         if (note != null) {
             TextView title = (TextView) view.findViewById(R.id.title);
+            Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/Dakota-Regular.ttf");
+            title.setTypeface(typeface);
             if (title != null) {
                 title.setText(note.getTitle());
             }

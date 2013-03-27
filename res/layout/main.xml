@@ -3,15 +3,23 @@
               android:id="@+id/mainLayout"
               android:orientation="vertical"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
+              android:layout_height="fill_parent"
+              android:background="#faf9ce">
 
     <ViewFlipper android:id="@+id/ViewFlipper"
                  android:layout_width="fill_parent"
                  android:layout_height="fill_parent">
 
+        <ImageView android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="top|right"
+                   android:src="@drawable/new_note_instruction"></ImageView>
+
         <ListView android:id="@android:id/list"
                   android:layout_width="fill_parent"
-                  android:layout_height="wrap_content" />
+                  android:layout_height="wrap_content"
+                  android:divider="#bdbc92"
+                  android:dividerHeight="2px"/>
 
         <ScrollView android:layout_width="fill_parent"
                     android:layout_height="wrap_content" >
@@ -21,22 +29,15 @@
                           android:layout_width="fill_parent"
                           android:layout_height="fill_parent" >
 
-                <LinearLayout android:id="@+id/note_layout"
-                              android:orientation="horizontal"
-                              android:layout_width="fill_parent"
-                              android:layout_height="wrap_content" >
+                <TextView android:id="@+id/note_title"
+                          style="@style/DefaultTextViewTitle"
+                          android:layout_marginTop="10dp"></TextView>
 
-                    <TextView style="@style/DarkTextViewBold"
-                              android:text="@string/notesTitle"></TextView>
-
-                    <TextView android:id="@+id/note_title"
-                              style="@style/DefaultTextView"></TextView>
-
-                </LinearLayout>
-
-
-                <TextView style="@style/DarkTextViewBold"
-                          android:text="@string/notesDetails"></TextView>
+                <ImageView android:layout_width="fill_parent"
+                           android:layout_height="wrap_content"
+                           android:layout_marginTop="5dp"
+                           android:layout_marginBottom="5dp"
+                           android:src="@drawable/seperator"></ImageView>
 
                 <TextView android:id="@+id/note_details"
                           style="@style/DefaultTextView"></TextView>

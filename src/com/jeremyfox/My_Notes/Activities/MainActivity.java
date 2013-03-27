@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -45,14 +46,17 @@ public class MainActivity extends ListActivity {
         setContentView(R.layout.main);
 
         this.viewFlipper = (ViewFlipper)findViewById(R.id.ViewFlipper);
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Dakota-Regular.ttf");
         this.noteTitle = (TextView)findViewById(R.id.note_title);
         this.noteDetails = (TextView)findViewById(R.id.note_details);
+        this.noteTitle.setTypeface(typeface);
+        this.noteDetails.setTypeface(typeface);
         this.dismissNoteButton = (Button)findViewById(R.id.dismiss_note_button);
         this.dismissNoteButton.setText(getString(R.string.dismiss));
         this.dismissNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.this.viewFlipper.setDisplayedChild(0);
+                MainActivity.this.viewFlipper.setDisplayedChild(1);
             }
         });
 
@@ -231,7 +235,7 @@ public class MainActivity extends ListActivity {
 
                         MainActivity.this.noteTitle.setText(note.getTitle());
                         MainActivity.this.noteDetails.setText(note.getDetails());
-                        MainActivity.this.viewFlipper.setDisplayedChild(1);
+                        MainActivity.this.viewFlipper.setDisplayedChild(2);
                     }
                 });
 
@@ -269,9 +273,11 @@ public class MainActivity extends ListActivity {
 
             NotesAdapter notesAdapter = new NotesAdapter(MainActivity.this, R.id.title, notes);
             setListAdapter(notesAdapter);
+            this.viewFlipper.setDisplayedChild(1);
         } else {
             NotesAdapter notesAdapter = new NotesAdapter(MainActivity.this, R.id.title, new ArrayList<BasicNote>());
             setListAdapter(notesAdapter);
+            this.viewFlipper.setDisplayedChild(0);
         }
 
         listView.invalidateViews();
