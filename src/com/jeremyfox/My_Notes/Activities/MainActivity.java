@@ -1,9 +1,6 @@
 package com.jeremyfox.My_Notes.Activities;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ListActivity;
-import android.app.ProgressDialog;
+import android.app.*;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -14,7 +11,6 @@ import android.widget.*;
 import com.jeremyfox.My_Notes.Adapters.NotesAdapter;
 import com.jeremyfox.My_Notes.Classes.BasicNote;
 import com.jeremyfox.My_Notes.Dialogs.NewNoteDialog;
-import com.jeremyfox.My_Notes.Dialogs.NoteDetailsDialog;
 import com.jeremyfox.My_Notes.Helpers.PrefsHelper;
 import com.jeremyfox.My_Notes.Interfaces.NetworkCallback;
 import com.jeremyfox.My_Notes.Managers.NetworkManager;
@@ -29,13 +25,14 @@ import java.util.ArrayList;
 /**
  * The type Main activity.
  */
-public class MainActivity extends ListActivity {
+public class MainActivity extends Activity {
 
     private NotesManager notesManager;
     private ViewFlipper viewFlipper;
     private TextView noteTitle;
     private TextView noteDetails;
     private Button dismissNoteButton;
+    private GridView gridView;
 
     /**
      * Called when the activity is first created.
@@ -45,6 +42,7 @@ public class MainActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        this.gridView = (GridView)findViewById(R.id.gridview);
         this.viewFlipper = (ViewFlipper)findViewById(R.id.ViewFlipper);
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Dakota-Regular.ttf");
         this.noteTitle = (TextView)findViewById(R.id.note_title);
@@ -179,14 +177,23 @@ public class MainActivity extends ListActivity {
         this.notesManager.retrieveNotesFromAPI(MainActivity.this, new NetworkCallback() {
             @Override
             public void onSuccess(Object json) {
-                final ListView listView = getListView();
-                listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-                listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+                final GridView grid = MainActivity.this.gridView;
+                grid.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+                grid.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
 
                     @Override
                     public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-                        int count = listView.getCheckedItemCount();
+                        int count = grid.getCheckedItemCount();
                         mode.setTitle(count + " selected");
+                        if (checked) {
+                            View itemView = grid.getAdapter().getView(position, null, null);
+                            ImageView checkmark = (ImageView)itemView.findViewById(R.id.checkmark);
+                            checkmark.setVisibility(View.VISIBLE);
+                        } else {
+                            View itemView = grid.getAdapter().getView(position, null, null);
+                            ImageView checkmark = (ImageView)itemView.findViewById(R.id.checkmark);
+                            checkmark.setVisibility(View.GONE);
+                        }
                     }
 
                     @Override
@@ -223,7 +230,7 @@ public class MainActivity extends ListActivity {
 
                 setListViewItems();
 
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         JSONArray notes = MainActivity.this.notesManager.getNotes();
                         BasicNote note = null;
@@ -258,7 +265,6 @@ public class MainActivity extends ListActivity {
     }
 
     private void setListViewItems() {
-        ListView listView = getListView();
         JSONArray jsonArray = this.notesManager.getNotes();
         if (jsonArray.length() > 0) {
             ArrayList<BasicNote> notes = new ArrayList<BasicNote>(jsonArray.length());
@@ -272,23 +278,22 @@ public class MainActivity extends ListActivity {
             }
 
             NotesAdapter notesAdapter = new NotesAdapter(MainActivity.this, R.id.title, notes);
-            setListAdapter(notesAdapter);
+            this.gridView.setAdapter(notesAdapter);
             this.viewFlipper.setDisplayedChild(1);
         } else {
             NotesAdapter notesAdapter = new NotesAdapter(MainActivity.this, R.id.title, new ArrayList<BasicNote>());
-            setListAdapter(notesAdapter);
+            this.gridView.setAdapter(notesAdapter);
             this.viewFlipper.setDisplayedChild(0);
         }
 
-        listView.invalidateViews();
+        this.gridView.invalidateViews();
     }
 
     private void deleteSelectedNotes() {
-        ListView listView = getListView();
-        SparseBooleanArray checked = listView.getCheckedItemPositions();
-        for (int i = 0; i < listView.getCount(); i++) {
+        SparseBooleanArray checked = this.gridView.getCheckedItemPositions();
+        for (int i = 0; i < this.gridView.getCount(); i++) {
             if (checked.get(i)) {
-                final BasicNote note = (BasicNote)listView.getItemAtPosition(i);
+                final BasicNote note = (BasicNote)this.gridView.getItemAtPosition(i);
                 NetworkManager networkManager = NetworkManager.getInstance();
                 String url = NetworkManager.API_HOST+"/notes/"+note.getRecordId()+".json?unique_id="+PrefsHelper.getPref(this, getString(R.string.user_id));
                 networkManager.executeDeleteRequest(MainActivity.this, url, null, new NetworkCallback() {
@@ -309,11 +314,10 @@ public class MainActivity extends ListActivity {
     }
 
     private void editSelectedNotes() {
-        ListView listView = getListView();
-        SparseBooleanArray checked = listView.getCheckedItemPositions();
-        for (int i = 0; i < listView.getCount(); i++) {
+        SparseBooleanArray checked = this.gridView.getCheckedItemPositions();
+        for (int i = 0; i < this.gridView.getCount(); i++) {
             if (checked.get(i)) {
-                final BasicNote note = (BasicNote)listView.getItemAtPosition(i);
+                final BasicNote note = (BasicNote)this.gridView.getItemAtPosition(i);
                 final EditText titleInput = new EditText(this);
                 titleInput.setText(note.getTitle());
                 final EditText detailsInput = new EditText(this);
@@ -375,12 +379,4 @@ public class MainActivity extends ListActivity {
         return dialog;
     }
 
-    /**
-     * Used in the custom view creation methods to set the layout params
-     * @return LayoutParams
-     */
-    private LinearLayout.LayoutParams getLayoutParams() {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        return new LinearLayout.LayoutParams(layoutParams);
-    }
 }

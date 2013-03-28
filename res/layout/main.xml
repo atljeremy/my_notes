@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/mainLayout"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:background="#faf9ce">
+              style="@style/DefaultMainLayoutContainer">
 
     <ViewFlipper android:id="@+id/ViewFlipper"
                  android:layout_width="fill_parent"
@@ -15,11 +12,8 @@
                    android:layout_gravity="top|right"
                    android:src="@drawable/new_note_instruction"></ImageView>
 
-        <ListView android:id="@android:id/list"
-                  android:layout_width="fill_parent"
-                  android:layout_height="wrap_content"
-                  android:divider="#bdbc92"
-                  android:dividerHeight="2px"/>
+        <GridView android:id="@+id/gridview"
+                  style="@style/DefaultGridView"/>
 
         <ScrollView android:layout_width="fill_parent"
                     android:layout_height="wrap_content" >

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class NotesAdapter extends ArrayAdapter<BasicNote> {
 
     private ArrayList<BasicNote> notes;
+    private int counter;
 
     public NotesAdapter(Context context, int textViewResourceId, ArrayList<BasicNote> notes) {
         super(context, textViewResourceId, notes);
@@ -33,6 +34,15 @@ public class NotesAdapter extends ArrayAdapter<BasicNote> {
         if (view == null) {
             LayoutInflater layoutInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = layoutInflater.inflate(R.layout.my_notes_list_item, null);
+        } else {
+            view.findViewById(R.id.main_item_container).setBackground(getContext().getResources().getDrawable(R.drawable.grid_item_1_background));
+        }
+
+        if (counter >= 3) {
+            view.findViewById(R.id.main_item_container).setBackground(getContext().getResources().getDrawable(R.drawable.grid_item_2_background));
+            counter = 0;
+        } else if (counter < 3) {
+            counter++;
         }
 
         BasicNote note = notes.get(position);
