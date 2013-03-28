@@ -1,0 +1,135 @@
+com.jeremyfox.My_Notes.Activities.MainActivity -> com.jeremyfox.My_Notes.Activities.MainActivity:
+    com.jeremyfox.My_Notes.Managers.NotesManager notesManager -> a
+    android.widget.ViewFlipper viewFlipper -> b
+    android.widget.TextView noteTitle -> c
+    android.widget.TextView noteDetails -> d
+    android.widget.Button dismissNoteButton -> e
+    android.widget.GridView gridView -> f
+    void onCreate(android.os.Bundle) -> onCreate
+    void registerWIthAPI() -> a
+    boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
+    boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
+    void createListView() -> b
+    void setListViewItems() -> c
+    void deleteSelectedNotes() -> d
+    void editSelectedNotes() -> e
+    android.app.ProgressDialog showLoadingDialog() -> f
+    android.widget.ViewFlipper access$000(com.jeremyfox.My_Notes.Activities.MainActivity) -> a
+    void access$100(com.jeremyfox.My_Notes.Activities.MainActivity) -> b
+    android.widget.GridView access$200(com.jeremyfox.My_Notes.Activities.MainActivity) -> c
+    void access$300(com.jeremyfox.My_Notes.Activities.MainActivity) -> d
+    void access$400(com.jeremyfox.My_Notes.Activities.MainActivity) -> e
+    void access$500(com.jeremyfox.My_Notes.Activities.MainActivity) -> f
+    com.jeremyfox.My_Notes.Managers.NotesManager access$600(com.jeremyfox.My_Notes.Activities.MainActivity) -> g
+    android.widget.TextView access$700(com.jeremyfox.My_Notes.Activities.MainActivity) -> h
+    android.widget.TextView access$800(com.jeremyfox.My_Notes.Activities.MainActivity) -> i
+com.jeremyfox.My_Notes.Activities.MainActivity$1 -> com.jeremyfox.My_Notes.Activities.a:
+    com.jeremyfox.My_Notes.Activities.MainActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+com.jeremyfox.My_Notes.Activities.MainActivity$2 -> com.jeremyfox.My_Notes.Activities.b:
+    com.jeremyfox.My_Notes.Activities.MainActivity this$0 -> a
+    void onSuccess(java.lang.Object) -> a
+    void onFailure(int) -> a
+com.jeremyfox.My_Notes.Activities.MainActivity$3 -> com.jeremyfox.My_Notes.Activities.c:
+    android.widget.EditText val$titleInput -> a
+    android.widget.EditText val$detailsInput -> b
+    com.jeremyfox.My_Notes.Activities.MainActivity this$0 -> c
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.jeremyfox.My_Notes.Activities.MainActivity$3$1 -> com.jeremyfox.My_Notes.Activities.d:
+    com.jeremyfox.My_Notes.Activities.MainActivity$3 this$1 -> a
+    void onSuccess(java.lang.Object) -> a
+    void onFailure(int) -> a
+com.jeremyfox.My_Notes.Activities.MainActivity$4 -> com.jeremyfox.My_Notes.Activities.e:
+    android.app.ProgressDialog val$dialog -> a
+    com.jeremyfox.My_Notes.Activities.MainActivity this$0 -> b
+    void onSuccess(java.lang.Object) -> a
+    void onFailure(int) -> a
+com.jeremyfox.My_Notes.Activities.MainActivity$4$1 -> com.jeremyfox.My_Notes.Activities.f:
+    android.widget.GridView val$grid -> a
+    com.jeremyfox.My_Notes.Activities.MainActivity$4 this$1 -> b
+    void onItemCheckedStateChanged(android.view.ActionMode,int,long,boolean) -> onItemCheckedStateChanged
+    boolean onActionItemClicked(android.view.ActionMode,android.view.MenuItem) -> onActionItemClicked
+    boolean onCreateActionMode(android.view.ActionMode,android.view.Menu) -> onCreateActionMode
+    void onDestroyActionMode(android.view.ActionMode) -> onDestroyActionMode
+    boolean onPrepareActionMode(android.view.ActionMode,android.view.Menu) -> onPrepareActionMode
+com.jeremyfox.My_Notes.Activities.MainActivity$4$2 -> com.jeremyfox.My_Notes.Activities.g:
+    com.jeremyfox.My_Notes.Activities.MainActivity$4 this$1 -> a
+    void onItemClick(android.widget.AdapterView,android.view.View,int,long) -> onItemClick
+com.jeremyfox.My_Notes.Activities.MainActivity$5 -> com.jeremyfox.My_Notes.Activities.h:
+    com.jeremyfox.My_Notes.Classes.BasicNote val$note -> a
+    com.jeremyfox.My_Notes.Activities.MainActivity this$0 -> b
+    void onSuccess(java.lang.Object) -> a
+    void onFailure(int) -> a
+com.jeremyfox.My_Notes.Activities.MainActivity$6 -> com.jeremyfox.My_Notes.Activities.i:
+    android.widget.EditText val$titleInput -> a
+    android.widget.EditText val$detailsInput -> b
+    com.jeremyfox.My_Notes.Classes.BasicNote val$note -> c
+    com.jeremyfox.My_Notes.Activities.MainActivity this$0 -> d
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.jeremyfox.My_Notes.Activities.MainActivity$6$1 -> com.jeremyfox.My_Notes.Activities.j:
+    com.jeremyfox.My_Notes.Activities.MainActivity$6 this$1 -> a
+    void onSuccess(java.lang.Object) -> a
+    void onFailure(int) -> a
+com.jeremyfox.My_Notes.Adapters.NotesAdapter -> com.jeremyfox.My_Notes.a.a:
+    java.util.ArrayList notes -> a
+    int counter -> b
+    android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
+com.jeremyfox.My_Notes.Classes.BasicNote -> com.jeremyfox.My_Notes.b.a:
+    java.lang.String title -> a
+    java.lang.String details -> b
+    int recordId -> c
+    java.lang.String getTitle() -> a
+    java.lang.String getDetails() -> b
+    int getRecordId() -> c
+com.jeremyfox.My_Notes.Dialogs.NewNoteDialog -> com.jeremyfox.My_Notes.c.a:
+    android.app.AlertDialog$Builder builder -> a
+    android.app.AlertDialog dialog -> b
+    android.widget.EditText titleInput -> c
+    android.widget.EditText detailsInput -> d
+    void showDialog() -> a
+com.jeremyfox.My_Notes.Helpers.PrefsHelper -> com.jeremyfox.My_Notes.d.a:
+    void setPref(android.content.Context,java.lang.String,java.lang.String) -> a
+    java.lang.String getPref(android.content.Context,java.lang.String) -> a
+com.jeremyfox.My_Notes.Interfaces.NetworkCallback -> com.jeremyfox.My_Notes.e.a:
+    void onSuccess(java.lang.Object) -> a
+    void onFailure(int) -> a
+com.jeremyfox.My_Notes.Managers.NetworkAsyncTask -> com.jeremyfox.My_Notes.f.a:
+    com.jeremyfox.My_Notes.Interfaces.NetworkCallback callback -> a
+    java.lang.String doInBackground(java.lang.Object[]) -> a
+    void onPostExecute(java.lang.String) -> a
+    void onPostExecute(java.lang.Object) -> onPostExecute
+    java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
+com.jeremyfox.My_Notes.Managers.NetworkManager -> com.jeremyfox.My_Notes.f.b:
+    com.jeremyfox.My_Notes.Managers.NetworkManager instance -> a
+    com.jeremyfox.My_Notes.Managers.NetworkManager getInstance() -> a
+    boolean isConnected(android.content.Context) -> a
+    void executeGetRequest(android.content.Context,java.lang.String,com.jeremyfox.My_Notes.Interfaces.NetworkCallback) -> a
+    void executePostRequest(android.content.Context,java.lang.String,org.json.JSONObject,com.jeremyfox.My_Notes.Interfaces.NetworkCallback) -> a
+    void executePutRequest(android.content.Context,java.lang.String,org.json.JSONObject,com.jeremyfox.My_Notes.Interfaces.NetworkCallback) -> b
+    void executeDeleteRequest(android.content.Context,java.lang.String,org.json.JSONObject,com.jeremyfox.My_Notes.Interfaces.NetworkCallback) -> c
+    void executeRequest(android.content.Context,java.lang.String,org.json.JSONObject,com.jeremyfox.My_Notes.Managers.NetworkManager$RequestType,com.jeremyfox.My_Notes.Interfaces.NetworkCallback) -> a
+com.jeremyfox.My_Notes.Managers.NetworkManager$1 -> com.jeremyfox.My_Notes.f.c:
+    int[] $SwitchMap$com$jeremyfox$My_Notes$Managers$NetworkManager$RequestType -> a
+com.jeremyfox.My_Notes.Managers.NetworkManager$RequestType -> com.jeremyfox.My_Notes.f.d:
+    com.jeremyfox.My_Notes.Managers.NetworkManager$RequestType GET -> a
+    com.jeremyfox.My_Notes.Managers.NetworkManager$RequestType POST -> b
+    com.jeremyfox.My_Notes.Managers.NetworkManager$RequestType PUT -> c
+    com.jeremyfox.My_Notes.Managers.NetworkManager$RequestType DELETE -> d
+    com.jeremyfox.My_Notes.Managers.NetworkManager$RequestType[] $VALUES -> e
+    com.jeremyfox.My_Notes.Managers.NetworkManager$RequestType[] values() -> values
+    com.jeremyfox.My_Notes.Managers.NetworkManager$RequestType valueOf(java.lang.String) -> valueOf
+com.jeremyfox.My_Notes.Managers.NotesManager -> com.jeremyfox.My_Notes.f.e:
+    com.jeremyfox.My_Notes.Managers.NotesManager instance -> a
+    org.json.JSONArray notes -> b
+    com.jeremyfox.My_Notes.Managers.NotesManager getInstance() -> a
+    boolean retrieveNotesFromAPI(android.content.Context,com.jeremyfox.My_Notes.Interfaces.NetworkCallback) -> a
+    org.json.JSONArray getNotes() -> b
+    boolean removeNote(com.jeremyfox.My_Notes.Classes.BasicNote) -> a
+    org.json.JSONArray access$002(com.jeremyfox.My_Notes.Managers.NotesManager,org.json.JSONArray) -> a
+    org.json.JSONArray access$000(com.jeremyfox.My_Notes.Managers.NotesManager) -> a
+com.jeremyfox.My_Notes.Managers.NotesManager$1 -> com.jeremyfox.My_Notes.f.f:
+    boolean[] val$requestSuccessful -> a
+    com.jeremyfox.My_Notes.Interfaces.NetworkCallback val$callback -> b
+    com.jeremyfox.My_Notes.Managers.NotesManager this$0 -> c
+    void onSuccess(java.lang.Object) -> a
+    void onFailure(int) -> a

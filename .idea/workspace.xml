@@ -28,24 +28,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="373370d0-9813-4bb5-9c5f-517de1471963" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/grid_item_1_background.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/grid_item_2_background.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/new_note_instruction.png" afterPath="$PROJECT_DIR$/res/drawable/new_note_instruction.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Activities/MainActivity.java" afterPath="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Activities/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Adapters/NotesAdapter.java" afterPath="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Adapters/NotesAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/menu/context_menu.xml" afterPath="$PROJECT_DIR$/res/menu/context_menu.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/main.xml" afterPath="$PROJECT_DIR$/res/layout/main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/menu/menu.xml" afterPath="$PROJECT_DIR$/res/menu/menu.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/my_notes_list_item.xml" afterPath="$PROJECT_DIR$/res/layout/my_notes_list_item.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/styles.xml" afterPath="$PROJECT_DIR$/res/values/styles.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="My Notes.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/NotesManager.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363916916883" ignored="false" />
-    <file path="/Dummy.txt" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364430771790" ignored="false" />
+    <file path="/Dummy.txt" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364444958322" ignored="false" />
     <file path="/MainActivity.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364442512943" ignored="false" />
     <file path="/main.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364434680297" ignored="false" />
     <file path="/notes.json" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363221933222" ignored="false" />
@@ -155,18 +143,17 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="MainActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Activities/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="194" column="63" selection-start="8587" selection-end="8587" vertical-scroll-proportion="0.0">
+            <state line="224" column="16" selection-start="9729" selection-end="9729" vertical-scroll-proportion="0.74931127">
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#onCreate#0;class#MainActivity#0" expanded="true" />
                 <element signature="method#registerWIthAPI#0;class#MainActivity#0" expanded="true" />
                 <element signature="method#onCreateOptionsMenu#0;class#MainActivity#0" expanded="true" />
                 <element signature="method#onOptionsItemSelected#0;class#MainActivity#0" expanded="true" />
-                <element signature="e#9990#10765#0" expanded="true" />
-                <element signature="e#10746#10747#0" expanded="true" />
+                <element signature="method#onItemCheckedStateChanged#0;class#7687:9905" expanded="true" />
                 <element signature="method#setListViewItems#0;class#MainActivity#0" expanded="true" />
                 <element signature="method#deleteSelectedNotes#0;class#MainActivity#0" expanded="true" />
                 <element signature="method#onSuccess#0;class#12939:13539" expanded="true" />
@@ -176,26 +163,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NotesAdapter.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="NotesAdapter.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Adapters/NotesAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="143" selection-start="1478" selection-end="1478" vertical-scroll-proportion="0.47797063">
-              <folding>
-                <element signature="method#NotesAdapter#0;class#NotesAdapter#0" expanded="true" />
-              </folding>
+            <state line="1" column="0" selection-start="41" selection-end="41" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="my_notes_list_item.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/res/layout/my_notes_list_item.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="39" selection-start="631" selection-end="631" vertical-scroll-proportion="-3.9230769">
-              <folding />
-            </state>
-          </provider>
           <provider editor-type-id="android-designer">
             <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="12" column="39" selection-start="631" selection-end="631" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
           </provider>
         </entry>
       </file>
@@ -242,7 +227,7 @@
   <component name="ProjectFrameBounds">
     <option name="y" value="22" />
     <option name="width" value="2560" />
-    <option name="height" value="1414" />
+    <option name="height" value="874" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -272,7 +257,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -533,18 +517,20 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="OverrideImplement.combined" value="false" />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="preferences.sourceCode.XML" />
     <property name="MemberChooser.sorted" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/my-notes-release-key.keystore" />
     <property name="AndroidLayoutSelectedEditor" value="text-editor" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="0149C22316007008" />
@@ -553,11 +539,11 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="AG" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="MemberChooser.showClasses" value="true" />
     <property name="FullScreen" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -706,17 +692,16 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="2560" height="1414" extended-state="6" />
+    <frame x="0" y="22" width="2560" height="874" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32961783" sideWeight="0.67001545" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998455" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3995363" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3995363" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -736,6 +721,7 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998455" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3995363" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -810,9 +796,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/res/drawable/default_button.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="37" selection-start="264" selection-end="264" vertical-scroll-proportion="0.10442261">
-          <folding />
-        </state>
+        <state line="5" column="37" selection-start="264" selection-end="264" vertical-scroll-proportion="0.10442261" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
@@ -837,13 +821,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="15" column="38" selection-start="693" selection-end="693" vertical-scroll-proportion="0.32401526">
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/NetworkManager.java">
@@ -862,9 +846,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/res/drawable/grid_item_2_background.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="49" selection-start="342" selection-end="342" vertical-scroll-proportion="0.10442261">
-          <folding />
-        </state>
+        <state line="5" column="49" selection-start="342" selection-end="342" vertical-scroll-proportion="0.10442261" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/menu/menu.xml">
@@ -883,52 +865,45 @@
     </entry>
     <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/android/widget/Adapter.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="95" selection-start="627" selection-end="627" vertical-scroll-proportion="0.42550656">
-          <folding />
-        </state>
+        <state line="22" column="95" selection-start="627" selection-end="627" vertical-scroll-proportion="0.42550656" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/drawable/grid_item_1_background.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="83" selection-start="376" selection-end="376" vertical-scroll-proportion="0.10442261">
+        <state line="5" column="83" selection-start="376" selection-end="376" vertical-scroll-proportion="0.10442261" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/my_notes_list_item.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="39" selection-start="631" selection-end="631" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/my_notes_list_item.xml">
+    <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Adapters/NotesAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="39" selection-start="631" selection-end="631" vertical-scroll-proportion="-3.9230769">
+        <state line="1" column="0" selection-start="41" selection-end="41" vertical-scroll-proportion="0.0">
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Activities/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="194" column="63" selection-start="8587" selection-end="8587" vertical-scroll-proportion="0.0">
+        <state line="224" column="16" selection-start="9729" selection-end="9729" vertical-scroll-proportion="0.74931127">
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#onCreate#0;class#MainActivity#0" expanded="true" />
             <element signature="method#registerWIthAPI#0;class#MainActivity#0" expanded="true" />
             <element signature="method#onCreateOptionsMenu#0;class#MainActivity#0" expanded="true" />
             <element signature="method#onOptionsItemSelected#0;class#MainActivity#0" expanded="true" />
-            <element signature="e#9990#10765#0" expanded="true" />
-            <element signature="e#10746#10747#0" expanded="true" />
+            <element signature="method#onItemCheckedStateChanged#0;class#7687:9905" expanded="true" />
             <element signature="method#setListViewItems#0;class#MainActivity#0" expanded="true" />
             <element signature="method#deleteSelectedNotes#0;class#MainActivity#0" expanded="true" />
             <element signature="method#onSuccess#0;class#12939:13539" expanded="true" />
             <element signature="method#editSelectedNotes#0;class#MainActivity#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Adapters/NotesAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="143" selection-start="1478" selection-end="1478" vertical-scroll-proportion="0.47797063">
-          <folding>
-            <element signature="method#NotesAdapter#0;class#NotesAdapter#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -939,10 +914,12 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
+          <last-edited>My Notes</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -950,7 +927,7 @@
       </state>
       <state key="FacetStructureConfigurable.UI">
         <settings>
-          <last-edited>Android</last-edited>
+          <last-edited>Android (My Notes)|Android</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -985,12 +962,11 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>My Notes</last-edited>
+          <last-edited>Android|My Notes</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>

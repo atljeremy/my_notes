@@ -1,0 +1,33 @@
+com.jeremyfox.My_Notes.BuildConfig
+com.jeremyfox.My_Notes.Classes.BasicNote:
+    25:26:public void setTitle(java.lang.String)
+    35:36:public void setDetails(java.lang.String)
+    48:49:public void setRecordId(int)
+com.jeremyfox.My_Notes.Dialogs.NewNoteDialog:
+    51:54:public void hideDialog()
+    57:57:public android.widget.EditText getTitleInput()
+    61:62:public void setTitleInput(android.widget.EditText)
+    65:65:public android.widget.EditText getDetailsInput()
+    69:70:public void setDetailsInput(android.widget.EditText)
+com.jeremyfox.My_Notes.Dialogs.NoteDetailsDialog
+com.jeremyfox.My_Notes.Helpers.PrefsHelper:
+    13:13:public PrefsHelper()
+com.jeremyfox.My_Notes.Interfaces.Note
+com.jeremyfox.My_Notes.Managers.NetworkManager:
+    public static final int FAILURE_UNKNOWN_STATUS
+    public static final int SUCCESS_STATUS
+    public static final int SUCCESS_RECORD_CREATED_STATUS
+    public static final int SUCCESS_RECORD_DELETED_STATUS
+    public static final int NOT_MODIFIED_STATUS
+    public static final java.lang.String API_HOST
+    137:158:public org.json.JSONArray executeSynchronousGetRequest(android.content.Context,java.lang.String)
+com.jeremyfox.My_Notes.Managers.NotesManager:
+    private static final java.lang.String NOTES_KEY
+com.jeremyfox.My_Notes.R
+com.jeremyfox.My_Notes.R$attr
+com.jeremyfox.My_Notes.R$drawable
+com.jeremyfox.My_Notes.R$id
+com.jeremyfox.My_Notes.R$layout
+com.jeremyfox.My_Notes.R$menu
+com.jeremyfox.My_Notes.R$string
+com.jeremyfox.My_Notes.R$style
