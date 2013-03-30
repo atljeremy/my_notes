@@ -17,6 +17,8 @@ public interface Note {
 
     /**
      * Gets title.
+     *
+     * @return the title
      */
     public String getTitle();
 
@@ -29,6 +31,22 @@ public interface Note {
 
     /**
      * Gets details.
+     *
+     * @return the details
      */
     public String getDetails();
+
+    /**
+     * Sets selected.
+     *
+     * @param selected the selected
+     */
+    public void setSelected(boolean selected);
+
+    /**
+     * Is selected.
+     *
+     * @return the boolean
+     */
+    public boolean isSelected();
 }

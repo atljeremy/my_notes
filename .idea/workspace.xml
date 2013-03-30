@@ -28,37 +28,58 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="373370d0-9813-4bb5-9c5f-517de1471963" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/AnalyticsManager.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Classes/Environment.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/MixpanelAPI.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Classes/BasicNote.java" afterPath="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Classes/BasicNote.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Activities/MainActivity.java" afterPath="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Activities/MainActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/My Notes.iml" afterPath="$PROJECT_DIR$/My Notes.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/My_Notes.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/My_Notes.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Dialogs/NewNoteDialog.java" afterPath="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Dialogs/NewNoteDialog.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Interfaces/Note.java" afterPath="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Interfaces/Note.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Adapters/NotesAdapter.java" afterPath="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Adapters/NotesAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/NotesManager.java" afterPath="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/NotesManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/proguard_logs/dump.txt" afterPath="$PROJECT_DIR$/proguard_logs/dump.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/main.xml" afterPath="$PROJECT_DIR$/res/layout/main.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/proguard_logs/mapping.txt" afterPath="$PROJECT_DIR$/proguard_logs/mapping.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/proguard_logs/seeds.txt" afterPath="$PROJECT_DIR$/proguard_logs/seeds.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/proguard_logs/usage.txt" afterPath="$PROJECT_DIR$/proguard_logs/usage.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="My Notes.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/NotesManager.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363916916883" ignored="false" />
-    <file path="/Dummy.txt" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364444958322" ignored="false" />
-    <file path="/MainActivity.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364442512943" ignored="false" />
-    <file path="/main.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364434680297" ignored="false" />
+    <file path="/NotesManager.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364668844064" ignored="false" />
+    <file path="/Dummy.txt" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364667948101" ignored="false" />
+    <file path="/MainActivity.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364675461084" ignored="false" />
+    <file path="/main.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364672277531" ignored="false" />
     <file path="/notes.json" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363221933222" ignored="false" />
-    <file path="/fragment.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364442175190" ignored="false" />
-    <file path="/a.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363294648832" ignored="false" />
-    <file path="/sample.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363294667567" ignored="false" />
-    <file path="/Note.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363295351131" ignored="false" />
-    <file path="/BasicNote.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363831242167" ignored="false" />
+    <file path="/fragment.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364671353762" ignored="false" />
+    <file path="/a.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364571714749" ignored="false" />
+    <file path="/sample.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364571692939" ignored="false" />
+    <file path="/Note.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364670055174" ignored="false" />
+    <file path="/BasicNote.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364670172631" ignored="false" />
     <file path="/NoteDetailsDialog.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363303715558" ignored="false" />
     <file path="$USER_HOME$/Documents/android-sdk-mac_x86/tools/ant/build.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363304277121" ignored="false" />
     <file path="/main_activity.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363306986714" ignored="false" />
     <file path="/AndroidManifest.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364440372935" ignored="false" />
     <file path="/strings.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364349052326" ignored="false" />
-    <file path="/NewNoteDialog.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363312068843" ignored="false" />
+    <file path="/NewNoteDialog.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364675404822" ignored="false" />
     <file path="/menu.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364440878864" ignored="false" />
     <file path="/NetworkManager.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363917917418" ignored="false" />
     <file path="/NetworkCallback.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363916851640" ignored="false" />
     <file path="/PrefsHelper.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1363738110678" ignored="false" />
     <file path="/context_menu.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364440863338" ignored="false" />
     <file path="/my_notes_list_item.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364442377643" ignored="false" />
-    <file path="/NotesAdapter.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364437854256" ignored="false" />
+    <file path="/NotesAdapter.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364671380636" ignored="false" />
     <file path="/styles.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364439114493" ignored="false" />
     <file path="/default_button.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364269442504" ignored="false" />
-    <file path="/a.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364433860051" ignored="false" />
+    <file path="/a.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364571646541" ignored="false" />
     <file path="/grid_item_background.xml" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364441023818" ignored="false" />
+    <file path="/AnalyticsManager.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364673543206" ignored="false" />
+    <file path="/a.cfm" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364571724186" ignored="false" />
+    <file path="/File Header.txt.ft" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364572004470" ignored="false" />
+    <file path="/Environment.java" changelist="373370d0-9813-4bb5-9c5f-517de1471963" time="1364673855981" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +140,7 @@
       </breakpoint>
     </breakpoint_any>
     <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint url="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Activities/MainActivity.java" line="189" class="com.jeremyfox.My_Notes.Activities.MainActivity$4$1" package="com.jeremyfox.My_Notes.Activities">
+      <breakpoint url="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Activities/MainActivity.java" line="262" class="com.jeremyfox.My_Notes.Activities.MainActivity$5$1" package="com.jeremyfox.My_Notes.Activities">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -134,6 +155,24 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </line_breakpoints>
+    <method_breakpoints>
+      <breakpoint url="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Dialogs/NewNoteDialog.java" line="23" class="com.jeremyfox.My_Notes.Dialogs.NewNoteDialog" package="com.jeremyfox.My_Notes.Dialogs">
+        <option name="WATCH_ENTRY" value="true" />
+        <option name="WATCH_EXIT" value="true" />
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </method_breakpoints>
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -146,18 +185,64 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Activities/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="224" column="16" selection-start="9729" selection-end="9729" vertical-scroll-proportion="0.74931127">
+            <state line="395" column="97" selection-start="18566" selection-end="18566" vertical-scroll-proportion="0.21837229">
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#onCreate#0;class#MainActivity#0" expanded="true" />
-                <element signature="method#registerWIthAPI#0;class#MainActivity#0" expanded="true" />
-                <element signature="method#onCreateOptionsMenu#0;class#MainActivity#0" expanded="true" />
+                <element signature="e#2317#2843#0" expanded="true" />
+                <element signature="e#2832#2833#0" expanded="true" />
+                <element signature="e#2968#3224#0" expanded="true" />
+                <element signature="e#3213#3214#0" expanded="true" />
+                <element signature="method#onSuccess#0;class#4194:5592" expanded="true" />
+                <element signature="method#onFailure#0;class#4194:5592" expanded="true" />
                 <element signature="method#onOptionsItemSelected#0;class#MainActivity#0" expanded="true" />
-                <element signature="method#onItemCheckedStateChanged#0;class#7687:9905" expanded="true" />
-                <element signature="method#setListViewItems#0;class#MainActivity#0" expanded="true" />
-                <element signature="method#deleteSelectedNotes#0;class#MainActivity#0" expanded="true" />
-                <element signature="method#onSuccess#0;class#12939:13539" expanded="true" />
-                <element signature="method#editSelectedNotes#0;class#MainActivity#0" expanded="true" />
+                <element signature="e#6583#9456#0" expanded="true" />
+                <element signature="method#onSuccess#0;class#8318:9388" expanded="true" />
+                <element signature="e#9437#9438#0" expanded="true" />
+                <element signature="method#createGridView#0;class#MainActivity#0" expanded="true" />
+                <element signature="method#onSuccess#0;class#10072:14834" expanded="true" />
+                <element signature="method#onItemCheckedStateChanged#0;class#10354:13192" expanded="true" />
+                <element signature="method#onActionItemClicked#0;class#10354:13192" expanded="true" />
+                <element signature="e#13277#14307#0" expanded="true" />
+                <element signature="e#14288#14289#0" expanded="true" />
+                <element signature="e#15034#15045#0" expanded="true" />
+                <element signature="e#18595#21537#0" expanded="true" />
+                <element signature="method#onSuccess#0;class#20359:21468" expanded="true" />
+                <element signature="method#onFailure#0;class#20359:21468" expanded="true" />
+                <element signature="e#21518#21519#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NewNoteDialog.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Dialogs/NewNoteDialog.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="27" column="41" selection-start="874" selection-end="874" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="method#showDialog#0;class#NewNoteDialog#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Environment.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Classes/Environment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="25" column="45" selection-start="540" selection-end="540" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="method#getInstance#0;class#Environment#0" expanded="true" />
+                <element signature="method#isDebug#0;class#Environment#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AnalyticsManager.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/AnalyticsManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="32" column="0" selection-start="979" selection-end="979" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="method#getInstance#0;class#AnalyticsManager#0" expanded="true" />
+                <element signature="method#fireEvent#0;class#AnalyticsManager#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -166,8 +251,11 @@
       <file leaf-file-name="NotesAdapter.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Adapters/NotesAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="0" selection-start="41" selection-end="41" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="47" column="0" selection-start="1659" selection-end="1659" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="method#NotesAdapter#0;class#NotesAdapter#0" expanded="true" />
+                <element signature="method#shouldIncrementCounter#0;class#NotesAdapter#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -178,7 +266,19 @@
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="39" selection-start="631" selection-end="631" vertical-scroll-proportion="0.0">
+            <state line="17" column="46" selection-start="847" selection-end="847" vertical-scroll-proportion="-6.2115383">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="38" column="54" selection-start="1750" selection-end="1751" vertical-scroll-proportion="-13.884615">
               <folding />
             </state>
           </provider>
@@ -195,28 +295,36 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitLogSettings">
+    <option name="myStructureFilterPaths" />
     <option name="myDateState">
       <MyDateState />
+    </option>
+  </component>
+  <component name="GradleLocalSettings">
+    <option name="expandStates">
+      <map>
+        <entry key="My Notes" value="true" />
+      </map>
     </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Interfaces/NetworkCallback.java" />
-        <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/NotesManager.java" />
-        <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/NetworkManager.java" />
-        <option value="$PROJECT_DIR$/res/drawable/default_button.xml" />
-        <option value="$PROJECT_DIR$/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/res/layout/main.xml" />
-        <option value="$PROJECT_DIR$/res/drawable/grid_item_background.xml" />
         <option value="$PROJECT_DIR$/res/drawable/grid_item_2_background.xml" />
-        <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Adapters/NotesAdapter.java" />
         <option value="$PROJECT_DIR$/res/values/styles.xml" />
-        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/res/menu/context_menu.xml" />
         <option value="$PROJECT_DIR$/res/menu/menu.xml" />
         <option value="$PROJECT_DIR$/res/drawable/grid_item_1_background.xml" />
         <option value="$PROJECT_DIR$/res/layout/my_notes_list_item.xml" />
+        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/NotesManager.java" />
+        <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Interfaces/Note.java" />
+        <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Classes/BasicNote.java" />
+        <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Adapters/NotesAdapter.java" />
+        <option value="$PROJECT_DIR$/res/layout/main.xml" />
+        <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/AnalyticsManager.java" />
+        <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Classes/Environment.java" />
+        <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Dialogs/NewNoteDialog.java" />
         <option value="$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Activities/MainActivity.java" />
       </list>
     </option>
@@ -225,9 +333,26 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="1" />
     <option name="y" value="22" />
     <option name="width" value="2560" />
-    <option name="height" value="874" />
+    <option name="height" value="1414" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>Abstraction issues</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -257,6 +382,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -312,32 +438,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="My_Notes" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Interfaces" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="My Notes" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="My_Notes" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="My_Notes" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Helpers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -517,7 +617,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -528,7 +627,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="preferences.sourceCode.XML" />
+    <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors.Font" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/my-notes-release-key.keystore" />
     <property name="AndroidLayoutSelectedEditor" value="text-editor" />
@@ -539,11 +638,11 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="AG" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="FullScreen" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
+    <property name="FullScreen" value="false" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -691,37 +790,59 @@
     </task>
     <servers />
   </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="2560" height="874" extended-state="6" />
+    <frame x="1" y="22" width="2560" height="1414" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32921174" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32961783" sideWeight="0.67001545" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998455" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24980111" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Heroku" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32921174" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3995363" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998455" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.12688942" sideWeight="0.32766616" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998455" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998455" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998455" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3294753" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3294753" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.12688942" sideWeight="0.33153015" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12688942" sideWeight="0.6004637" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998455" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Jenkins" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12688942" sideWeight="0.67233384" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32766616" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24980111" sideWeight="0.67001545" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998455" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3995363" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -789,33 +910,72 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/android/widget/ArrayAdapter.class">
+    <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/NetworkManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="35" selection-start="1664" selection-end="1664" vertical-scroll-proportion="0.4934446" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/default_button.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="37" selection-start="264" selection-end="264" vertical-scroll-proportion="0.10442261" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="18" selection-start="69" selection-end="69" vertical-scroll-proportion="-1.36">
-          <folding />
+        <state line="106" column="5" selection-start="2761" selection-end="3094" vertical-scroll-proportion="0.48183253">
+          <folding>
+            <element signature="method#NetworkManager#0;class#NetworkManager#0" expanded="true" />
+            <element signature="method#getInstance#0;class#NetworkManager#0" expanded="true" />
+            <element signature="method#doInBackground#0;class#NetworkAsyncTask#0" expanded="true" />
+          </folding>
         </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/android/app/AlertDialog.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="156" column="39" selection-start="8656" selection-end="8656" vertical-scroll-proportion="0.84836394" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="54" selection-start="613" selection-end="613" vertical-scroll-proportion="0.22288439">
+        <state line="14" column="44" selection-start="780" selection-end="780" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/android/widget/Adapter.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="22" selection-start="554" selection-end="554" vertical-scroll-proportion="0.53271025">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Interfaces/Note.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="6" selection-start="527" selection-end="527" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Classes/BasicNote.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="18" selection-start="349" selection-end="349" vertical-scroll-proportion="0.42990655">
+          <folding>
+            <element signature="method#BasicNote#0;class#BasicNote#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/NotesManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="65" column="74" selection-start="2119" selection-end="2161" vertical-scroll-proportion="0.6849132">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/my_notes_list_item.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="46" selection-start="847" selection-end="847" vertical-scroll-proportion="-6.2115383">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values/styles.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="73" column="44" selection-start="3382" selection-end="3382" vertical-scroll-proportion="0.5">
+        <state line="54" column="17" selection-start="2315" selection-end="2315" vertical-scroll-proportion="0.34004834">
           <folding />
         </state>
       </provider>
@@ -825,85 +985,82 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="38" selection-start="693" selection-end="693" vertical-scroll-proportion="0.32401526">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/NetworkManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="304" column="40" selection-start="10157" selection-end="10157" vertical-scroll-proportion="0.77711564">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/NotesManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="84" column="0" selection-start="3046" selection-end="3046" vertical-scroll-proportion="0.4934446">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/grid_item_2_background.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="49" selection-start="342" selection-end="342" vertical-scroll-proportion="0.10442261" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/menu/menu.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="48" selection-start="468" selection-end="468" vertical-scroll-proportion="0.15068494">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/menu/context_menu.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="50" selection-start="453" selection-end="453" vertical-scroll-proportion="0.15068494">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/Documents/android-sdk-mac_x86/platforms/android-16/android.jar!/android/widget/Adapter.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="95" selection-start="627" selection-end="627" vertical-scroll-proportion="0.42550656" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/grid_item_1_background.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="83" selection-start="376" selection-end="376" vertical-scroll-proportion="0.10442261" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/my_notes_list_item.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="39" selection-start="631" selection-end="631" vertical-scroll-proportion="0.0">
+        <state line="38" column="54" selection-start="1750" selection-end="1751" vertical-scroll-proportion="-13.884615">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Adapters/NotesAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="0" selection-start="41" selection-end="41" vertical-scroll-proportion="0.0">
+        <state line="47" column="0" selection-start="1659" selection-end="1659" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="method#NotesAdapter#0;class#NotesAdapter#0" expanded="true" />
+            <element signature="method#shouldIncrementCounter#0;class#NotesAdapter#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Classes/Environment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="45" selection-start="540" selection-end="540" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="method#getInstance#0;class#Environment#0" expanded="true" />
+            <element signature="method#isDebug#0;class#Environment#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Managers/AnalyticsManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="0" selection-start="979" selection-end="979" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="method#getInstance#0;class#AnalyticsManager#0" expanded="true" />
+            <element signature="method#fireEvent#0;class#AnalyticsManager#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Dialogs/NewNoteDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="41" selection-start="874" selection-end="874" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="method#showDialog#0;class#NewNoteDialog#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="18" selection-start="573" selection-end="573" vertical-scroll-proportion="0.2800983">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jeremyfox/My_Notes/Activities/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="224" column="16" selection-start="9729" selection-end="9729" vertical-scroll-proportion="0.74931127">
+        <state line="395" column="97" selection-start="18566" selection-end="18566" vertical-scroll-proportion="0.21837229">
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#onCreate#0;class#MainActivity#0" expanded="true" />
-            <element signature="method#registerWIthAPI#0;class#MainActivity#0" expanded="true" />
-            <element signature="method#onCreateOptionsMenu#0;class#MainActivity#0" expanded="true" />
+            <element signature="e#2317#2843#0" expanded="true" />
+            <element signature="e#2832#2833#0" expanded="true" />
+            <element signature="e#2968#3224#0" expanded="true" />
+            <element signature="e#3213#3214#0" expanded="true" />
+            <element signature="method#onSuccess#0;class#4194:5592" expanded="true" />
+            <element signature="method#onFailure#0;class#4194:5592" expanded="true" />
             <element signature="method#onOptionsItemSelected#0;class#MainActivity#0" expanded="true" />
-            <element signature="method#onItemCheckedStateChanged#0;class#7687:9905" expanded="true" />
-            <element signature="method#setListViewItems#0;class#MainActivity#0" expanded="true" />
-            <element signature="method#deleteSelectedNotes#0;class#MainActivity#0" expanded="true" />
-            <element signature="method#onSuccess#0;class#12939:13539" expanded="true" />
-            <element signature="method#editSelectedNotes#0;class#MainActivity#0" expanded="true" />
+            <element signature="e#6583#9456#0" expanded="true" />
+            <element signature="method#onSuccess#0;class#8318:9388" expanded="true" />
+            <element signature="e#9437#9438#0" expanded="true" />
+            <element signature="method#createGridView#0;class#MainActivity#0" expanded="true" />
+            <element signature="method#onSuccess#0;class#10072:14834" expanded="true" />
+            <element signature="method#onItemCheckedStateChanged#0;class#10354:13192" expanded="true" />
+            <element signature="method#onActionItemClicked#0;class#10354:13192" expanded="true" />
+            <element signature="e#13277#14307#0" expanded="true" />
+            <element signature="e#14288#14289#0" expanded="true" />
+            <element signature="e#15034#15045#0" expanded="true" />
+            <element signature="e#18595#21537#0" expanded="true" />
+            <element signature="method#onSuccess#0;class#20359:21468" expanded="true" />
+            <element signature="method#onFailure#0;class#20359:21468" expanded="true" />
+            <element signature="e#21518#21519#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -950,7 +1107,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>Android 4.1.2</last-edited>
+          <last-edited>Android 4.2.2 Google APIs</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -986,6 +1143,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
+          <last-edited>MixpanelAPI</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

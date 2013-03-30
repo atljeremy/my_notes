@@ -37,6 +37,10 @@
                           style="@style/DefaultTextView"></TextView>
 
                 <Button android:id="@+id/dismiss_note_button"
+                        android:text="@string/dismiss"
+                        style="@style/DefaultButton" />
+                <Button android:id="@+id/edit_note_button"
+                        android:text="@string/editNote"
                         style="@style/DefaultButton" />
 
             </LinearLayout>

@@ -9,6 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 /**
  * Created with IntelliJ IDEA.
  * User: jeremy
@@ -18,7 +20,6 @@ import org.json.JSONObject;
 public class NotesManager {
 
     private static NotesManager instance = null;
-    private final static String NOTES_KEY = "notes";
     private JSONArray notes = new JSONArray();
 
     /**
@@ -48,6 +49,7 @@ public class NotesManager {
      * @return the boolean
      */
     public boolean retrieveNotesFromAPI(Context context, final NetworkCallback callback) {
+        AnalyticsManager.getInstance().fireEvent("retreiving notes from API", null);
         final boolean[] requestSuccessful = {false};
         if (NetworkManager.isConnected(context)) {
             NetworkManager networkManager = NetworkManager.getInstance();
@@ -59,7 +61,7 @@ public class NotesManager {
                     if (null != json) {
                         JSONArray jsonArray = (JSONArray)json;
                         try {
-                            if (null != json && jsonArray.length() > 0) {
+                            if (null != jsonArray && jsonArray.length() > 0) {
                                 requestSuccessful[0] = true;
                                 NotesManager.this.notes = new JSONArray();
                                 for (int i=0; i<jsonArray.length(); i++) {
@@ -77,11 +79,15 @@ public class NotesManager {
                         }
                     }
 
+                    AnalyticsManager.getInstance().fireEvent("successfully retrieved notes from API", null);
                     callback.onSuccess(json);
                 }
 
                 @Override
                 public void onFailure(int statusCode) {
+                    HashMap map = new HashMap<String, String>();
+                    map.put("status_code", Integer.toString(statusCode));
+                    AnalyticsManager.getInstance().fireEvent("error saving new note to API", map);
                     callback.onFailure(statusCode);
                 }
             });

@@ -3,6 +3,7 @@ package com.jeremyfox.My_Notes.Dialogs;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import com.jeremyfox.My_Notes.R;
@@ -12,7 +13,6 @@ import com.jeremyfox.My_Notes.R;
  * User: jeremy
  * Date: 3/14/13
  * Time: 8:34 PM
- * To change this template use File | Settings | File Templates.
  */
 public class NewNoteDialog {
 
@@ -21,11 +21,11 @@ public class NewNoteDialog {
     private EditText titleInput;
     private EditText detailsInput;
 
-    public NewNoteDialog(Activity activity, EditText titleInput, EditText detailsInput, DialogInterface.OnClickListener saveListener){
+    public NewNoteDialog(Activity activity, String dialogTitle, EditText titleInput, EditText detailsInput, DialogInterface.OnClickListener saveListener){
         this.titleInput = titleInput;
         this.detailsInput = detailsInput;
         this.builder = new AlertDialog.Builder(activity);
-        this.builder.setTitle(activity.getString(R.string.createNewNote))
+        this.builder.setTitle(dialogTitle)
                     .setPositiveButton(activity.getString(R.string.save), saveListener)
                     .setNegativeButton(activity.getString(R.string.cancel), null);
 
@@ -42,30 +42,9 @@ public class NewNoteDialog {
     }
 
     public void showDialog() {
-        if (null != this.builder) {
-            this.builder.show();
-        }
-    }
-
-    public void hideDialog() {
         if (null != this.dialog) {
-            this.dialog.dismiss();
+            this.dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+            this.dialog.show();
         }
-    }
-
-    public EditText getTitleInput() {
-        return titleInput;
-    }
-
-    public void setTitleInput(EditText titleInput) {
-        this.titleInput = titleInput;
-    }
-
-    public EditText getDetailsInput() {
-        return detailsInput;
-    }
-
-    public void setDetailsInput(EditText detailsInput) {
-        this.detailsInput = detailsInput;
     }
 }

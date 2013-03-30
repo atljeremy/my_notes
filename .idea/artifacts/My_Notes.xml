@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="apk" build-on-make="true" name="My Notes">
+  <artifact type="apk" name="My Notes">
     <output-path>$PROJECT_DIR$/out/artifacts/My_Notes</output-path>
     <properties id="android-properties">
       <options>

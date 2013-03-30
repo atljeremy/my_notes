@@ -12,12 +12,14 @@ public class BasicNote implements Note {
 
     private String title;
     private String details;
+    private boolean selected;
     private int recordId;
 
     public BasicNote(String title, String details, int recordId) {
         this.title = title;
         this.details = details;
         this.recordId = recordId;
+        this.selected = false;
     }
 
     @Override
@@ -38,6 +40,16 @@ public class BasicNote implements Note {
     @Override
     public String getDetails() {
         return this.details;
+    }
+
+    @Override
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    @Override
+    public boolean isSelected() {
+        return this.selected;
     }
 
     public int getRecordId() {

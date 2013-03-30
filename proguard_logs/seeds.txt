@@ -1,5 +1,7 @@
 com.jeremyfox.My_Notes.Activities.MainActivity
 com.jeremyfox.My_Notes.Activities.MainActivity: MainActivity()
+com.jeremyfox.My_Notes.Classes.Environment$AppEnv: com.jeremyfox.My_Notes.Classes.Environment$AppEnv[] values()
+com.jeremyfox.My_Notes.Classes.Environment$AppEnv: com.jeremyfox.My_Notes.Classes.Environment$AppEnv valueOf(java.lang.String)
 com.jeremyfox.My_Notes.Managers.NetworkManager$RequestType: com.jeremyfox.My_Notes.Managers.NetworkManager$RequestType[] values()
 com.jeremyfox.My_Notes.Managers.NetworkManager$RequestType: com.jeremyfox.My_Notes.Managers.NetworkManager$RequestType valueOf(java.lang.String)
 com.jeremyfox.My_Notes.R$drawable: int button_default_9
@@ -27,6 +29,7 @@ com.jeremyfox.My_Notes.R$id: int ViewFlipper
 com.jeremyfox.My_Notes.R$id: int checkmark
 com.jeremyfox.My_Notes.R$id: int dismiss_note_button
 com.jeremyfox.My_Notes.R$id: int edit
+com.jeremyfox.My_Notes.R$id: int edit_note_button
 com.jeremyfox.My_Notes.R$id: int gridview
 com.jeremyfox.My_Notes.R$id: int mainLayout
 com.jeremyfox.My_Notes.R$id: int main_item_container
@@ -74,3 +77,7 @@ com.jeremyfox.My_Notes.R$style: int LightTextView
 com.jeremyfox.My_Notes.R$style: int LightTextViewBold
 com.jeremyfox.My_Notes.R$style: int MyActionBar
 com.jeremyfox.My_Notes.R$style: int MyNotesThemeDefault
+com.mixpanel.android.mpmetrics.HttpPoster$PostResult: com.mixpanel.android.mpmetrics.HttpPoster$PostResult[] values()
+com.mixpanel.android.mpmetrics.HttpPoster$PostResult: com.mixpanel.android.mpmetrics.HttpPoster$PostResult valueOf(java.lang.String)
+com.mixpanel.android.mpmetrics.MPDbAdapter$Table: com.mixpanel.android.mpmetrics.MPDbAdapter$Table[] values()
+com.mixpanel.android.mpmetrics.MPDbAdapter$Table: com.mixpanel.android.mpmetrics.MPDbAdapter$Table valueOf(java.lang.String)
