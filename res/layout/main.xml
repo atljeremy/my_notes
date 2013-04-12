@@ -1,54 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/mainLayout"
-              style="@style/DefaultMainLayoutContainer">
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/ViewFlipper"
+             style="@style/DefaultMainLayoutContainer">
 
-    <ViewFlipper android:id="@+id/ViewFlipper"
-                 android:layout_width="fill_parent"
-                 android:layout_height="fill_parent">
+    <ImageView android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="top|right"
+               android:src="@drawable/new_note_instruction"></ImageView>
 
-        <ImageView android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_gravity="top|right"
-                   android:src="@drawable/new_note_instruction"></ImageView>
+    <GridView android:id="@+id/gridview"
+              style="@style/DefaultGridView"/>
 
-        <GridView android:id="@+id/gridview"
-                  style="@style/DefaultGridView"/>
-
-        <ScrollView android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" >
-
-            <LinearLayout android:id="@+id/note_layout"
-                          android:orientation="vertical"
-                          android:layout_width="fill_parent"
-                          android:layout_height="fill_parent" >
-
-                <TextView android:id="@+id/note_title"
-                          style="@style/DefaultTextViewTitle"
-                          android:layout_marginTop="10dp"></TextView>
-
-                <ImageView android:layout_width="fill_parent"
-                           android:layout_height="wrap_content"
-                           android:layout_marginTop="5dp"
-                           android:layout_marginBottom="5dp"
-                           android:src="@drawable/seperator"></ImageView>
-
-                <TextView android:id="@+id/note_details"
-                          style="@style/DefaultTextView"></TextView>
-
-                <Button android:id="@+id/dismiss_note_button"
-                        android:text="@string/dismiss"
-                        style="@style/DefaultButton" />
-                <Button android:id="@+id/edit_note_button"
-                        android:text="@string/editNote"
-                        style="@style/DefaultButton" />
-
-            </LinearLayout>
-
-        </ScrollView>
-
-    </ViewFlipper>
-
-
-</LinearLayout>
+</ViewFlipper>
 

@@ -2,6 +2,7 @@ package com.jeremyfox.My_Notes.Activities;
 
 import android.app.*;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,27 +25,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * The type Main activity.
+ * The Main activity.
  */
 public class MainActivity extends Activity {
 
     private NotesManager notesManager;
     private ViewFlipper viewFlipper;
-    private TextView noteTitle;
-    private TextView noteDetails;
-    private Button dismissNoteButton;
-    private Button editNoteButton;
     private GridView gridView;
-    private int notePosition;
     public static Activity ACTIVITY;
-    private static final int NO_NOTE_SELECTED = -1;
     private static final int DEFAULT_HOME_VIEW = 0;
     private static final int NOTES_VIEW = 1;
-    private static final int NOTE_DETAILS_VIEW = 2;
+    private static final int NEW_NOTE_REQUEST_CODE = 1;
 
-    /**
-     * Called when the activity is first created.
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,30 +45,6 @@ public class MainActivity extends Activity {
         this.ACTIVITY = this;
         this.gridView = (GridView)findViewById(R.id.gridview);
         this.viewFlipper = (ViewFlipper)findViewById(R.id.ViewFlipper);
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Dakota-Regular.ttf");
-        this.noteTitle = (TextView)findViewById(R.id.note_title);
-        this.noteDetails = (TextView)findViewById(R.id.note_details);
-        this.noteTitle.setTypeface(typeface);
-        this.noteDetails.setTypeface(typeface);
-        this.dismissNoteButton = (Button)findViewById(R.id.dismiss_note_button);
-        this.dismissNoteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MainActivity.this.viewFlipper.setDisplayedChild(NOTES_VIEW);
-                MainActivity.this.gridView.setItemChecked(MainActivity.this.notePosition, false);
-                MainActivity.this.notePosition = NO_NOTE_SELECTED;
-                AnalyticsManager.getInstance().fireEvent("dismiss note", null);
-                AnalyticsManager.getInstance().fireEvent("showed notes view", null);
-            }
-        });
-        this.editNoteButton = (Button)findViewById(R.id.edit_note_button);
-        this.editNoteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AnalyticsManager.getInstance().fireEvent("edit note from note details view", null);
-                editSelectedNotes();
-            }
-        });
 
         String user_id = PrefsHelper.getPref(this, getString(R.string.user_id));
         if (null == user_id || user_id.length() == 0) {
@@ -95,12 +63,96 @@ public class MainActivity extends Activity {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        AnalyticsManager.getInstance().fireEvent("application resumed", null);
+
+        createGridView();
+    }
+
+    @Override
     public void onDestroy() {
         AnalyticsManager.getInstance().fireEvent("application shutdown", null);
         AnalyticsManager.getInstance().flushEvents();
         super.onDestroy();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menu) {
+        switch (menu.getItemId()) {
+            case R.id.new_note:
+                NotesAdapter notesAdapter = (NotesAdapter)this.gridView.getAdapter();
+                notesAdapter.setShouldIncrementCounter(true);
+                AnalyticsManager.getInstance().fireEvent("selected new note option", null);
+                Intent newNoteIntent = new Intent(this, NewNoteActivity.class);
+                startActivityForResult(newNoteIntent, NEW_NOTE_REQUEST_CODE);
+                break;
+
+            case R.id.sync_notes:
+                AnalyticsManager.getInstance().fireEvent("selected sync notes option", null);
+                createGridView();
+                break;
+        }
+        return true;
+    }
+
+    /**
+     * Receives the result of the NewNoteActivity
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == NEW_NOTE_REQUEST_CODE) {
+            if(resultCode == RESULT_OK){
+                /**
+                 * Save the new note then update the list view
+                 */
+                String title = data.getStringExtra(getString(R.string.titleKey));
+                String details = data.getStringExtra(getString(R.string.detailsKey));
+
+                JSONObject innerParams = new JSONObject();
+                JSONObject params = new JSONObject();
+                try {
+                    innerParams.put("title", title);
+                    innerParams.put("details", details);
+                    params.put("note", innerParams);
+                    params.put(getString(R.string.unique_id), PrefsHelper.getPref(MainActivity.this, getString(R.string.user_id)));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                NetworkManager networkManager = NetworkManager.getInstance();
+                networkManager.executePostRequest(MainActivity.this, NetworkManager.API_HOST + "/notes.json", params, new NetworkCallback() {
+                    @Override
+                    public void onSuccess(Object json) {
+                        createGridView();
+                        Toast.makeText(MainActivity.this, getString(R.string.noteSaved), Toast.LENGTH_SHORT).show();
+                        AnalyticsManager.getInstance().fireEvent("new note created successfully", null);
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode) {
+                        Toast.makeText(MainActivity.this, "Error: Note Not Saved. Please Try Again.", Toast.LENGTH_LONG).show();
+                        HashMap map = new HashMap<String, String>();
+                        map.put("status_code", Integer.toString(statusCode));
+                        AnalyticsManager.getInstance().fireEvent("error saving new note to API", map);
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * Used to register the device with the API
+     */
     private void registerWIthAPI() {
         NetworkManager networkManager = NetworkManager.getInstance();
         networkManager.executePostRequest(MainActivity.this, NetworkManager.API_HOST + "/users.json", null, new NetworkCallback() {
@@ -134,85 +186,8 @@ public class MainActivity extends Activity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menu) {
-        switch (menu.getItemId()) {
-            case R.id.new_note:
-
-                NotesAdapter notesAdapter = (NotesAdapter)this.gridView.getAdapter();
-                notesAdapter.setShouldIncrementCounter(true);
-                AnalyticsManager.getInstance().fireEvent("selected new note option", null);
-                final EditText titleInput = new EditText(this);
-                titleInput.setHint(getString(R.string.titleInputHint));
-                final EditText detailsInput = new EditText(this);
-                detailsInput.setHint(getString(R.string.detailsInputHint));
-
-                NewNoteDialog newNoteDialog = new NewNoteDialog(this, getString(R.string.createNewNote), titleInput, detailsInput, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        boolean titleEmpty = titleInput.getText().toString().length() == 0;
-                        boolean detailsEmpty = detailsInput.getText().toString().length() == 0;
-                        if (titleEmpty || detailsEmpty) {
-                            Toast.makeText(MainActivity.this, getString(R.string.allFeildsRequired), Toast.LENGTH_SHORT).show();
-                        } else {
-                            /**
-                             * Save the new note then update the list view
-                             */
-                            String title = titleInput.getText().toString();
-                            String details = detailsInput.getText().toString();
-
-                            JSONObject innerParams = new JSONObject();
-                            JSONObject params = new JSONObject();
-                            try {
-                                innerParams.put("title", title);
-                                innerParams.put("details", details);
-                                params.put("note", innerParams);
-                                params.put(getString(R.string.unique_id), PrefsHelper.getPref(MainActivity.this, getString(R.string.user_id)));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                            NetworkManager networkManager = NetworkManager.getInstance();
-                            networkManager.executePostRequest(MainActivity.this, NetworkManager.API_HOST + "/notes.json", params, new NetworkCallback() {
-                                @Override
-                                public void onSuccess(Object json) {
-                                    createGridView();
-                                    Toast.makeText(MainActivity.this, getString(R.string.noteSaved), Toast.LENGTH_SHORT).show();
-                                    AnalyticsManager.getInstance().fireEvent("new note created successfully", null);
-                                }
-
-                                @Override
-                                public void onFailure(int statusCode) {
-                                    Toast.makeText(MainActivity.this, "Error: Note Not Saved. Please Try Again.", Toast.LENGTH_LONG).show();
-                                    HashMap map = new HashMap<String, String>();
-                                    map.put("status_code", Integer.toString(statusCode));
-                                    AnalyticsManager.getInstance().fireEvent("error saving new note to API", map);
-                                }
-                            });
-                        }
-                    }
-                });
-                newNoteDialog.showDialog();
-                break;
-
-            case R.id.sync_notes:
-                AnalyticsManager.getInstance().fireEvent("selected sync notes option", null);
-                createGridView();
-                break;
-        }
-        return true;
-    }
-
     /**
-     * Sets up the GridView
+     * Creates and displays the grid view of notes
      */
     private void createGridView() {
         final ProgressDialog dialog = showLoadingDialog();
@@ -294,11 +269,11 @@ public class MainActivity extends Activity {
                             e.printStackTrace();
                         }
 
-                        MainActivity.this.noteTitle.setText(note.getTitle());
-                        MainActivity.this.noteDetails.setText(note.getDetails());
-                        MainActivity.this.viewFlipper.setDisplayedChild(NOTE_DETAILS_VIEW);
-                        MainActivity.this.notePosition = position;
-                        grid.setItemChecked(MainActivity.this.notePosition, true);
+                        Intent noteDetailsIntent = new Intent(MainActivity.this, NoteDetailsActivity.class);
+                        noteDetailsIntent.putExtra("title", note.getTitle());
+                        noteDetailsIntent.putExtra("details", note.getDetails());
+                        noteDetailsIntent.putExtra("id", note.getRecordID());
+                        startActivity(noteDetailsIntent, null);
                         AnalyticsManager.getInstance().fireEvent("opened a note", null);
                     }
                 });
@@ -321,6 +296,9 @@ public class MainActivity extends Activity {
         });
     }
 
+    /**
+     * Updates the gird view
+     */
     private void setGridViewItems() {
         JSONArray jsonArray = this.notesManager.getNotes();
         if (jsonArray.length() > 0) {
@@ -348,6 +326,10 @@ public class MainActivity extends Activity {
         this.gridView.invalidateViews();
     }
 
+    /**
+     * Deletes the selected notes from the API
+     * @return int the total number of notes that were deleted
+     */
     private int deleteSelectedNotes() {
         int count = 0;
         NotesAdapter notesAdapter = (NotesAdapter)this.gridView.getAdapter();
@@ -357,9 +339,7 @@ public class MainActivity extends Activity {
             if (checked.get(i)) {
                 count++;
                 final BasicNote note = (BasicNote)this.gridView.getItemAtPosition(i);
-                NetworkManager networkManager = NetworkManager.getInstance();
-                String url = NetworkManager.API_HOST+"/notes/"+note.getRecordId()+".json?unique_id="+PrefsHelper.getPref(this, getString(R.string.user_id));
-                networkManager.executeDeleteRequest(MainActivity.this, url, null, new NetworkCallback() {
+                this.notesManager.deleteNote(MainActivity.this, note, new NetworkCallback() {
                     @Override
                     public void onSuccess(Object json) {
                         MainActivity.this.notesManager.removeNote(note);
@@ -381,6 +361,10 @@ public class MainActivity extends Activity {
         return count;
     }
 
+    /**
+     * Edits the selected notes
+     * @return int the total number of notes that were edited
+     */
     private int editSelectedNotes() {
         int count = 0;
         SparseBooleanArray checked = this.gridView.getCheckedItemPositions();
@@ -388,65 +372,32 @@ public class MainActivity extends Activity {
             if (checked.get(i)) {
                 count++;
                 final BasicNote note = (BasicNote)this.gridView.getItemAtPosition(i);
-                final EditText titleInput = new EditText(this);
-                titleInput.setText(note.getTitle());
-                final EditText detailsInput = new EditText(this);
-                detailsInput.setText(note.getDetails());
-
-                NewNoteDialog newNoteDialog = new NewNoteDialog(this, getString(R.string.editNote), titleInput, detailsInput, new DialogInterface.OnClickListener() {
+                this.notesManager.editNote(this, note, new NetworkCallback() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onSuccess(Object json) {
+                        createGridView();
+                        Toast.makeText(MainActivity.this, getString(R.string.noteSaved), Toast.LENGTH_SHORT).show();
+                        AnalyticsManager.getInstance().fireEvent("successfully edited notes from API", null);
+                    }
 
-                        boolean titleEmpty = titleInput.getText().toString().length() == 0;
-                        boolean detailsEmpty = detailsInput.getText().toString().length() == 0;
-                        if (titleEmpty || detailsEmpty) {
-                            Toast.makeText(MainActivity.this, getString(R.string.allFeildsRequired), Toast.LENGTH_SHORT).show();
-                        } else {
-                            /**
-                             * Save the edited note then update the list view
-                             */
-                            String title = titleInput.getText().toString();
-                            String details = detailsInput.getText().toString();
-
-                            JSONObject innerParams = new JSONObject();
-                            JSONObject params = new JSONObject();
-                            try {
-                                innerParams.put("title", title);
-                                innerParams.put("details", details);
-                                params.put("note", innerParams);
-                                params.put(getString(R.string.unique_id), PrefsHelper.getPref(MainActivity.this, getString(R.string.user_id)));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                            NetworkManager networkManager = NetworkManager.getInstance();
-                            networkManager.executePutRequest(MainActivity.this, NetworkManager.API_HOST + "/notes/" + note.getRecordId() + ".json", params, new NetworkCallback() {
-                                @Override
-                                public void onSuccess(Object json) {
-                                    createGridView();
-                                    Toast.makeText(MainActivity.this, getString(R.string.noteSaved), Toast.LENGTH_SHORT).show();
-                                    AnalyticsManager.getInstance().fireEvent("successfully edited notes from API", null);
-                                }
-
-                                @Override
-                                public void onFailure(int statusCode) {
-                                    Toast.makeText(MainActivity.this, "Error: Note Not Saved. Please Check Your Network Connection and Try Again.", Toast.LENGTH_LONG).show();
-                                    HashMap map = new HashMap<String, String>();
-                                    map.put("status_code", Integer.toString(statusCode));
-                                    AnalyticsManager.getInstance().fireEvent("error editing notes from API", map);
-                                }
-                            });
-
-                        }
+                    @Override
+                    public void onFailure(int statusCode) {
+                        Toast.makeText(MainActivity.this, "Error: Note Not Saved. Please Check Your Network Connection and Try Again.", Toast.LENGTH_LONG).show();
+                        HashMap map = new HashMap<String, String>();
+                        map.put("status_code", Integer.toString(statusCode));
+                        AnalyticsManager.getInstance().fireEvent("error editing notes from API", map);
                     }
                 });
-                newNoteDialog.showDialog();
             }
         }
 
         return count;
     }
 
+    /**
+     * Shows the loading spinner dialog
+     * @return ProgressDialog the progress dialog that will be displayed while loading notes from the API
+     */
     private ProgressDialog showLoadingDialog() {
         ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage("Loading Notes...");

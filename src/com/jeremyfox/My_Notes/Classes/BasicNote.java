@@ -52,11 +52,13 @@ public class BasicNote implements Note {
         return this.selected;
     }
 
-    public int getRecordId() {
+    @Override
+    public int getRecordID() {
         return recordId;
     }
 
-    public void setRecordId(int recordId) {
+    @Override
+    public void setRecordID(int recordId) {
         this.recordId = recordId;
     }
 }

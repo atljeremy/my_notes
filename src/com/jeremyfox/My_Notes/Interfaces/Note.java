@@ -49,4 +49,18 @@ public interface Note {
      * @return the boolean
      */
     public boolean isSelected();
+
+    /**
+     * Sets record iD.
+     *
+     * @param recordID the record iD
+     */
+    public void setRecordID(int recordID);
+
+    /**
+     * Gets record iD.
+     *
+     * @return the record iD
+     */
+    public int getRecordID();
 }
