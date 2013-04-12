@@ -58,47 +58,45 @@ public class NotesManager {
     public boolean retrieveNotesFromAPI(Context context, final NetworkCallback callback) {
         AnalyticsManager.getInstance().fireEvent("retreiving notes from API", null);
         final boolean[] requestSuccessful = {false};
-        if (NetworkManager.isConnected(context)) {
-            NetworkManager networkManager = NetworkManager.getInstance();
-            String user_id = PrefsHelper.getPref(context, context.getString(R.string.user_id));
-            String query = NetworkManager.API_HOST + "/notes.json?unique_id=" + user_id;
-            networkManager.executeGetRequest(context, query, new NetworkCallback() {
-                @Override
-                public void onSuccess(Object json) {
-                    if (null != json) {
-                        JSONArray jsonArray = (JSONArray)json;
-                        try {
-                            if (null != jsonArray && jsonArray.length() > 0) {
-                                requestSuccessful[0] = true;
-                                NotesManager.this.notes = new JSONArray();
-                                for (int i=0; i<jsonArray.length(); i++) {
-                                    JSONObject currentNote = jsonArray.getJSONObject(i);
-                                    String title = currentNote.getString("title");
-                                    String details = currentNote.getString("details");
-                                    int recordId = currentNote.getInt("id");
+        NetworkManager networkManager = NetworkManager.getInstance();
+        String user_id = PrefsHelper.getPref(context, context.getString(R.string.user_id));
+        String query = NetworkManager.API_HOST + "/notes.json?unique_id=" + user_id;
+        networkManager.executeGetRequest(context, query, new NetworkCallback() {
+            @Override
+            public void onSuccess(Object json) {
+                if (null != json) {
+                    JSONArray jsonArray = (JSONArray)json;
+                    try {
+                        if (null != jsonArray && jsonArray.length() > 0) {
+                            requestSuccessful[0] = true;
+                            NotesManager.this.notes = new JSONArray();
+                            for (int i=0; i<jsonArray.length(); i++) {
+                                JSONObject currentNote = jsonArray.getJSONObject(i);
+                                String title = currentNote.getString("title");
+                                String details = currentNote.getString("details");
+                                int recordId = currentNote.getInt("id");
 
-                                    BasicNote basicNote = new BasicNote(title, details, recordId);
-                                    NotesManager.this.notes.put(basicNote);
-                                }
+                                BasicNote basicNote = new BasicNote(title, details, recordId);
+                                NotesManager.this.notes.put(basicNote);
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-
-                    AnalyticsManager.getInstance().fireEvent("successfully retrieved notes from API", null);
-                    callback.onSuccess(json);
                 }
 
-                @Override
-                public void onFailure(int statusCode) {
-                    HashMap map = new HashMap<String, String>();
-                    map.put("status_code", Integer.toString(statusCode));
-                    AnalyticsManager.getInstance().fireEvent("error saving new note to API", map);
-                    callback.onFailure(statusCode);
-                }
-            });
-        }
+                AnalyticsManager.getInstance().fireEvent("successfully retrieved notes from API", null);
+                callback.onSuccess(json);
+            }
+
+            @Override
+            public void onFailure(int statusCode) {
+                HashMap map = new HashMap<String, String>();
+                map.put("status_code", Integer.toString(statusCode));
+                AnalyticsManager.getInstance().fireEvent("error saving new note to API", map);
+                callback.onFailure(statusCode);
+            }
+        });
 
         return requestSuccessful[0];
     }

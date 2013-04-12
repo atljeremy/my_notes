@@ -89,7 +89,7 @@ public class MainActivity extends Activity {
         switch (menu.getItemId()) {
             case R.id.new_note:
                 NotesAdapter notesAdapter = (NotesAdapter)this.gridView.getAdapter();
-                notesAdapter.setShouldIncrementCounter(true);
+                if (null != notesAdapter) notesAdapter.setShouldIncrementCounter(true);
                 AnalyticsManager.getInstance().fireEvent("selected new note option", null);
                 Intent newNoteIntent = new Intent(this, NewNoteActivity.class);
                 startActivityForResult(newNoteIntent, NEW_NOTE_REQUEST_CODE);
