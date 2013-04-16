@@ -111,7 +111,6 @@ public class NotesManager {
     }
 
     public Note getNote(int recordID) {
-        Note note = null;
         for (int i=0; i<getNotes().length(); i++) {
             Note currentNote = null;
             try {
@@ -120,8 +119,18 @@ public class NotesManager {
                 e.printStackTrace();
             }
             if (currentNote.getRecordID() == recordID) {
-                note = currentNote;
+                return currentNote;
             }
+        }
+        return null;
+    }
+
+    public Note getFirstNote() {
+        Note note = null;
+        try {
+            note = (Note)getNotes().get(0);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         return note;
     }

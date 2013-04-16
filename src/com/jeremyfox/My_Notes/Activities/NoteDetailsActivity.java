@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.jeremyfox.My_Notes.Fragments.NoteDetailsFragment;
 import com.jeremyfox.My_Notes.Interfaces.NetworkCallback;
 import com.jeremyfox.My_Notes.Interfaces.Note;
 import com.jeremyfox.My_Notes.Managers.AnalyticsManager;
@@ -29,59 +31,35 @@ import java.net.NoRouteToHostException;
  * Date: 4/9/13
  * Time: 5:01 PM
  */
-public class NoteDetailsActivity extends Activity {
+public class NoteDetailsActivity extends Activity implements NoteDetailsFragment.NoteDetailsListener {
 
     private NotesManager notesManager;
-    private String title;
-    private String details;
-    private int recordID;
-    private TextView noteTitle;
-    private TextView noteDetails;
-    private Button dismissNoteButton;
-    private Button editNoteButton;
     private Dialog dialog;
+    private Note note;
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.note_details);
+        setContentView(R.layout.note_details_fragment);
+        Bundle extras = getIntent().getExtras();
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // If the screen is now in landscape mode, show the
+            // details in-line with the list so we don't need this activity.
+            finish();
+            return;
+        }
+
+        if (savedInstanceState == null) {
+            // During initial setup, plug in the details fragment.
+            NoteDetailsFragment details = new NoteDetailsFragment();
+            details.setArguments(extras);
+            getFragmentManager().beginTransaction().add(android.R.id.content, details).commit();
+        }
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         this.notesManager = NotesManager.getInstance();
-
-        Bundle extras = this.getIntent().getExtras();
-        this.title = extras.getString(getString(R.string.titleKey));
-        this.details = extras.getString(getString(R.string.detailsKey));
-        this.recordID = extras.getInt(getString(R.string.idKey));
-
-        this.noteTitle = (TextView)findViewById(R.id.note_title);
-        this.noteDetails = (TextView)findViewById(R.id.note_details);
-        this.dismissNoteButton = (Button)findViewById(R.id.dismiss_note_button);
-        this.editNoteButton = (Button)findViewById(R.id.edit_note_button);
-
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Dakota-Regular.ttf");
-        this.dismissNoteButton.setTypeface(typeface);
-        this.editNoteButton.setTypeface(typeface);
-        this.noteTitle.setTypeface(typeface);
-        this.noteDetails.setTypeface(typeface);
-
-        this.dismissNoteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AnalyticsManager.getInstance().fireEvent("dismiss note", null);
-                finish();
-            }
-        });
-        this.editNoteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AnalyticsManager.getInstance().fireEvent("edit note from note details view", null);
-                editNote();
-            }
-        });
-
-        this.noteTitle.setText(this.title);
-        this.noteDetails.setText(this.details);
     }
 
     @Override
@@ -98,16 +76,16 @@ public class NoteDetailsActivity extends Activity {
                 AnalyticsManager.getInstance().fireEvent("share note from note details view", null);
                 Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, this.title);
-                shareIntent.putExtra(Intent.EXTRA_TITLE, this.title);
-                shareIntent.putExtra(Intent.EXTRA_TEXT, this.details);
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, this.note.getTitle());
+                shareIntent.putExtra(Intent.EXTRA_TITLE, this.note.getTitle());
+                shareIntent.putExtra(Intent.EXTRA_TEXT, this.note.getDetails());
                 startActivity(Intent.createChooser(shareIntent, "Share via"));
                 break;
 
             case R.id.note_details_trash:
                 AnalyticsManager.getInstance().fireEvent("delete note from note details view", null);
                 this.dialog = showLoadingDialog();
-                deleteNote();
+                deleteNote(this.note.getRecordID());
                 break;
 
             case android.R.id.home:
@@ -117,8 +95,9 @@ public class NoteDetailsActivity extends Activity {
         return true;
     }
 
-    private void editNote() {
-        Note note = this.notesManager.getNote(this.recordID);
+    @Override
+    public void editNote(int recordID, final TextView title, final TextView details) {
+        Note note = this.notesManager.getNote(recordID);
         if (null != note) {
             this.notesManager.editNote(this, note, new NetworkCallback() {
                 @Override
@@ -133,10 +112,8 @@ public class NoteDetailsActivity extends Activity {
                     }
 
                     if (null != newTitle && null != newDetails) {
-                        NoteDetailsActivity.this.title = newTitle;
-                        NoteDetailsActivity.this.details = newDetails;
-                        NoteDetailsActivity.this.noteTitle.setText(newTitle);
-                        NoteDetailsActivity.this.noteDetails.setText(newDetails);
+                        title.setText(newTitle);
+                        details.setText(newDetails);
                     }
                 }
 
@@ -150,8 +127,21 @@ public class NoteDetailsActivity extends Activity {
         }
     }
 
-    private void deleteNote() {
-        Note note = this.notesManager.getNote(this.recordID);
+    @Override
+    public void shareNote(Intent shareIntent) {
+        startActivity(Intent.createChooser(shareIntent, "Share via"));
+    }
+
+    @Override
+    public void setNote(Note note) {
+        this.note = note;
+    }
+
+    @Override
+    public void deleteNote(int recordID) {
+        AnalyticsManager.getInstance().fireEvent("delete note from note details view", null);
+        this.dialog = showLoadingDialog();
+        Note note = this.notesManager.getNote(recordID);
         this.notesManager.deleteNote(this, note, new NetworkCallback() {
             @Override
             public void onSuccess(Object json) {
@@ -165,6 +155,11 @@ public class NoteDetailsActivity extends Activity {
                 Toast.makeText(NoteDetailsActivity.this, getString(R.string.error_deleting_note), Toast.LENGTH_LONG);
             }
         });
+    }
+
+    @Override
+    public void dismissNote() {
+        finish();
     }
 
     private ProgressDialog showLoadingDialog() {
