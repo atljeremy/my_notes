@@ -119,7 +119,7 @@ public class NoteDetailsFragment extends Fragment {
 
     public void setNoteDetails(Bundle args) {
         Note note = NotesManager.getInstance().getFirstNote();
-
+        listener.setNote(note);
         if (null != args) {
             int index = args.getInt("index", 0);
             try {
