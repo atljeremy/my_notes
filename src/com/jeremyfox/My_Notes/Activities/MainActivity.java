@@ -60,8 +60,6 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
     public void onResume() {
         super.onResume();
         AnalyticsManager.getInstance().fireEvent("application resumed", null);
-
-        this.notesListFragment.createGridView();
     }
 
     @Override
@@ -72,33 +70,16 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
+    public void newNoteAction() {
+        NotesAdapter notesAdapter = (NotesAdapter)this.gridView.getAdapter();
+        if (null != notesAdapter) notesAdapter.setShouldIncrementCounter(true);
+        AnalyticsManager.getInstance().fireEvent("selected new note option", null);
+        Intent newNoteIntent = new Intent(this, NewNoteActivity.class);
+        startActivityForResult(newNoteIntent, NEW_NOTE_REQUEST_CODE);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menu) {
-        switch (menu.getItemId()) {
-            case R.id.new_note:
-                NotesAdapter notesAdapter = (NotesAdapter)this.gridView.getAdapter();
-                if (null != notesAdapter) notesAdapter.setShouldIncrementCounter(true);
-                AnalyticsManager.getInstance().fireEvent("selected new note option", null);
-                Intent newNoteIntent = new Intent(this, NewNoteActivity.class);
-                startActivityForResult(newNoteIntent, NEW_NOTE_REQUEST_CODE);
-                break;
-
-            case R.id.sync_notes:
-                AnalyticsManager.getInstance().fireEvent("selected sync notes option", null);
-                MainActivity.this.notesListFragment.createGridView();
-                break;
-        }
-        return true;
-    }
-
-    @Override
-    public void registerWithAPI() {
+    public void registerWithAPI(final NetworkCallback callback) {
         NetworkManager networkManager = NetworkManager.getInstance();
         networkManager.executePostRequest(MainActivity.this, NetworkManager.API_HOST + "/users.json", null, new NetworkCallback() {
             @Override
@@ -107,7 +88,7 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
                     String unique_id = ((JSONObject)json).getString(getString(R.string.unique_id));
                     PrefsHelper.setPref(getBaseContext(), getString(R.string.user_id), unique_id);
                     AnalyticsManager.getInstance().registerSuperProperty("user API key", unique_id);
-                    MainActivity.this.notesListFragment.createGridView();
+                    callback.onSuccess(null);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -120,13 +101,7 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
                 HashMap map = new HashMap<String, String>();
                 map.put("status_code", Integer.toString(statusCode));
                 AnalyticsManager.getInstance().fireEvent("failed API registration", map);
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Sorry!")
-                        .setMessage("We were unable to register you with the API at this time. Please try again later by simply relaunching the application.")
-                        .setNegativeButton("Ok", null)
-                        .create()
-                        .show();
-
+                callback.onFailure(statusCode);
             }
         });
     }

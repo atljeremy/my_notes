@@ -3,6 +3,7 @@ package com.jeremyfox.My_Notes.Fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -42,6 +43,7 @@ public class NoteDetailsFragment extends Fragment {
     private String title;
     private String details;
     private int recordID;
+    private boolean dualMode;
 
     public static NoteDetailsFragment newInstance(int index) {
         NoteDetailsFragment f = new NoteDetailsFragment();
@@ -56,6 +58,17 @@ public class NoteDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         setNoteDetails(args);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        dualMode = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+
+        if (dualMode) {
+            getActivity().findViewById(R.id.dismiss_note_button).setVisibility(View.GONE);
+        }
     }
 
     @Override

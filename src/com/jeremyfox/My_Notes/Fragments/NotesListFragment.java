@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.*;
 import android.widget.*;
+import com.jeremyfox.My_Notes.Activities.NewNoteActivity;
 import com.jeremyfox.My_Notes.Adapters.NotesAdapter;
 import com.jeremyfox.My_Notes.Classes.BasicNote;
 import com.jeremyfox.My_Notes.Helpers.PrefsHelper;
@@ -32,7 +34,8 @@ public class NotesListFragment extends Fragment {
 
     public interface NotesListListener {
         public void showNoteDetails(int index, boolean dualMode);
-        public void registerWithAPI();
+        public void newNoteAction();
+        public void registerWithAPI(NetworkCallback callback);
     }
 
     private NotesListListener listener;
@@ -66,11 +69,40 @@ public class NotesListFragment extends Fragment {
         String user_id = PrefsHelper.getPref(getActivity(), getActivity().getString(R.string.user_id));
         if (null == user_id || user_id.length() == 0) {
             AnalyticsManager.getInstance().fireEvent("new user", null);
-            listener.registerWithAPI();
+            listener.registerWithAPI(new NetworkCallback() {
+                @Override
+                public void onSuccess(Object json) {
+                    createGridView();
+                }
+
+                @Override
+                public void onFailure(int statusCode) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Sorry!")
+                            .setMessage("We were unable to register you with the API at this time. Please try again later by simply relaunching the application.")
+                            .setNegativeButton("Ok", null)
+                            .create()
+                            .show();
+                }
+            });
         } else {
             AnalyticsManager.getInstance().fireEvent("returning user", null);
             createGridView();
         }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (NotesManager.getInstance().getNotes().length() > 0)
+            createGridView();
     }
 
     @Override
@@ -96,6 +128,26 @@ public class NotesListFragment extends Fragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement NotesListListener");
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menu) {
+        switch (menu.getItemId()) {
+            case R.id.new_note:
+                listener.newNoteAction();
+                break;
+
+            case R.id.sync_notes:
+                AnalyticsManager.getInstance().fireEvent("selected sync notes option", null);
+                createGridView();
+                break;
+        }
+        return true;
     }
 
     private void showNoteDetails(int index) {

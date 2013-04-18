@@ -49,7 +49,7 @@ public class NotesManager {
     }
 
     /**
-     * Synchronously retrieves notes from API.
+     * Asynchronously retrieves notes from API.
      *
      * @param context the context
      * @param callback the callback
