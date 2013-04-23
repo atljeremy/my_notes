@@ -32,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -139,6 +140,27 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
         startService(intent);
     }
 
+    /**
+     * MyNotesAPIService DELETE notes request
+     * @param notesArray
+     */
+    @Override
+    public void deleteNotes(ArrayList<Note> notesArray) {
+        this.receiver = new MyNotesAPIResultReceiver(new Handler());
+        this.receiver.setReceiver(this);
+        final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, MyNotesAPIService.class);
+        intent.putParcelableArrayListExtra("notesArray", notesArray);
+        intent.putExtra("receiver", this.receiver);
+        intent.putExtra("action", MyNotesAPIService.DELETE_NOTES);
+        startService(intent);
+    }
+
+    /**
+     * Called from the MyNotesAPIService to report the status of the request (RUNNING, FINISHED, ERROR)
+     *
+     * @param resultCode
+     * @param resultData
+     */
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData) {
         ResponseObject responseObject;
@@ -155,13 +177,13 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
                         if (responseObject.getStatus() == ResponseObject.RequestStatus.STATUS_SUCCESS) {
                             if (responseObject.getObject() instanceof JSONArray) {
                                 JSONArray array = (JSONArray)responseObject.getObject();
-                                if (array.length() > 0) {
-                                    NotesManager.getInstance().setNotes(array);
-                                    MainActivity.this.notesListFragment.createGridView();
-                                }
+                                NotesManager.getInstance().setNotes(array);
+                                MainActivity.this.notesListFragment.createGridView();
+                                AnalyticsManager.getInstance().fireEvent("successfully retrieved notes from API", null);
                             }
                         } else {
                             MainActivity.this.notesListFragment.showLoadingError();
+                            AnalyticsManager.getInstance().fireEvent("error retrieving notes from API", null);
                         }
                         break;
 
@@ -174,13 +196,32 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
                             }
                         } else {
                             MainActivity.this.notesListFragment.showSavingError();
+                            AnalyticsManager.getInstance().fireEvent("error saving new note to API", null);
                         }
                         break;
 
                     case MyNotesAPIService.EDIT_NOTES:
+                        if (responseObject.getStatus() == ResponseObject.RequestStatus.STATUS_SUCCESS) {
+                            if (responseObject.getObject() instanceof JSONObject) {
+                                MainActivity.this.notesListFragment.requestNotes();
+                                Toast.makeText(MainActivity.this, getString(R.string.notesUpdated), Toast.LENGTH_SHORT).show();
+                                AnalyticsManager.getInstance().fireEvent("new note created successfully", null);
+                            }
+                        } else {
+                            MainActivity.this.notesListFragment.showSavingError();
+                            AnalyticsManager.getInstance().fireEvent("error saving new note to API", null);
+                        }
                         break;
 
                     case MyNotesAPIService.DELETE_NOTES:
+                        if (responseObject.getStatus() == ResponseObject.RequestStatus.STATUS_SUCCESS) {
+                            MainActivity.this.notesListFragment.setGridViewItems();
+                            Toast.makeText(MainActivity.this, getString(R.string.notesDeleted), Toast.LENGTH_SHORT).show();
+                            AnalyticsManager.getInstance().fireEvent("successfully deleted note from API", null);
+                        } else {
+                            MainActivity.this.notesListFragment.showSavingError();
+                            AnalyticsManager.getInstance().fireEvent("error deleting note from API", null);
+                        }
                         break;
                 }
                 Log.d("MainActivity", "STATUS_FINISHED");
@@ -320,31 +361,9 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == NEW_NOTE_REQUEST_CODE) {
             if(resultCode == RESULT_OK){
-                /**
-                 * Save the new note then update the grid view
-                 */
                 String title = data.getStringExtra(getString(R.string.titleKey));
                 String details = data.getStringExtra(getString(R.string.detailsKey));
-
                 saveNoteToAPI(title, details);
-
-//                NetworkManager networkManager = NetworkManager.getInstance();
-//                networkManager.executePostRequest(MainActivity.this, NetworkManager.API_HOST + "/notes.json", params, new NetworkCallback() {
-//                    @Override
-//                    public void onSuccess(Object json) {
-//                        MainActivity.this.notesListFragment.requestNotes();
-//                        Toast.makeText(MainActivity.this, getString(R.string.noteSaved), Toast.LENGTH_SHORT).show();
-//                        AnalyticsManager.getInstance().fireEvent("new note created successfully", null);
-//                    }
-//
-//                    @Override
-//                    public void onFailure(int statusCode) {
-//                        Toast.makeText(MainActivity.this, "Error: Note Not Saved. Please Try Again.", Toast.LENGTH_LONG).show();
-//                        HashMap map = new HashMap<String, String>();
-//                        map.put("status_code", Integer.toString(statusCode));
-//                        AnalyticsManager.getInstance().fireEvent("error saving new note to API", map);
-//                    }
-//                });
             }
         }
     }

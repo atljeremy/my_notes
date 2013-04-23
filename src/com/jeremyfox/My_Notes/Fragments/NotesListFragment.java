@@ -12,6 +12,7 @@ import com.jeremyfox.My_Notes.Adapters.NotesAdapter;
 import com.jeremyfox.My_Notes.Classes.BasicNote;
 import com.jeremyfox.My_Notes.Helpers.PrefsHelper;
 import com.jeremyfox.My_Notes.Interfaces.NetworkCallback;
+import com.jeremyfox.My_Notes.Interfaces.Note;
 import com.jeremyfox.My_Notes.Managers.AnalyticsManager;
 import com.jeremyfox.My_Notes.Managers.NotesManager;
 import com.jeremyfox.My_Notes.R;
@@ -34,6 +35,7 @@ public class NotesListFragment extends Fragment {
         public void newNoteAction();
         public void registerWithAPI(NetworkCallback callback);
         public void requestNotesFromAPI();
+        public void deleteNotes(ArrayList<Note> notesArray);
     }
 
     private NotesListListener listener;
@@ -251,6 +253,7 @@ public class NotesListFragment extends Fragment {
      * Updates the gird view
      */
     public void setGridViewItems() {
+        dialog.dismiss();
         JSONArray jsonArray = NotesManager.getInstance().getNotes();
         if (jsonArray.length() > 0) {
             ArrayList<BasicNote> notes = new ArrayList<BasicNote>(jsonArray.length());
@@ -282,34 +285,23 @@ public class NotesListFragment extends Fragment {
      * @return int the total number of notes that were deleted
      */
     private int deleteSelectedNotes() {
-        int count = 0;
+        showDeletingNotesDialog();
+        ArrayList<Note> notesArray = new ArrayList<Note>();
         NotesAdapter notesAdapter = (NotesAdapter)this.gridView.getAdapter();
         notesAdapter.setShouldIncrementCounter(true);
         SparseBooleanArray checked = this.gridView.getCheckedItemPositions();
         for (int i = 0; i < this.gridView.getCount(); i++) {
             if (checked.get(i)) {
-                count++;
                 final BasicNote note = (BasicNote)this.gridView.getItemAtPosition(i);
-                NotesManager.getInstance().deleteNote(getActivity(), note, new NetworkCallback() {
-                    @Override
-                    public void onSuccess(Object json) {
-                        NotesManager.getInstance().removeNote(note);
-                        setGridViewItems();
-                        Toast.makeText(getActivity(), "Selected Notes Deleted", Toast.LENGTH_SHORT).show();
-                        AnalyticsManager.getInstance().fireEvent("successfully deleted notes from API", null);
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode) {
-                        Toast.makeText(getActivity(), "ERROR: Selected Notes Not Deleted", Toast.LENGTH_SHORT).show();
-                        HashMap map = new HashMap<String, String>();
-                        map.put("status_code", Integer.toString(statusCode));
-                        AnalyticsManager.getInstance().fireEvent("error deleting notes from API", map);
-                    }
-                });
+                notesArray.add(note);
             }
         }
-        return count;
+
+        if (notesArray.size() > 0) {
+            listener.deleteNotes(notesArray);
+        }
+
+        return notesArray.size();
     }
 
     /**
@@ -383,6 +375,17 @@ public class NotesListFragment extends Fragment {
                 .setNegativeButton("Ok", null)
                 .create()
                 .show();
+    }
+
+    /**
+     * Show Deleting Notes dialog
+     */
+    private void showDeletingNotesDialog() {
+        if (null == this.dialog) this.dialog = new ProgressDialog(getActivity());
+        this.dialog.setMessage(getString(R.string.deleting_note));
+        this.dialog.setCancelable(false);
+        this.dialog.show();
+        AnalyticsManager.getInstance().fireEvent("showed deleting note dialog", null);
     }
 
 }

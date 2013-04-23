@@ -7,7 +7,9 @@ import android.os.ResultReceiver;
 import android.util.Log;
 import com.jeremyfox.My_Notes.Classes.ResponseObject;
 import com.jeremyfox.My_Notes.Helpers.PrefsHelper;
+import com.jeremyfox.My_Notes.Interfaces.Note;
 import com.jeremyfox.My_Notes.Managers.NetworkManager;
+import com.jeremyfox.My_Notes.Managers.NotesManager;
 import com.jeremyfox.My_Notes.R;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -22,6 +24,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -121,7 +124,29 @@ public class MyNotesAPIService extends IntentService {
     }
 
     private void deleteNotes(Bundle extras, Bundle resultBundle, ResultReceiver receiver) {
+        try {
+            ResponseObject.RequestStatus status = ResponseObject.RequestStatus.STATUS_FAILED;
+            Object result = null;
+            ArrayList<Note> notesArray = extras.getParcelableArrayList("notesArray");
+            for (Note note : notesArray) {
+                String query    = NetworkManager.API_HOST+"/notes/"+note.getRecordID()+".json?unique_id="+PrefsHelper.getPref(this, getString(R.string.user_id));
+                String response = processRequest(query, null, NetworkManager.RequestType.DELETE);
+                result = processResult(response);
+                status = (null != result) ? ResponseObject.RequestStatus.STATUS_SUCCESS : ResponseObject.RequestStatus.STATUS_FAILED;
+                if (status == ResponseObject.RequestStatus.STATUS_SUCCESS) {
+                    NotesManager.getInstance().removeNote(note);
+                } else {
+                    break;
+                }
+            }
 
+            resultBundle.putSerializable("result", new ResponseObject(result, status));
+            resultBundle.putInt("action", DELETE_NOTES);
+            receiver.send(STATUS_FINISHED, resultBundle);
+        } catch(Exception e) {
+            resultBundle.putString(Intent.EXTRA_TEXT, e.toString());
+            receiver.send(STATUS_ERROR, resultBundle);
+        }
     }
 
     private void editNotes(Bundle extras, Bundle resultBundle, ResultReceiver receiver) {

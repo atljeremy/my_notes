@@ -158,9 +158,9 @@ public class NotesManager {
     }
 
     /**
-     * Remove note.
+     * Removes the supplied note from the "notes" array.
      *
-     * @param note the note
+     * @param note the note to remove
      * @return the boolean
      */
     public boolean removeNote(Note note) {
