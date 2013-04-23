@@ -20,5 +20,11 @@
         </activity>
         <activity android:name=".Activities.NoteDetailsActivity"/>
         <activity android:name=".Activities.NewNoteActivity"/>
+
+        <service android:name=".Services.MyNotesAPIService"
+                 android:icon="@drawable/my_notes_icon"
+                 android:label="@string/myNotesAPIServie" >
+        </service>
+
     </application>
 </manifest> 

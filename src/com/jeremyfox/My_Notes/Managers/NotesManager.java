@@ -110,6 +110,28 @@ public class NotesManager {
         return this.notes;
     }
 
+    /**
+     * Sets notes.
+     *
+     * @param notes the notes
+     */
+    public void setNotes(JSONArray notes) {
+        try {
+            this.notes = null;
+            this.notes = new JSONArray();
+            for (int i=0; i<notes.length(); i++) {
+                JSONObject currentNote = notes.getJSONObject(i);
+                String title = currentNote.getString("title");
+                String details = currentNote.getString("details");
+                int recordId = currentNote.getInt("id");
+                BasicNote basicNote = new BasicNote(title, details, recordId);
+                NotesManager.this.notes.put(basicNote);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Note getNote(int recordID) {
         for (int i=0; i<getNotes().length(); i++) {
             Note currentNote = null;

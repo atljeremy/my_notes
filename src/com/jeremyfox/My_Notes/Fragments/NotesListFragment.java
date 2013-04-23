@@ -4,13 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.*;
 import android.widget.*;
-import com.jeremyfox.My_Notes.Activities.NewNoteActivity;
 import com.jeremyfox.My_Notes.Adapters.NotesAdapter;
 import com.jeremyfox.My_Notes.Classes.BasicNote;
 import com.jeremyfox.My_Notes.Helpers.PrefsHelper;
@@ -36,6 +33,7 @@ public class NotesListFragment extends Fragment {
         public void showNoteDetails(int index, boolean dualMode);
         public void newNoteAction();
         public void registerWithAPI(NetworkCallback callback);
+        public void requestNotesFromAPI();
     }
 
     private NotesListListener listener;
@@ -45,6 +43,7 @@ public class NotesListFragment extends Fragment {
     private static final int NOTES_VIEW = 1;
     private ViewFlipper viewFlipper;
     private GridView gridView;
+    private ProgressDialog dialog;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -58,6 +57,10 @@ public class NotesListFragment extends Fragment {
 
         if (savedInstanceState != null) {
             curCheckPosition = savedInstanceState.getInt("curNote", 0);
+            boolean wasShowingDialog = savedInstanceState.getBoolean("dialogVisibility");
+            if (wasShowingDialog) {
+                showLoadingDialog();
+            }
         }
 
         if (dualMode) {
@@ -72,7 +75,7 @@ public class NotesListFragment extends Fragment {
             listener.registerWithAPI(new NetworkCallback() {
                 @Override
                 public void onSuccess(Object json) {
-                    createGridView();
+                    requestNotes();
                 }
 
                 @Override
@@ -87,7 +90,7 @@ public class NotesListFragment extends Fragment {
             });
         } else {
             AnalyticsManager.getInstance().fireEvent("returning user", null);
-            createGridView();
+            requestNotes();
         }
     }
 
@@ -102,13 +105,17 @@ public class NotesListFragment extends Fragment {
         super.onResume();
 
         if (NotesManager.getInstance().getNotes().length() > 0)
-            createGridView();
+            requestNotes();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("curNote", curCheckPosition);
+        outState.putBoolean("dialogVisibility", dialog.isShowing());
+        if (null != dialog && dialog.isShowing()) {
+            dialog.dismiss();
+        }
     }
 
     @Override
@@ -144,7 +151,7 @@ public class NotesListFragment extends Fragment {
 
             case R.id.sync_notes:
                 AnalyticsManager.getInstance().fireEvent("selected sync notes option", null);
-                createGridView();
+                requestNotes();
                 break;
         }
         return true;
@@ -159,97 +166,85 @@ public class NotesListFragment extends Fragment {
      * Creates the notes grid view, retrieves notes from API, then displays the grid view of notes
      */
     public void createGridView() {
-        final ProgressDialog dialog = showLoadingDialog();
+        final GridView grid = NotesListFragment.this.gridView;
+        if (dualMode) {
+            grid.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        } else {
+            grid.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        }
 
-        NotesManager.getInstance().retrieveNotesFromAPI(getActivity(), new NetworkCallback() {
+        grid.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+
             @Override
-            public void onSuccess(Object json) {
-                final GridView grid = NotesListFragment.this.gridView;
-                if (dualMode) {
-                    grid.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+                NotesAdapter notesAdapter = (NotesAdapter)grid.getAdapter();
+                int count = grid.getCheckedItemCount();
+                if (count > 0) {
+                    notesAdapter.setShouldIncrementCounter(false);
                 } else {
-                    grid.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+                    notesAdapter.setShouldIncrementCounter(true);
                 }
-
-                grid.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
-
-                    @Override
-                    public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-                        NotesAdapter notesAdapter = (NotesAdapter)grid.getAdapter();
-                        int count = grid.getCheckedItemCount();
-                        if (count > 0) {
-                            notesAdapter.setShouldIncrementCounter(false);
-                        } else {
-                            notesAdapter.setShouldIncrementCounter(true);
-                        }
-                        mode.setTitle(count + " selected");
-                        BasicNote note = (BasicNote)grid.getItemAtPosition(position);
-                        note.setSelected(checked);
-                        grid.invalidateViews();
-                    }
-
-                    @Override
-                    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.trash:
-                                int numNotesSelectedForDelete = deleteSelectedNotes();
-                                HashMap deletedmap = new HashMap<String, String>();
-                                deletedmap.put("selected for delete", Integer.toString(numNotesSelectedForDelete));
-                                AnalyticsManager.getInstance().fireEvent("deleted notes", deletedmap);
-                                mode.finish();
-                                return true;
-                            case R.id.edit:
-                                int numNotesSelectedForEdit = editSelectedNotes();
-                                HashMap editedMap = new HashMap<String, String>();
-                                editedMap.put("selected for edit", Integer.toString(numNotesSelectedForEdit));
-                                AnalyticsManager.getInstance().fireEvent("edited notes", editedMap);
-                                return true;
-                            default:
-                                return false;
-                        }
-                    }
-
-                    @Override
-                    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                        MenuInflater inflater = mode.getMenuInflater();
-                        inflater.inflate(R.menu.context_menu, menu);
-                        return true;
-                    }
-
-                    @Override
-                    public void onDestroyActionMode(ActionMode mode) {
-                    }
-
-                    @Override
-                    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                        return false;
-                    }
-                });
-
-                setGridViewItems();
-
-                grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        showNoteDetails(position);
-                    }
-                });
-
-                dialog.dismiss();
+                mode.setTitle(count + " selected");
+                BasicNote note = (BasicNote)grid.getItemAtPosition(position);
+                note.setSelected(checked);
+                grid.invalidateViews();
             }
 
             @Override
-            public void onFailure(int statusCode) {
-                dialog.dismiss();
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.trash:
+                        int numNotesSelectedForDelete = deleteSelectedNotes();
+                        HashMap deletedmap = new HashMap<String, String>();
+                        deletedmap.put("selected for delete", Integer.toString(numNotesSelectedForDelete));
+                        AnalyticsManager.getInstance().fireEvent("deleted notes", deletedmap);
+                        mode.finish();
+                        return true;
+                    case R.id.edit:
+                        int numNotesSelectedForEdit = editSelectedNotes();
+                        HashMap editedMap = new HashMap<String, String>();
+                        editedMap.put("selected for edit", Integer.toString(numNotesSelectedForEdit));
+                        AnalyticsManager.getInstance().fireEvent("edited notes", editedMap);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
 
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("Error")
-                        .setMessage("Couldn't load your notes. Please check your network connection and try again.")
-                        .setNegativeButton("Ok", null)
-                        .create()
-                        .show();
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.context_menu, menu);
+                return true;
+            }
 
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
             }
         });
+
+        setGridViewItems();
+
+        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showNoteDetails(position);
+            }
+        });
+
+        dialog.dismiss();
+    }
+
+    /**
+     * Request notes from the API.
+     */
+    public void requestNotes() {
+        showLoadingDialog();
+        listener.requestNotesFromAPI();
     }
 
     /**
@@ -331,7 +326,7 @@ public class NotesListFragment extends Fragment {
                 NotesManager.getInstance().editNote(getActivity(), note, new NetworkCallback() {
                     @Override
                     public void onSuccess(Object json) {
-                        createGridView();
+                        requestNotes();
                         Toast.makeText(getActivity(), getString(R.string.noteSaved), Toast.LENGTH_SHORT).show();
                         AnalyticsManager.getInstance().fireEvent("successfully edited notes from API", null);
                     }
@@ -354,13 +349,40 @@ public class NotesListFragment extends Fragment {
      * Shows the loading spinner dialog
      * @return ProgressDialog the progress dialog that will be displayed while loading notes from the API
      */
-    private ProgressDialog showLoadingDialog() {
-        ProgressDialog dialog = new ProgressDialog(getActivity());
-        dialog.setMessage("Loading Notes...");
-        dialog.setCancelable(false);
-        dialog.show();
+    private void showLoadingDialog() {
+        if (null == this.dialog) this.dialog = new ProgressDialog(getActivity());
+        this.dialog.setMessage("Loading Notes...");
+        this.dialog.setCancelable(false);
+        this.dialog.show();
         AnalyticsManager.getInstance().fireEvent("showed loading dialog", null);
-        return dialog;
+    }
+
+    /**
+     * Show loading error.
+     */
+    public void showLoadingError() {
+        this.dialog.dismiss();
+
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Error")
+                .setMessage("Couldn't load your notes. Please check your network connection and try again.")
+                .setNegativeButton("Ok", null)
+                .create()
+                .show();
+    }
+
+    /**
+     * Show loading error.
+     */
+    public void showSavingError() {
+        this.dialog.dismiss();
+
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Error")
+                .setMessage("Couldn't save your note. Please check your network connection and try again.")
+                .setNegativeButton("Ok", null)
+                .create()
+                .show();
     }
 
 }

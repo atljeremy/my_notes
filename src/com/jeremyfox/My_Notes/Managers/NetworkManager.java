@@ -65,7 +65,7 @@ public class NetworkManager {
      */
     public static final String API_HOST = "https://young-cove-5823.herokuapp.com";
 
-    private enum RequestType {
+    public enum RequestType {
 
         /**
          * Specifies a GET request.
@@ -260,6 +260,62 @@ public class NetworkManager {
         } else {
             callback.onFailure(NetworkManager.FAILURE_UNKNOWN_STATUS);
         }
+    }
+
+    /**
+     * Creates and returns HttpRequestBase.
+     *
+     * @param url the url
+     * @param requestType the RequestType
+     */
+    public HttpRequestBase createHttpRequest(String url, JSONObject params, RequestType requestType) {
+
+        HttpRequestBase httpRequest;
+
+        switch (requestType) {
+            case POST:
+                httpRequest = new HttpPost(url);
+                if (null != params && params.length() > 0) {
+                    StringEntity se = null;
+                    try {
+                        se = new StringEntity(params.toString());
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+                    ((HttpPost)httpRequest).setEntity(se);
+                    httpRequest.setHeader("Accept", "application/json");
+                    httpRequest.setHeader("Content-type", "application/json");
+                }
+                break;
+
+            case PUT:
+                httpRequest = new HttpPut(url);
+                if (null != params && params.length() > 0) {
+                    StringEntity se = null;
+                    try {
+                        se = new StringEntity(params.toString());
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+                    ((HttpPut)httpRequest).setEntity(se);
+                    httpRequest.setHeader("Accept", "application/json");
+                    httpRequest.setHeader("Content-type", "application/json");
+                }
+                break;
+
+            case DELETE:
+                httpRequest = new HttpDelete(url);
+                break;
+
+            case GET:
+            default:
+                httpRequest = new HttpGet(url);
+                break;
+        }
+
+        return httpRequest;
     }
 }
 
