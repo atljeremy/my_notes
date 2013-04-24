@@ -3,10 +3,12 @@ package com.jeremyfox.My_Notes.Managers;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.jeremyfox.My_Notes.Classes.BasicNote;
 import com.jeremyfox.My_Notes.Dialogs.NewNoteDialog;
+import com.jeremyfox.My_Notes.Helpers.FileStorageHelper;
 import com.jeremyfox.My_Notes.Helpers.PrefsHelper;
 import com.jeremyfox.My_Notes.Interfaces.NetworkCallback;
 import com.jeremyfox.My_Notes.Interfaces.Note;
@@ -62,7 +64,7 @@ public class NotesManager {
      *
      * @param notes the notes
      */
-    public void setNotes(JSONArray notes) {
+    public void setNotes(Context context, JSONArray notes) {
         try {
             this.notes = null;
             this.notes = new JSONArray();
@@ -77,6 +79,8 @@ public class NotesManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        FileStorageHelper.writeStringToFile(context, notes.toString(), FileStorageHelper.NOTES_FILE_PATH);
     }
 
     public Note getNote(int recordID) {

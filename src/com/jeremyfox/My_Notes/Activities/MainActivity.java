@@ -191,7 +191,7 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
                         if (responseObject.getStatus() == ResponseObject.RequestStatus.STATUS_SUCCESS) {
                             if (responseObject.getObject() instanceof JSONArray) {
                                 JSONArray array = (JSONArray)responseObject.getObject();
-                                NotesManager.getInstance().setNotes(array);
+                                NotesManager.getInstance().setNotes(this, array);
                                 MainActivity.this.notesListFragment.createGridView();
                                 AnalyticsManager.getInstance().fireEvent("successfully retrieved notes from API", null);
                             }
