@@ -33,4 +33,5 @@
     <string name="notesUpdated">Notes Updated</string>
     <string name="notesDeleted">Notes Deleted</string>
     <string name="recordIDKey">recordIDKey</string>
+    <string name="savingNote">saving note</string>
 </resources>

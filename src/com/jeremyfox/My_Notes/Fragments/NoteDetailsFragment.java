@@ -1,14 +1,11 @@
 package com.jeremyfox.My_Notes.Fragments;
 
-import android.app.Activity;
-import android.app.Fragment;
+import android.app.*;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -27,24 +24,62 @@ import org.json.JSONException;
  */
 public class NoteDetailsFragment extends Fragment {
 
+    /**
+     * The interface Note details listener.
+     */
     public interface NoteDetailsListener {
+        /**
+         * Dismiss note.
+         */
         public void dismissNote();
+
+        /**
+         * Delete note.
+         *
+         * @param recordID the record iD
+         */
         public void deleteNote(int recordID);
+
+        /**
+         * Edit note.
+         *
+         * @param recordID the record iD
+         * @param title the title
+         * @param details the details
+         */
         public void editNote(int recordID, TextView title, TextView details);
+
+        /**
+         * Share note.
+         *
+         * @param shareIntent the share intent
+         */
         public void shareNote(Intent shareIntent);
+
+        /**
+         * Sets note.
+         *
+         * @param note the note
+         */
         public void setNote(Note note);
     }
 
     private NoteDetailsListener listener;
-    private Button dismissNoteButton;
-    private Button editNoteButton;
     private TextView noteTitle;
     private TextView noteDetails;
     private String title;
     private String details;
     private int recordID;
-    private boolean dualMode;
+    private ProgressDialog dialog;
+    private Note note;
+    public static NoteDetailsFragment FRAGMENT;
 
+    /**
+     * New instance.
+     *
+     * @param index the index
+     * @return the note details fragment
+     */
     public static NoteDetailsFragment newInstance(int index) {
         NoteDetailsFragment f = new NoteDetailsFragment();
         Bundle args = new Bundle();
@@ -56,15 +91,17 @@ public class NoteDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         Bundle args = getArguments();
         setNoteDetails(args);
+        FRAGMENT = this;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        dualMode = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        boolean dualMode = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
 
         if (dualMode) {
             getActivity().findViewById(R.id.dismiss_note_button).setVisibility(View.GONE);
@@ -79,26 +116,26 @@ public class NoteDetailsFragment extends Fragment {
 
         this.noteTitle = (TextView)scrollView.findViewById(R.id.note_title);
         this.noteDetails = (TextView)scrollView.findViewById(R.id.note_details);
-        this.dismissNoteButton = (Button)scrollView.findViewById(R.id.dismiss_note_button);
-        this.editNoteButton = (Button)scrollView.findViewById(R.id.edit_note_button);
+        Button dismissNoteButton = (Button) scrollView.findViewById(R.id.dismiss_note_button);
+        Button editNoteButton = (Button) scrollView.findViewById(R.id.edit_note_button);
 
         Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Dakota-Regular.ttf");
         this.noteTitle.setTypeface(typeface);
         this.noteDetails.setTypeface(typeface);
-        this.dismissNoteButton.setTypeface(typeface);
-        this.editNoteButton.setTypeface(typeface);
+        dismissNoteButton.setTypeface(typeface);
+        editNoteButton.setTypeface(typeface);
 
         this.noteTitle.setText(this.title);
         this.noteDetails.setText(this.details);
 
-        this.dismissNoteButton.setOnClickListener(new View.OnClickListener() {
+        dismissNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AnalyticsManager.getInstance().fireEvent("dismiss note", null);
                 listener.dismissNote();
             }
         });
-        this.editNoteButton.setOnClickListener(new View.OnClickListener() {
+        editNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AnalyticsManager.getInstance().fireEvent("edit note from note details view", null);
@@ -119,6 +156,42 @@ public class NoteDetailsFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.note_details_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menu) {
+        switch (menu.getItemId()) {
+            case R.id.share_note:
+                AnalyticsManager.getInstance().fireEvent("share note from note details view", null);
+                Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, getNote().getTitle());
+                shareIntent.putExtra(Intent.EXTRA_TITLE, getNote().getTitle());
+                shareIntent.putExtra(Intent.EXTRA_TEXT, getNote().getDetails());
+                startActivity(Intent.createChooser(shareIntent, "Share via"));
+                break;
+
+            case R.id.note_details_trash:
+                AnalyticsManager.getInstance().fireEvent("delete note from note details view", null);
+                showDeletingNoteDialog();
+                listener.deleteNote(getNote().getRecordID());
+                break;
+
+            case android.R.id.home:
+                listener.dismissNote();
+                return true;
+        }
+        return true;
+    }
+
+    /**
+     * Gets shown index.
+     *
+     * @return the shown index
+     */
     public int getShownIndex() {
         int shownIndex;
         Bundle args = getArguments();
@@ -130,9 +203,13 @@ public class NoteDetailsFragment extends Fragment {
         return shownIndex;
     }
 
+    /**
+     * Sets note details.
+     *
+     * @param args the args
+     */
     public void setNoteDetails(Bundle args) {
         Note note = NotesManager.getInstance().getFirstNote();
-        listener.setNote(note);
         if (null != args) {
             int index = args.getInt("index", 0);
             try {
@@ -150,6 +227,79 @@ public class NoteDetailsFragment extends Fragment {
             this.details = note.getDetails();
             this.recordID = note.getRecordID();
         }
+
+        listener.setNote(note);
+        setNote(note);
+    }
+
+    /**
+     * Gets note.
+     *
+     * @return the note
+     */
+    public Note getNote() {
+        return note;
+    }
+
+    /**
+     * Sets note.
+     *
+     * @param note the note
+     */
+    public void setNote(Note note) {
+        this.note = note;
+    }
+
+    public void updateCurrentNote(String title, String details) {
+        this.title = title;
+        this.details = details;
+        this.noteTitle.setText(title);
+        this.noteDetails.setText(details);
+    }
+
+    /**
+     * Show editing note dialog.
+     */
+    public void showEditingNoteDialog() {
+        if (null == this.dialog) this.dialog = new ProgressDialog(getActivity());
+        this.dialog.setMessage(getString(R.string.savingNote));
+        this.dialog.setCancelable(false);
+        this.dialog.show();
+        AnalyticsManager.getInstance().fireEvent("showed editing note dialog", null);
+    }
+
+    /**
+     * Show deleting note dialog.
+     */
+    public void showDeletingNoteDialog() {
+        if (null == this.dialog) this.dialog = new ProgressDialog(getActivity());
+        this.dialog.setMessage(getString(R.string.deleting_note));
+        this.dialog.setCancelable(false);
+        this.dialog.show();
+        AnalyticsManager.getInstance().fireEvent("showed deleting note dialog", null);
+    }
+
+    /**
+     * Dismiss dialog.
+     */
+    public void dismissDialog() {
+        if (null != this.dialog) {
+            this.dialog.dismiss();
+        }
+    }
+
+    /**
+     * Show loading error.
+     */
+    public void showLoadingError() {
+        this.dialog.dismiss();
+
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Error")
+                .setMessage("Please check your network connection and try again.")
+                .setNegativeButton("Ok", null)
+                .create()
+                .show();
     }
 
 }

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.*;
 import android.widget.*;
+import com.jeremyfox.My_Notes.Activities.MainActivity;
 import com.jeremyfox.My_Notes.Adapters.NotesAdapter;
 import com.jeremyfox.My_Notes.Classes.BasicNote;
 import com.jeremyfox.My_Notes.Helpers.PrefsHelper;
@@ -18,7 +19,6 @@ import com.jeremyfox.My_Notes.Managers.NotesManager;
 import com.jeremyfox.My_Notes.R;
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -30,11 +30,40 @@ import java.util.HashMap;
  */
 public class NotesListFragment extends Fragment {
 
+    /**
+     * The interface Notes list listener.
+     */
     public interface NotesListListener {
+        /**
+         * Show note details.
+         *
+         * @param index the index
+         * @param dualMode the dual mode
+         */
         public void showNoteDetails(int index, boolean dualMode);
+
+        /**
+         * New note action.
+         */
         public void newNoteAction();
+
+        /**
+         * Register with aPI.
+         *
+         * @param callback the callback
+         */
         public void registerWithAPI(NetworkCallback callback);
+
+        /**
+         * Request notes from aPI.
+         */
         public void requestNotesFromAPI();
+
+        /**
+         * Delete notes.
+         *
+         * @param notesArray the notes array
+         */
         public void deleteNotes(ArrayList<Note> notesArray);
     }
 
@@ -202,12 +231,7 @@ public class NotesListFragment extends Fragment {
                         AnalyticsManager.getInstance().fireEvent("deleted notes", deletedmap);
                         mode.finish();
                         return true;
-                    case R.id.edit:
-                        int numNotesSelectedForEdit = editSelectedNotes();
-                        HashMap editedMap = new HashMap<String, String>();
-                        editedMap.put("selected for edit", Integer.toString(numNotesSelectedForEdit));
-                        AnalyticsManager.getInstance().fireEvent("edited notes", editedMap);
-                        return true;
+
                     default:
                         return false;
                 }
@@ -266,7 +290,8 @@ public class NotesListFragment extends Fragment {
                 }
             }
 
-            NotesAdapter notesAdapter = new NotesAdapter(getActivity(), R.id.title, notes);
+            if (null == notes) notes = new ArrayList<BasicNote>();
+            NotesAdapter notesAdapter = new NotesAdapter(MainActivity.ACTIVITY, R.id.title, notes);
             this.gridView.setAdapter(notesAdapter);
             this.viewFlipper.setDisplayedChild(NOTES_VIEW);
             AnalyticsManager.getInstance().fireEvent("showed notes view", null);
@@ -302,39 +327,6 @@ public class NotesListFragment extends Fragment {
         }
 
         return notesArray.size();
-    }
-
-    /**
-     * Edits the selected notes
-     * @return int the total number of notes that were edited
-     */
-    private int editSelectedNotes() {
-        int count = 0;
-        SparseBooleanArray checked = this.gridView.getCheckedItemPositions();
-        for (int i = 0; i < this.gridView.getCount(); i++) {
-            if (checked.get(i)) {
-                count++;
-                final BasicNote note = (BasicNote)this.gridView.getItemAtPosition(i);
-                NotesManager.getInstance().editNote(getActivity(), note, new NetworkCallback() {
-                    @Override
-                    public void onSuccess(Object json) {
-                        requestNotes();
-                        Toast.makeText(getActivity(), getString(R.string.noteSaved), Toast.LENGTH_SHORT).show();
-                        AnalyticsManager.getInstance().fireEvent("successfully edited notes from API", null);
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode) {
-                        Toast.makeText(getActivity(), "Error: Note Not Saved. Please Check Your Network Connection and Try Again.", Toast.LENGTH_LONG).show();
-                        HashMap map = new HashMap<String, String>();
-                        map.put("status_code", Integer.toString(statusCode));
-                        AnalyticsManager.getInstance().fireEvent("error editing notes from API", map);
-                    }
-                });
-            }
-        }
-
-        return count;
     }
 
     /**

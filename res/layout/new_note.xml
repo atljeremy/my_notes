@@ -4,7 +4,7 @@
 
     <LinearLayout android:orientation="vertical"
                   android:layout_width="fill_parent"
-                  android:layout_height="fill_parent" >
+                  android:layout_height="wrap_content" >
 
         <EditText android:id="@+id/new_note_title"
                   style="@style/DefaultTextViewTitle"

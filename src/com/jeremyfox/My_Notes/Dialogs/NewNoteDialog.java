@@ -16,7 +16,6 @@ import com.jeremyfox.My_Notes.R;
  */
 public class NewNoteDialog {
 
-    private AlertDialog.Builder builder;
     private AlertDialog dialog;
     private EditText titleInput;
     private EditText detailsInput;
@@ -24,21 +23,21 @@ public class NewNoteDialog {
     public NewNoteDialog(Activity activity, String dialogTitle, EditText titleInput, EditText detailsInput, DialogInterface.OnClickListener saveListener){
         this.titleInput = titleInput;
         this.detailsInput = detailsInput;
-        this.builder = new AlertDialog.Builder(activity);
-        this.builder.setTitle(dialogTitle)
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(dialogTitle)
                     .setPositiveButton(activity.getString(R.string.save), saveListener)
                     .setNegativeButton(activity.getString(R.string.cancel), null);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        LinearLayout linearLayout = new LinearLayout(this.builder.getContext());
+        LinearLayout linearLayout = new LinearLayout(builder.getContext());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setLayoutParams(lp);
         linearLayout.addView(this.titleInput, lp);
         linearLayout.addView(this.detailsInput, lp);
 
-        this.builder.setView(linearLayout);
+        builder.setView(linearLayout);
 
-        this.dialog = this.builder.create();
+        this.dialog = builder.create();
     }
 
     public void showDialog() {

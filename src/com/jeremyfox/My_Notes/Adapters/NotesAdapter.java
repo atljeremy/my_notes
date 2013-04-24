@@ -61,9 +61,7 @@ public class NotesAdapter extends ArrayAdapter<BasicNote> {
             TextView title = (TextView) view.findViewById(R.id.title);
             Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/Dakota-Regular.ttf");
             title.setTypeface(typeface);
-            if (title != null) {
-                title.setText(note.getTitle());
-            }
+            title.setText(note.getTitle());
         }
         return view;
     }

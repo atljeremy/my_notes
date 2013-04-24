@@ -1,16 +1,14 @@
 package com.jeremyfox.My_Notes.Activities;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +16,7 @@ import com.jeremyfox.My_Notes.Adapters.NotesAdapter;
 import com.jeremyfox.My_Notes.Classes.BasicNote;
 import com.jeremyfox.My_Notes.Classes.MyNotesAPIResultReceiver;
 import com.jeremyfox.My_Notes.Classes.ResponseObject;
+import com.jeremyfox.My_Notes.Dialogs.NewNoteDialog;
 import com.jeremyfox.My_Notes.Fragments.NoteDetailsFragment;
 import com.jeremyfox.My_Notes.Fragments.NotesListFragment;
 import com.jeremyfox.My_Notes.Helpers.PrefsHelper;
@@ -156,6 +155,21 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
     }
 
     /**
+     * MyNotesAPIService PUT edited note request
+     */
+    public void updateNoteToAPI(int recordID, String title, String details) {
+        this.receiver = new MyNotesAPIResultReceiver(new Handler());
+        this.receiver.setReceiver(this);
+        final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, MyNotesAPIService.class);
+        intent.putExtra("title", title);
+        intent.putExtra("details", details);
+        intent.putExtra("recordID", recordID);
+        intent.putExtra("receiver", this.receiver);
+        intent.putExtra("action", MyNotesAPIService.EDIT_NOTES);
+        startService(intent);
+    }
+
+    /**
      * Called from the MyNotesAPIService to report the status of the request (RUNNING, FINISHED, ERROR)
      *
      * @param resultCode
@@ -201,15 +215,29 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
                         break;
 
                     case MyNotesAPIService.EDIT_NOTES:
+                        NoteDetailsFragment.FRAGMENT.dismissDialog();
                         if (responseObject.getStatus() == ResponseObject.RequestStatus.STATUS_SUCCESS) {
                             if (responseObject.getObject() instanceof JSONObject) {
-                                MainActivity.this.notesListFragment.requestNotes();
+                                JSONObject jsonObject = (JSONObject)responseObject.getObject();
+                                String title = null;
+                                String details = null;
+                                try {
+                                    title = jsonObject.getString("title");
+                                    details = jsonObject.getString("details");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                if (null != title && null != details) {
+                                    NoteDetailsFragment.FRAGMENT.updateCurrentNote(title, details);
+                                }
+
                                 Toast.makeText(MainActivity.this, getString(R.string.notesUpdated), Toast.LENGTH_SHORT).show();
-                                AnalyticsManager.getInstance().fireEvent("new note created successfully", null);
+                                AnalyticsManager.getInstance().fireEvent("note updated successfully", null);
                             }
                         } else {
-                            MainActivity.this.notesListFragment.showSavingError();
-                            AnalyticsManager.getInstance().fireEvent("error saving new note to API", null);
+                            NoteDetailsFragment.FRAGMENT.showLoadingError();
+                            AnalyticsManager.getInstance().fireEvent("error updating note to API", null);
                         }
                         break;
 
@@ -240,33 +268,29 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
 
     @Override
     public void editNote(int recordID, final TextView title, final TextView details) {
-        Note note = NotesManager.getInstance().getNote(recordID);
+        final Note note = NotesManager.getInstance().getNote(recordID);
         if (null != note) {
-            NotesManager.getInstance().editNote(this, note, new NetworkCallback() {
+            final EditText titleInput = new EditText(this);
+            titleInput.setText(note.getTitle());
+            final EditText detailsInput = new EditText(this);
+            detailsInput.setText(note.getDetails());
+
+            NewNoteDialog newNoteDialog = new NewNoteDialog(this, getString(R.string.editNote), titleInput, detailsInput, new DialogInterface.OnClickListener() {
                 @Override
-                public void onSuccess(Object json) {
-                    String newTitle = null;
-                    String newDetails = null;
-                    try {
-                        newTitle = ((JSONObject) json).getString(getString(R.string.titleKey));
-                        newDetails = ((JSONObject) json).getString(getString(R.string.detailsKey));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                    boolean titleEmpty = titleInput.getText().toString().length() == 0;
+                    boolean detailsEmpty = detailsInput.getText().toString().length() == 0;
+                    if (titleEmpty || detailsEmpty) {
+                        Toast.makeText(MainActivity.this, getString(R.string.allFeildsRequired), Toast.LENGTH_SHORT).show();
+                    } else {
+                        final String title = titleInput.getText().toString();
+                        final String details = detailsInput.getText().toString();
+                        updateNoteToAPI(note.getRecordID(), title, details);
                     }
-
-                    if (null != newTitle && null != newDetails) {
-                        title.setText(newTitle);
-                        details.setText(newDetails);
-                    }
-
-                    MainActivity.this.notesListFragment.requestNotes();
-                }
-
-                @Override
-                public void onFailure(int statusCode) {
-                    Toast.makeText(MainActivity.this, getString(R.string.error_saving_note), Toast.LENGTH_LONG);
                 }
             });
+            newNoteDialog.showDialog();
         } else {
             Toast.makeText(this, getString(R.string.unexpected_error), Toast.LENGTH_LONG);
         }
@@ -286,23 +310,9 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
     public void deleteNote(int recordID) {
         AnalyticsManager.getInstance().fireEvent("delete note from note details view", null);
         final Note note = NotesManager.getInstance().getNote(recordID);
-        NotesManager.getInstance().deleteNote(this, note, new NetworkCallback() {
-            @Override
-            public void onSuccess(Object json) {
-                NotesManager.getInstance().removeNote(note);
-                MainActivity.this.notesListFragment.setGridViewItems();
-                Toast.makeText(MainActivity.this, "Note Deleted", Toast.LENGTH_SHORT).show();
-                AnalyticsManager.getInstance().fireEvent("successfully deleted note from API", null);
-            }
-
-            @Override
-            public void onFailure(int statusCode) {
-                Toast.makeText(MainActivity.this, getString(R.string.error_deleting_note), Toast.LENGTH_LONG);
-                HashMap map = new HashMap<String, String>();
-                map.put("status_code", Integer.toString(statusCode));
-                AnalyticsManager.getInstance().fireEvent("error deleting note from API", map);
-            }
-        });
+        ArrayList<Note> notesArray = new ArrayList<Note>();
+        notesArray.add(note);
+        deleteNotes(notesArray);
     }
 
     @Override

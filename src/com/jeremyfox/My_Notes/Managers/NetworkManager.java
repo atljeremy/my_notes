@@ -86,7 +86,7 @@ public class NetworkManager {
          * Specifies a DELETE request.
          */
         DELETE
-    };
+    }
 
     /**
      * Instantiates a new Network manager.

@@ -150,7 +150,33 @@ public class MyNotesAPIService extends IntentService {
     }
 
     private void editNotes(Bundle extras, Bundle resultBundle, ResultReceiver receiver) {
+        try {
+            String title           = extras.getString(getString(R.string.titleKey));
+            String details         = extras.getString(getString(R.string.detailsKey));
+            int recordID           = extras.getInt("recordID");
+            JSONObject innerParams = new JSONObject();
+            JSONObject params      = new JSONObject();
 
+            innerParams.put("title", title);
+            innerParams.put("details", details);
+            params.put("note", innerParams);
+            params.put(getString(R.string.unique_id), PrefsHelper.getPref(this, getString(R.string.user_id)));
+
+            String query    = NetworkManager.API_HOST + "/notes/" + recordID + ".json";
+            String response = processRequest(query, params, NetworkManager.RequestType.PUT);
+            Object result   = processResult(response);
+            ResponseObject.RequestStatus status = (null != result) ? ResponseObject.RequestStatus.STATUS_SUCCESS : ResponseObject.RequestStatus.STATUS_FAILED;
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("title", title);
+            jsonObject.put("details", details);
+            resultBundle.putSerializable("result", new ResponseObject(jsonObject, status));
+            resultBundle.putInt("action", EDIT_NOTES);
+            receiver.send(STATUS_FINISHED, resultBundle);
+        } catch(Exception e) {
+            resultBundle.putString(Intent.EXTRA_TEXT, e.toString());
+            receiver.send(STATUS_ERROR, resultBundle);
+        }
     }
 
     protected String processRequest(String url, JSONObject params, NetworkManager.RequestType requestType) {

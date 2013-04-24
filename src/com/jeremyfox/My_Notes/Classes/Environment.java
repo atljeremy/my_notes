@@ -16,7 +16,8 @@ public class Environment {
     /**
      * The enum App env.
      */
-    public static enum AppEnv { APP_ENV_PROD, APP_ENV_DEBUG };
+    public static enum AppEnv { APP_ENV_PROD, APP_ENV_DEBUG }
+
     private AppEnv appEnvironment;
 
     /**

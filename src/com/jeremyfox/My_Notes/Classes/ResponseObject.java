@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Date: 4/21/13
  * Time: 9:41 PM
  */
-public class ResponseObject extends Object implements Serializable {
+public class ResponseObject implements Serializable {
 
     private Object object;
     private RequestStatus status;
@@ -25,7 +25,7 @@ public class ResponseObject extends Object implements Serializable {
         /**
          * The STATUS _ FAILED.
          */
-        STATUS_FAILED };
+        STATUS_FAILED }
 
     /**
      * Instantiates a new Response object.
