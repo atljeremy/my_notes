@@ -7,7 +7,9 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.util.Log;
 import com.jeremyfox.My_Notes.Helpers.FileStorageHelper;
+import com.jeremyfox.My_Notes.Interfaces.Note;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,14 +70,53 @@ public class NotesProvider extends ContentProvider {
         if (null != jsonArray) {
             switch (uriMatcher.match(uri)) {
                 case NOTES:
-
+                    for (int i=0; i<jsonArray.length(); i++) {
+                        try {
+                            field = (JSONObject) jsonArray.get(i);
+                            cursor.addRow(new Object[] {
+                                    i + 1,
+                                    field.get(Note.RECORD_ID_KEY),
+                                    field.get(Note.RECORD_TITLE_KEY),
+                                    field.get(Note.RECORD_DETAILS_KEY)
+                            });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
 
                 case NOTES_ID:
+                    String itemID = uri.getLastPathSegment();
+                    int index = -1;
+                    try {
+                        index = Integer.parseInt(itemID);
+                    } catch (NumberFormatException e) {
+                        Log.e("NotesProvider", "Invalid Index: " + itemID);
+                    }
 
+                    if (index > 0 && index <= jsonArray.length()) {
+                        try {
+                            field = (JSONObject) jsonArray.get(index - 1);
+                            cursor.addRow(new Object[] {
+                                    index,
+                                    field.get(Note.RECORD_ID_KEY),
+                                    field.get(Note.RECORD_TITLE_KEY),
+                                    field.get(Note.RECORD_DETAILS_KEY)
+                            });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    break;
+
+                default:
+                    Log.e("NotesProvider", "Invalid URI: " + uri.toString());
+                    break;
             }
         }
 
-        return null;
+        return cursor;
     }
 
     @Override

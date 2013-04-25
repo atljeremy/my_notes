@@ -10,6 +10,10 @@ import android.os.Parcelable;
  */
 public interface Note extends Parcelable {
 
+    public static final String RECORD_ID_KEY      = "id";
+    public static final String RECORD_TITLE_KEY   = "title";
+    public static final String RECORD_DETAILS_KEY = "details";
+
     /**
      * Sets title.
      *

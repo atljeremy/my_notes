@@ -1,23 +1,12 @@
 package com.jeremyfox.My_Notes.Managers;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.util.Log;
-import android.widget.EditText;
-import android.widget.Toast;
 import com.jeremyfox.My_Notes.Classes.BasicNote;
-import com.jeremyfox.My_Notes.Dialogs.NewNoteDialog;
 import com.jeremyfox.My_Notes.Helpers.FileStorageHelper;
-import com.jeremyfox.My_Notes.Helpers.PrefsHelper;
-import com.jeremyfox.My_Notes.Interfaces.NetworkCallback;
 import com.jeremyfox.My_Notes.Interfaces.Note;
-import com.jeremyfox.My_Notes.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -81,6 +70,18 @@ public class NotesManager {
         }
 
         FileStorageHelper.writeStringToFile(context, notes.toString(), FileStorageHelper.NOTES_FILE_PATH);
+    }
+
+    /**
+     * Sets notes.
+     *
+     * @param notes the notes
+     */
+    public void setNotesFromProvider(Context context, JSONArray notes) {
+        if (this.notes != notes) {
+            this.notes = null;
+            this.notes = notes;
+        }
     }
 
     public Note getNote(int recordID) {

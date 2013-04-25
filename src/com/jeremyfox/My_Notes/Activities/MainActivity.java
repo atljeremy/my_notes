@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -16,6 +16,7 @@ import com.jeremyfox.My_Notes.Adapters.NotesAdapter;
 import com.jeremyfox.My_Notes.Classes.BasicNote;
 import com.jeremyfox.My_Notes.Classes.MyNotesAPIResultReceiver;
 import com.jeremyfox.My_Notes.Classes.ResponseObject;
+import com.jeremyfox.My_Notes.ContentProviders.NotesProvider;
 import com.jeremyfox.My_Notes.Dialogs.NewNoteDialog;
 import com.jeremyfox.My_Notes.Fragments.NoteDetailsFragment;
 import com.jeremyfox.My_Notes.Fragments.NotesListFragment;
@@ -39,6 +40,9 @@ import java.util.HashMap;
  */
 public class MainActivity extends Activity implements NotesListFragment.NotesListListener, NoteDetailsFragment.NoteDetailsListener, MyNotesAPIResultReceiver.Receiver {
 
+    /**
+     * The constant ACTIVITY.
+     */
     public static Activity ACTIVITY;
     private static final int NEW_NOTE_REQUEST_CODE = 1;
     private GridView gridView;
@@ -127,6 +131,8 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
 
     /**
      * MyNotesAPIService POST new note request
+     * @param title the title
+     * @param details the details
      */
     public void saveNoteToAPI(String title, String details) {
         this.receiver = new MyNotesAPIResultReceiver(new Handler());
@@ -156,6 +162,9 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
 
     /**
      * MyNotesAPIService PUT edited note request
+     * @param recordID the record iD
+     * @param title the title
+     * @param details the details
      */
     public void updateNoteToAPI(int recordID, String title, String details) {
         this.receiver = new MyNotesAPIResultReceiver(new Handler());
@@ -294,6 +303,34 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
         } else {
             Toast.makeText(this, getString(R.string.unexpected_error), Toast.LENGTH_LONG);
         }
+    }
+
+    @Override
+    public Cursor queryContentProvider() {
+        // A "projection" defines the columns that will be returned for each row
+        String[] projection = {
+                NotesProvider.NotesData.RECORD_ID_COLUMN,
+                NotesProvider.NotesData.TITLE_COLUMN,
+                NotesProvider.NotesData.DETAILS_COLUMN
+        };
+
+        // Initializes an array to contain selection arguments
+        String[] selectionArgs = {""};
+
+        // Does a query against the table and returns a Cursor object
+        Cursor cursor = getContentResolver().query(
+                NotesProvider.NotesData.CONTENT_URI,  // The content URI of the notes table
+                projection,                           // The columns to return for each row
+                null,                                 // Either null, or the word the user entered
+                selectionArgs,                                 // Either empty, or the string the user entered
+                "DESC");                              // The sort order for the returned rows
+
+        // Some providers return null if an error occurs, others throw an exception
+        if (null != cursor) {
+            return cursor;
+        }
+
+        return null;
     }
 
     @Override
