@@ -102,6 +102,7 @@ public class MyNotesAPIService extends IntentService {
         try {
             String title           = extras.getString(Note.TITLE_KEY);
             String details         = extras.getString(Note.DETAILS_KEY);
+            int id                 = extras.getInt(Note.ID_KEY);
             String userToken       = extras.getString(User.API_TOKEN_KEY);
             JSONObject innerParams = new JSONObject();
             JSONObject params      = new JSONObject();
@@ -116,7 +117,10 @@ public class MyNotesAPIService extends IntentService {
             Object result   = processResult(response);
             ResponseObject.RequestStatus status = (null != result) ? ResponseObject.RequestStatus.STATUS_SUCCESS : ResponseObject.RequestStatus.STATUS_FAILED;
 
-            resultBundle.putSerializable(RESULT_KEY, new ResponseObject(result, status));
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put(Note.ID_KEY, id);
+            jsonObject.put(Note.API_ID_KEY, (result != null) ? Integer.parseInt(((JSONObject)result).getString(Note.ID_KEY)) : -1 );
+            resultBundle.putSerializable(RESULT_KEY, new ResponseObject(jsonObject, status));
             resultBundle.putInt(ACTION_KEY, SAVE_NOTE);
             receiver.send(STATUS_FINISHED, resultBundle);
         } catch(JSONException e) {

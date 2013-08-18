@@ -120,9 +120,13 @@ public class NoteDetailsActivity extends Activity implements NoteDetailsFragment
      * @param notesArray
      */
     public void deleteNotes(ArrayList<Note> notesArray) {
-        this.receiver = new MyNotesAPIResultReceiver(new Handler());
-        this.receiver.setReceiver(this);
+        if (this.receiver == null) {
+            this.receiver = new MyNotesAPIResultReceiver(new Handler());
+            this.receiver.setReceiver(this);
+        }
         final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, MyNotesAPIService.class);
+        DataBaseHelper db = new DataBaseHelper(this);
+        intent.putExtra(User.API_TOKEN_KEY, db.getCurrentUser().getApiToken());
         intent.putParcelableArrayListExtra("notesArray", notesArray);
         intent.putExtra(MyNotesAPIService.RECEIVER_KEY, this.receiver);
         intent.putExtra(MyNotesAPIService.ACTION_KEY, MyNotesAPIService.DELETE_NOTES);
@@ -202,12 +206,26 @@ public class NoteDetailsActivity extends Activity implements NoteDetailsFragment
 
                     case MyNotesAPIService.DELETE_NOTES:
                         NoteDetailsActivity.this.noteDetailsFragment.dismissDialog();
-                        if (responseObject.getStatus() == ResponseObject.RequestStatus.STATUS_SUCCESS) {
+                        ArrayList<Note> notesArray = resultData.getParcelableArrayList("notesArray");
+                        ArrayList<Note> notDeletedNotes = resultData.getParcelableArrayList("notDeletedNotesArray");
+                        boolean allNotesDeleted = true;
+
+                        if (notesArray != null && notesArray.size() > 0) {
+                            for (Note note : notesArray) {
+                                NotesManager.getInstance().removeNote(this, note);
+                            }
+                        }
+
+                        if (notDeletedNotes != null && notDeletedNotes.size() > 0) {
+                            allNotesDeleted = false;
+                        }
+
+                        if (allNotesDeleted) {
                             dismissNote();
                             AnalyticsManager.fireEvent(this, "successfully deleted note from API", null);
                         } else {
-                            NoteDetailsActivity.this.noteDetailsFragment.showLoadingError();
-                            AnalyticsManager.fireEvent(this, "error deleting note from API", null);
+                            Toast.makeText(NoteDetailsActivity.this, getString(R.string.error_deleting_notes), Toast.LENGTH_LONG).show();
+                            AnalyticsManager.fireEvent(this, "error deleting note(s) from API", null);
                         }
                         break;
                 }

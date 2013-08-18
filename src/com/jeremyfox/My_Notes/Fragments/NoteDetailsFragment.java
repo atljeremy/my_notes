@@ -284,7 +284,7 @@ public class NoteDetailsFragment extends Fragment {
      * Show loading error.
      */
     public void showLoadingError() {
-        this.dialog.dismiss();
+        dismissDialog();
 
         new AlertDialog.Builder(getActivity())
                 .setTitle("Error")

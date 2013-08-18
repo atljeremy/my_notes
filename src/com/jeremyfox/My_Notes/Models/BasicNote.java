@@ -151,6 +151,9 @@ public class BasicNote implements Note {
         out.writeInt((selected) ? 1 : 0);
         out.writeInt(id);
         out.writeInt(userId);
+        out.writeInt(apiNoteId);
+        out.writeString(createdAt);
+        out.writeString(updatedAt);
     }
 
     /**
@@ -166,6 +169,9 @@ public class BasicNote implements Note {
         selected = (in.readInt() != 0);
         id = in.readInt();
         userId = in.readInt();
+        apiNoteId = in.readInt();
+        createdAt = in.readString();
+        updatedAt = in.readString();
     }
 
     /**

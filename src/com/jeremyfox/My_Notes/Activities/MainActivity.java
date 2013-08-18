@@ -134,10 +134,9 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
 
     /**
      * MyNotesAPIService POST new note request
-     * @param title the title
-     * @param details the details
+     * @param note the note to sync with API
      */
-    public void saveNoteToAPI(String title, String details) {
+    public void saveNoteToAPI(Note note) {
         if (this.receiver == null) {
             this.receiver = new MyNotesAPIResultReceiver(new Handler());
             this.receiver.setReceiver(this);
@@ -145,8 +144,9 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
         final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, MyNotesAPIService.class);
         DataBaseHelper db = new DataBaseHelper(this);
         intent.putExtra(User.API_TOKEN_KEY, db.getCurrentUser().getApiToken());
-        intent.putExtra(Note.TITLE_KEY, title);
-        intent.putExtra(Note.DETAILS_KEY, details);
+        intent.putExtra(Note.TITLE_KEY, note.getTitle());
+        intent.putExtra(Note.DETAILS_KEY, note.getDetails());
+        intent.putExtra(Note.ID_KEY, note.getId());
         intent.putExtra(MyNotesAPIService.RECEIVER_KEY, this.receiver);
         intent.putExtra(MyNotesAPIService.ACTION_KEY, MyNotesAPIService.SAVE_NOTE);
         startService(intent);
@@ -229,7 +229,25 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
                     case MyNotesAPIService.SAVE_NOTE:
                         if (responseObject.getStatus() == ResponseObject.RequestStatus.STATUS_SUCCESS) {
                             if (responseObject.getObject() instanceof JSONObject) {
-                                MainActivity.this.notesListFragment.requestNotes();
+                                JSONObject jsonObject = (JSONObject)responseObject.getObject();
+                                int id = -1;
+                                String apiId = null;
+
+                                try {
+                                    id = jsonObject.getInt(Note.ID_KEY);
+                                    apiId = jsonObject.getString(Note.API_ID_KEY);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                if (id != -1 && apiId != null) {
+                                    String[] columns = new String[] { DataBaseHelper.NOTE_API_ID };
+                                    String[] values = new String[] { apiId };
+                                    NotesManager.getInstance().updateNote(MainActivity.this, id, columns, values);
+
+                                    MainActivity.this.notesListFragment.requestNotes();
+                                }
+
                                 Toast.makeText(MainActivity.this, getString(R.string.noteSaved), Toast.LENGTH_SHORT).show();
                                 AnalyticsManager.fireEvent(this, "new note created successfully", null);
                             }
@@ -255,9 +273,6 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
                                     e.printStackTrace();
                                 }
 
-                                if (null != title && null != details) {
-
-                                }
                                 if (null != title && null != details && -1 != id) {
                                     String[] columns = new String[] { DataBaseHelper.NOTE_TITLE, DataBaseHelper.NOTE_DETAILS };
                                     String[] values = new String[] { title, details };
@@ -410,7 +425,7 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
                 note.setTitle(title);
                 note.setDetails(details);
                 NotesManager.getInstance().addNote(this, note);
-                saveNoteToAPI(title, details);
+                saveNoteToAPI(note);
             }
         }
     }

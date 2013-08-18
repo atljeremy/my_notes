@@ -169,9 +169,11 @@ public class NotesListFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("curNote", currentNoteId);
-        outState.putBoolean("dialogVisibility", dialog.isShowing());
-        if (null != dialog && dialog.isShowing()) {
-            dialog.dismiss();
+        if (dialog != null) {
+            outState.putBoolean("dialogVisibility", dialog.isShowing());
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
         }
     }
 
@@ -208,6 +210,7 @@ public class NotesListFragment extends Fragment {
 
             case R.id.sync_notes:
                 AnalyticsManager.fireEvent(getActivity(), "selected sync notes option", null);
+                showLoadingDialog();
                 requestNotes();
                 break;
         }
@@ -289,14 +292,13 @@ public class NotesListFragment extends Fragment {
             }
         });
 
-        dialog.dismiss();
+        dismissDialog();
     }
 
     /**
      * Request notes from the API.
      */
     public void requestNotes() {
-        showLoadingDialog();
         listener.requestNotesFromAPI();
     }
 
@@ -304,7 +306,7 @@ public class NotesListFragment extends Fragment {
      * Updates the gird view
      */
     public void setGridViewItems() {
-        dialog.dismiss();
+        dismissDialog();
         DataBaseHelper db = new DataBaseHelper(getActivity());
         User user = db.getCurrentUser();
         List<Note> notes = user.getNotes();
@@ -347,6 +349,12 @@ public class NotesListFragment extends Fragment {
         return notesArray.size();
     }
 
+    public void dismissDialog() {
+        if (null != this.dialog) {
+            this.dialog.dismiss();
+        }
+    }
+
     /**
      * Shows the loading spinner dialog
      * @return ProgressDialog the progress dialog that will be displayed while loading notes from the API
@@ -363,7 +371,7 @@ public class NotesListFragment extends Fragment {
      * Show loading error.
      */
     public void showLoadingError() {
-        this.dialog.dismiss();
+        dismissDialog();
 
         new AlertDialog.Builder(getActivity())
                 .setTitle("Error")
@@ -377,7 +385,7 @@ public class NotesListFragment extends Fragment {
      * Show loading error.
      */
     public void showSavingError() {
-        this.dialog.dismiss();
+        dismissDialog();
 
         new AlertDialog.Builder(getActivity())
                 .setTitle("Error")
