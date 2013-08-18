@@ -1,4 +1,4 @@
-package com.jeremyfox.My_Notes.Classes;
+package com.jeremyfox.My_Notes.Models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -15,20 +15,27 @@ public class BasicNote implements Note {
     private String title;
     private String details;
     private boolean selected;
-    private int recordId;
+    private int id;
+    private int userId;
+    private String createdAt;
+    private String updatedAt;
 
     /**
      * Instantiates a new Basic note.
      *
+     * @param id the record id
      * @param title the title
      * @param details the details
-     * @param recordId the record id
+     * @param userId the user ID of the user in the Users database that owns this note
      */
-    public BasicNote(String title, String details, int recordId) {
-        this.title = title;
-        this.details = details;
-        this.recordId = recordId;
-        this.selected = false;
+    public BasicNote(int id, String title, String details, String createdAt, String updatedAt, int userId) {
+        this.title     = title;
+        this.details   = details;
+        this.id        = id;
+        this.selected  = false;
+        this.userId    = userId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     /**
@@ -73,13 +80,43 @@ public class BasicNote implements Note {
     }
 
     @Override
-    public int getRecordID() {
-        return recordId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
-    public void setRecordID(int recordId) {
-        this.recordId = recordId;
+    public int getId() {
+        return this.id;
+    }
+
+    @Override
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    @Override
+    public int getUserId() {
+        return this.userId;
+    }
+
+    @Override
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @Override
+    public String getCreatedAt() {
+        return this.createdAt;
+    }
+
+    @Override
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String getUpdatedAt() {
+        return this.updatedAt;
     }
 
     @Override
@@ -98,7 +135,8 @@ public class BasicNote implements Note {
         out.writeString(title);
         out.writeString(details);
         out.writeInt((selected) ? 1 : 0);
-        out.writeInt(recordId);
+        out.writeInt(id);
+        out.writeInt(userId);
     }
 
     /**
@@ -111,8 +149,9 @@ public class BasicNote implements Note {
     private void readFromParcel(Parcel in) {
         title = in.readString();
         details = in.readString();
-        selected = (in.readInt() == 0) ? false : true;
-        recordId = in.readInt();
+        selected = (in.readInt() != 0);
+        id = in.readInt();
+        userId = in.readInt();
     }
 
     /**

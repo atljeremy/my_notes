@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
+import com.jeremyfox.My_Notes.Classes.Environment;
 import com.jeremyfox.My_Notes.Interfaces.NetworkCallback;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -19,10 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -63,7 +61,10 @@ public class NetworkManager {
     /**
      * The constant API_HOST.
      */
-    public static final String API_HOST = "https://young-cove-5823.herokuapp.com";
+    private static final String API_HOST_PROD = "https://young-cove-5823.herokuapp.com";
+    private static final String API_HOST_DEBUG = "192.168.1.109";
+
+    private String apiHost;
 
     public enum RequestType {
 
@@ -92,6 +93,11 @@ public class NetworkManager {
      * Instantiates a new Network manager.
      */
     protected NetworkManager() {
+        if (Environment.isDebug()) {
+            setApiHost(API_HOST_DEBUG);
+        } else {
+            setApiHost(API_HOST_PROD);
+        }
     }
 
     /**
@@ -104,6 +110,14 @@ public class NetworkManager {
             instance = new NetworkManager();
         }
         return instance;
+    }
+
+    public String getApiHost() {
+        return apiHost;
+    }
+
+    public void setApiHost(String apiHost) {
+        this.apiHost = apiHost;
     }
 
     /**
@@ -354,8 +368,11 @@ class NetworkAsyncTask extends AsyncTask<Object, Integer, String> {
                     inputStream.close();
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             Log.d("executeGetRequest", e.getLocalizedMessage());
+            if (this.callback != null) {
+                this.callback.onFailure(NetworkManager.FAILURE_UNKNOWN_STATUS);
+            }
         }
 
         return stringBuilder.toString();

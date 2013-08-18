@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.*;
 import android.widget.*;
-import com.jeremyfox.My_Notes.Activities.MainActivity;
 import com.jeremyfox.My_Notes.Adapters.NotesAdapter;
-import com.jeremyfox.My_Notes.Classes.BasicNote;
+import com.jeremyfox.My_Notes.Models.BasicNote;
 import com.jeremyfox.My_Notes.Helpers.PrefsHelper;
 import com.jeremyfox.My_Notes.Interfaces.NetworkCallback;
 import com.jeremyfox.My_Notes.Interfaces.Note;
@@ -67,13 +65,6 @@ public class NotesListFragment extends Fragment {
          * @param notesArray the notes array
          */
         public void deleteNotes(ArrayList<Note> notesArray);
-
-        /**
-         * Query content provider.
-         *
-         * @return the cursor
-         */
-        public Cursor queryContentProvider();
     }
 
     private NotesListListener listener;
@@ -111,7 +102,7 @@ public class NotesListFragment extends Fragment {
 
         String user_id = PrefsHelper.getPref(getActivity(), getActivity().getString(R.string.user_id));
         if (null == user_id || user_id.length() == 0) {
-            AnalyticsManager.getInstance().fireEvent("new user", null);
+            AnalyticsManager.fireEvent(getActivity(), "new user", null);
             listener.registerWithAPI(new NetworkCallback() {
                 @Override
                 public void onSuccess(Object json) {
@@ -129,7 +120,7 @@ public class NotesListFragment extends Fragment {
                 }
             });
         } else {
-            AnalyticsManager.getInstance().fireEvent("returning user", null);
+            AnalyticsManager.fireEvent(getActivity(), "returning user", null);
             requestNotes();
         }
     }
@@ -185,32 +176,12 @@ public class NotesListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem menu) {
         switch (menu.getItemId()) {
-            case R.id.load_from_content_provider:
-                Cursor cursor = listener.queryContentProvider();
-                if (null != cursor) {
-                    JSONArray notesFromProvider = new JSONArray();
-                    while (cursor.moveToNext()) {
-                        int recordID   = cursor.getInt(1);
-                        String title   = cursor.getString(2);
-                        String details = cursor.getString(3);
-
-                        notesFromProvider.put(new BasicNote(title, details, recordID));
-                    }
-
-                    if (notesFromProvider.length() > 0) {
-                        NotesManager.getInstance().setNotesFromProvider(getActivity(), notesFromProvider);
-                        setGridViewItems();
-                        showLoadedNotesFromProviderDialog();
-                    }
-                }
-                break;
-
             case R.id.new_note:
                 listener.newNoteAction();
                 break;
 
             case R.id.sync_notes:
-                AnalyticsManager.getInstance().fireEvent("selected sync notes option", null);
+                AnalyticsManager.fireEvent(getActivity(), "selected sync notes option", null);
                 requestNotes();
                 break;
         }
@@ -257,7 +228,7 @@ public class NotesListFragment extends Fragment {
                         int numNotesSelectedForDelete = deleteSelectedNotes();
                         HashMap deletedmap = new HashMap<String, String>();
                         deletedmap.put("selected for delete", Integer.toString(numNotesSelectedForDelete));
-                        AnalyticsManager.getInstance().fireEvent("deleted notes", deletedmap);
+                        AnalyticsManager.fireEvent(getActivity(), "deleted notes", deletedmap);
                         mode.finish();
                         return true;
 
@@ -320,15 +291,15 @@ public class NotesListFragment extends Fragment {
             }
 
             if (null == notes) notes = new ArrayList<BasicNote>();
-            NotesAdapter notesAdapter = new NotesAdapter(MainActivity.ACTIVITY, R.id.title, notes);
+            NotesAdapter notesAdapter = new NotesAdapter(getActivity(), R.id.title, notes);
             this.gridView.setAdapter(notesAdapter);
             this.viewFlipper.setDisplayedChild(NOTES_VIEW);
-            AnalyticsManager.getInstance().fireEvent("showed notes view", null);
+            AnalyticsManager.fireEvent(getActivity(), "showed notes view", null);
         } else {
             NotesAdapter notesAdapter = new NotesAdapter(getActivity(), R.id.title, new ArrayList<BasicNote>());
             this.gridView.setAdapter(notesAdapter);
             this.viewFlipper.setDisplayedChild(DEFAULT_HOME_VIEW);
-            AnalyticsManager.getInstance().fireEvent("showed default home view", null);
+            AnalyticsManager.fireEvent(getActivity(), "showed default home view", null);
         }
 
         this.gridView.invalidateViews();
@@ -367,7 +338,7 @@ public class NotesListFragment extends Fragment {
         this.dialog.setMessage("Loading Notes...");
         this.dialog.setCancelable(false);
         this.dialog.show();
-        AnalyticsManager.getInstance().fireEvent("showed loading dialog", null);
+        AnalyticsManager.fireEvent(getActivity(), "showed loading dialog", null);
     }
 
     /**
@@ -406,22 +377,6 @@ public class NotesListFragment extends Fragment {
         this.dialog.setMessage(getString(R.string.deleting_note));
         this.dialog.setCancelable(false);
         this.dialog.show();
-        AnalyticsManager.getInstance().fireEvent("showed deleting note dialog", null);
+        AnalyticsManager.fireEvent(getActivity(), "showed deleting note dialog", null);
     }
-
-    /**
-     * Show loading error.
-     */
-    public void showLoadedNotesFromProviderDialog() {
-        this.dialog.dismiss();
-
-        new AlertDialog.Builder(getActivity())
-                .setTitle("Process Complete!")
-                .setMessage("The current notes in the grid view have been loaded via the My Notes content provider." +
-                        "\n See the NotesListFragment.java from line 190 to 207 for the code that is mkaing this happen.")
-                .setNegativeButton("Ok", null)
-                .create()
-                .show();
-    }
-
 }

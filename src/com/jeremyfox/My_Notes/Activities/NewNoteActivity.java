@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.jeremyfox.My_Notes.Managers.AnalyticsManager;
+import com.jeremyfox.My_Notes.Interfaces.Note;
 import com.jeremyfox.My_Notes.R;
 
 /**
@@ -48,8 +48,8 @@ public class NewNoteActivity extends Activity {
                     Toast.makeText(NewNoteActivity.this, getString(R.string.allFeildsRequired), Toast.LENGTH_SHORT).show();
                 } else {
                     Intent returnIntent = new Intent();
-                    returnIntent.putExtra(getString(R.string.titleKey), NewNoteActivity.this.title.getText().toString());
-                    returnIntent.putExtra(getString(R.string.detailsKey), NewNoteActivity.this.details.getText().toString());
+                    returnIntent.putExtra(Note.TITLE_KEY, NewNoteActivity.this.title.getText().toString());
+                    returnIntent.putExtra(Note.DETAILS_KEY, NewNoteActivity.this.details.getText().toString());
                     setResult(RESULT_OK,returnIntent);
                     finish();
                 }

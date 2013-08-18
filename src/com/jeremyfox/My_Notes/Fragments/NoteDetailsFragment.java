@@ -131,14 +131,14 @@ public class NoteDetailsFragment extends Fragment {
         dismissNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AnalyticsManager.getInstance().fireEvent("dismiss note", null);
+                AnalyticsManager.fireEvent(getActivity(), "dismiss note", null);
                 listener.dismissNote();
             }
         });
         editNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AnalyticsManager.getInstance().fireEvent("edit note from note details view", null);
+                AnalyticsManager.fireEvent(getActivity(), "edit note from note details view", null);
                 listener.editNote(NoteDetailsFragment.this.recordID, NoteDetailsFragment.this.noteTitle, NoteDetailsFragment.this.noteDetails);
             }
         });
@@ -165,7 +165,7 @@ public class NoteDetailsFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem menu) {
         switch (menu.getItemId()) {
             case R.id.share_note:
-                AnalyticsManager.getInstance().fireEvent("share note from note details view", null);
+                AnalyticsManager.fireEvent(getActivity(), "share note from note details view", null);
                 Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, getNote().getTitle());
@@ -175,7 +175,7 @@ public class NoteDetailsFragment extends Fragment {
                 break;
 
             case R.id.note_details_trash:
-                AnalyticsManager.getInstance().fireEvent("delete note from note details view", null);
+                AnalyticsManager.fireEvent(getActivity(), "delete note from note details view", null);
                 showDeletingNoteDialog();
                 listener.deleteNote(getNote().getRecordID());
                 break;
@@ -265,7 +265,7 @@ public class NoteDetailsFragment extends Fragment {
         this.dialog.setMessage(getString(R.string.savingNote));
         this.dialog.setCancelable(false);
         this.dialog.show();
-        AnalyticsManager.getInstance().fireEvent("showed editing note dialog", null);
+        AnalyticsManager.fireEvent(getActivity(), "showed editing note dialog", null);
     }
 
     /**
@@ -276,7 +276,7 @@ public class NoteDetailsFragment extends Fragment {
         this.dialog.setMessage(getString(R.string.deleting_note));
         this.dialog.setCancelable(false);
         this.dialog.show();
-        AnalyticsManager.getInstance().fireEvent("showed deleting note dialog", null);
+        AnalyticsManager.fireEvent(getActivity(), "showed deleting note dialog", null);
     }
 
     /**

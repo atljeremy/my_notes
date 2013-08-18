@@ -63,14 +63,14 @@ com.jeremyfox.My_Notes.Activities.MainActivity$5$2 -> com.jeremyfox.My_Notes.Act
     com.jeremyfox.My_Notes.Activities.MainActivity$5 this$1 -> a
     void onItemClick(android.widget.AdapterView,android.view.View,int,long) -> onItemClick
 com.jeremyfox.My_Notes.Activities.MainActivity$6 -> com.jeremyfox.My_Notes.Activities.i:
-    com.jeremyfox.My_Notes.Classes.BasicNote val$note -> a
+    com.jeremyfox.My_Notes.Models.BasicNote val$note -> a
     com.jeremyfox.My_Notes.Activities.MainActivity this$0 -> b
     void onSuccess(java.lang.Object) -> a
     void onFailure(int) -> a
 com.jeremyfox.My_Notes.Activities.MainActivity$7 -> com.jeremyfox.My_Notes.Activities.j:
     android.widget.EditText val$titleInput -> a
     android.widget.EditText val$detailsInput -> b
-    com.jeremyfox.My_Notes.Classes.BasicNote val$note -> c
+    com.jeremyfox.My_Notes.Models.BasicNote val$note -> c
     com.jeremyfox.My_Notes.Activities.MainActivity this$0 -> d
     void onClick(android.content.DialogInterface,int) -> onClick
 com.jeremyfox.My_Notes.Activities.MainActivity$7$1 -> com.jeremyfox.My_Notes.Activities.k:
@@ -84,7 +84,7 @@ com.jeremyfox.My_Notes.Adapters.NotesAdapter -> com.jeremyfox.My_Notes.a.a:
     android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
     boolean shouldIncrementCounter() -> a
     void setShouldIncrementCounter(boolean) -> a
-com.jeremyfox.My_Notes.Classes.BasicNote -> com.jeremyfox.My_Notes.b.a:
+com.jeremyfox.My_Notes.Models.BasicNote -> com.jeremyfox.My_Notes.b.a:
     java.lang.String title -> a
     java.lang.String details -> b
     boolean selected -> c
@@ -157,7 +157,7 @@ com.jeremyfox.My_Notes.Managers.NotesManager -> com.jeremyfox.My_Notes.f.f:
     com.jeremyfox.My_Notes.Managers.NotesManager getInstance() -> a
     boolean retrieveNotesFromAPI(android.content.Context,com.jeremyfox.My_Notes.Interfaces.NetworkCallback) -> a
     org.json.JSONArray getNotes() -> b
-    boolean removeNote(com.jeremyfox.My_Notes.Classes.BasicNote) -> a
+    boolean removeNote(com.jeremyfox.My_Notes.Models.BasicNote) -> a
     org.json.JSONArray access$002(com.jeremyfox.My_Notes.Managers.NotesManager,org.json.JSONArray) -> a
     org.json.JSONArray access$000(com.jeremyfox.My_Notes.Managers.NotesManager) -> a
 com.jeremyfox.My_Notes.Managers.NotesManager$1 -> com.jeremyfox.My_Notes.f.g:

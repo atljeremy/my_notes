@@ -1,12 +1,15 @@
 package com.jeremyfox.My_Notes.Managers;
 
 import android.content.Context;
-import com.jeremyfox.My_Notes.Classes.BasicNote;
-import com.jeremyfox.My_Notes.Helpers.FileStorageHelper;
+import com.jeremyfox.My_Notes.Helpers.DataBaseHelper;
+import com.jeremyfox.My_Notes.Models.BasicNote;
 import com.jeremyfox.My_Notes.Interfaces.Note;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,7 +20,6 @@ import org.json.JSONObject;
 public class NotesManager {
 
     private static NotesManager instance = null;
-    private JSONArray notes = new JSONArray();
 
     /**
      * Instantiates a new Notes manager.
@@ -44,8 +46,9 @@ public class NotesManager {
      *
      * @return the notes object
      */
-    public JSONArray getNotes() {
-        return this.notes;
+    public ArrayList<Note> getNotes(Context context, int userId, String filter, String filterWHERE) {
+        DataBaseHelper db = new DataBaseHelper(context);
+        return db.getNotes(userId, filter, filterWHERE);
     }
 
     /**
@@ -55,47 +58,27 @@ public class NotesManager {
      */
     public void setNotes(Context context, JSONArray notes) {
         try {
-            this.notes = null;
-            this.notes = new JSONArray();
             for (int i=0; i<notes.length(); i++) {
                 JSONObject currentNote = notes.getJSONObject(i);
-                String title = currentNote.getString("title");
-                String details = currentNote.getString("details");
-                int recordId = currentNote.getInt("id");
-                BasicNote basicNote = new BasicNote(title, details, recordId);
+
+                int id           = currentNote.getInt(Note.ID_KEY);
+                String title     = currentNote.getString(Note.TITLE_KEY);
+                String details   = currentNote.getString(Note.DETAILS_KEY);
+                String createdAt = currentNote.getString(Note.CREATED_AT_KEY);
+                String updatedAt = currentNote.getString(Note.UPDATED_AT_KEY);
+
+                BasicNote basicNote = new BasicNote(id, title, details, createdAt, updatedAt);
+
                 NotesManager.this.notes.put(basicNote);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        FileStorageHelper.writeStringToFile(context, notes.toString(), FileStorageHelper.NOTES_FILE_PATH);
     }
 
-    /**
-     * Sets notes.
-     *
-     * @param notes the notes
-     */
-    public void setNotesFromProvider(Context context, JSONArray notes) {
-        if (this.notes != notes) {
-            this.notes = null;
-            this.notes = notes;
-        }
-    }
-
-    public Note getNote(int recordID) {
-        for (int i=0; i<getNotes().length(); i++) {
-            Note currentNote = null;
-            try {
-                currentNote = (Note)getNotes().get(i);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            if (currentNote.getRecordID() == recordID) {
-                return currentNote;
-            }
-        }
+    public Note getNote(Context context, int id) {
+        DataBaseHelper db = new DataBaseHelper(context);
+        db.getNote(id);
         return null;
     }
 

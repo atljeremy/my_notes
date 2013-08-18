@@ -1,5 +1,6 @@
 package com.jeremyfox.My_Notes.Managers;
 
+import android.content.Context;
 import com.jeremyfox.My_Notes.Activities.MainActivity;
 import com.jeremyfox.My_Notes.Classes.Environment;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
@@ -13,40 +14,14 @@ import java.util.Iterator;
  * User: jeremy
  * Date: 3/28/13
  * Time: 12:20 PM
- * To change this template use File | Settings | File Templates.
  */
 public class AnalyticsManager {
 
     /**
      * The single instance of AnalyticsManager
      */
-    private static AnalyticsManager instance = null;
-    private MixpanelAPI mixpanelAPI;
     private static final String API_TOKEN = "e8fb97ba8b60cfbc027dfb2e337cd822";
     private static final String API_TOKEN_DEBUG = "8c692559bf5c07a59ab6cf31c1975a76";
-
-    /**
-     * Protected to hide the constructor. Must use getInstance method.
-     */
-    protected AnalyticsManager() {
-        String apiToken = API_TOKEN;
-        if (Environment.isDebug()) {
-            apiToken = API_TOKEN_DEBUG;
-        }
-        this.mixpanelAPI = MixpanelAPI.getInstance(MainActivity.ACTIVITY, apiToken);
-    }
-
-    /**
-     * Gets instance.
-     *
-     * @return the instance
-     */
-    public static AnalyticsManager getInstance() {
-        if(instance == null) {
-            instance = new AnalyticsManager();
-        }
-        return instance;
-    }
 
     /**
      * Fire event.
@@ -54,7 +29,7 @@ public class AnalyticsManager {
      * @param eventKey the event key
      * @param propertiesMap the properties map
      */
-    public void fireEvent(String eventKey, HashMap<String, String> propertiesMap) {
+    public static void fireEvent(Context context, String eventKey, HashMap<String, String> propertiesMap) {
         JSONObject eventProperties = null;
         if (propertiesMap != null) {
             eventProperties = new JSONObject();
@@ -71,14 +46,14 @@ public class AnalyticsManager {
             }
         }
 
-        this.mixpanelAPI.track(eventKey, eventProperties);
+        MixpanelAPI.getInstance(context, getAPIToken()).track(eventKey, eventProperties);
     }
 
     /**
      * Flush events.
      */
-    public void flushEvents() {
-        this.mixpanelAPI.flush();
+    public static void flushEvents(Context context) {
+        MixpanelAPI.getInstance(context, getAPIToken()).flush();
     }
 
     /**
@@ -87,14 +62,22 @@ public class AnalyticsManager {
      * @param key the key
      * @param property the property
      */
-    public void registerSuperProperty(String key, String property) {
+    public static void registerSuperProperty(Context context, String key, String property) {
         JSONObject superProperties = new JSONObject();
         try {
             superProperties.put(key, property);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        this.mixpanelAPI.registerSuperProperties(superProperties);
+        MixpanelAPI.getInstance(context, getAPIToken()).registerSuperProperties(superProperties);
+    }
+
+    private static String getAPIToken() {
+        String apiToken = API_TOKEN;
+        if (Environment.isDebug()) {
+            apiToken = API_TOKEN_DEBUG;
+        }
+        return apiToken;
     }
 
 }

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.jeremyfox.My_Notes.Classes.BasicNote;
+import com.jeremyfox.My_Notes.Models.BasicNote;
 import com.jeremyfox.My_Notes.R;
 
 import java.util.ArrayList;

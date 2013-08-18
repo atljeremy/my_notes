@@ -3,7 +3,7 @@ com.jeremyfox.My_Notes.Activities.MainActivity:
     private static final int NOTES_VIEW
     private static final int NOTE_DETAILS_VIEW
 com.jeremyfox.My_Notes.BuildConfig
-com.jeremyfox.My_Notes.Classes.BasicNote:
+com.jeremyfox.My_Notes.Models.BasicNote:
     27:28:public void setTitle(java.lang.String)
     37:38:public void setDetails(java.lang.String)
     60:61:public void setRecordId(int)

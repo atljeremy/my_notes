@@ -10,63 +10,31 @@ import android.os.Parcelable;
  */
 public interface Note extends Parcelable {
 
-    public static final String RECORD_ID_KEY      = "id";
-    public static final String RECORD_TITLE_KEY   = "title";
-    public static final String RECORD_DETAILS_KEY = "details";
+    public static final String ID_KEY         = "id";
+    public static final String TITLE_KEY      = "title";
+    public static final String DETAILS_KEY    = "details";
+    public static final String CREATED_AT_KEY = "note";
+    public static final String UPDATED_AT_KEY = "note";
+    public static final String NOTE_KEY       = "note";
 
-    /**
-     * Sets title.
-     *
-     * @param title the title
-     */
     public void setTitle(String title);
-
-    /**
-     * Gets title.
-     *
-     * @return the title
-     */
     public String getTitle();
 
-    /**
-     * Sets details.
-     *
-     * @param details the details
-     */
     public void setDetails(String details);
-
-    /**
-     * Gets details.
-     *
-     * @return the details
-     */
     public String getDetails();
 
-    /**
-     * Sets selected.
-     *
-     * @param selected the selected
-     */
     public void setSelected(boolean selected);
-
-    /**
-     * Is selected.
-     *
-     * @return the boolean
-     */
     public boolean isSelected();
 
-    /**
-     * Sets record iD.
-     *
-     * @param recordID the record iD
-     */
-    public void setRecordID(int recordID);
+    public void setId(int id);
+    public int getId();
 
-    /**
-     * Gets record iD.
-     *
-     * @return the record iD
-     */
-    public int getRecordID();
+    public void setUserId(int userId);
+    public int getUserId();
+
+    public void setCreatedAt(String createdAt);
+    public String getCreatedAt();
+
+    public void setUpdatedAt(String updatedAt);
+    public String getUpdatedAt();
 }

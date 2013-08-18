@@ -103,7 +103,7 @@ public class NoteDetailsActivity extends Activity implements NoteDetailsFragment
 
     @Override
     public void deleteNote(int recordID) {
-        AnalyticsManager.getInstance().fireEvent("delete note from note details view", null);
+        AnalyticsManager.fireEvent(this, "delete note from note details view", null);
         final Note note = NotesManager.getInstance().getNote(recordID);
         ArrayList<Note> notesArray = new ArrayList<Note>();
         notesArray.add(note);
@@ -182,11 +182,11 @@ public class NoteDetailsActivity extends Activity implements NoteDetailsFragment
                                 }
 
                                 Toast.makeText(NoteDetailsActivity.this, getString(R.string.notesUpdated), Toast.LENGTH_SHORT).show();
-                                AnalyticsManager.getInstance().fireEvent("note updated successfully", null);
+                                AnalyticsManager.fireEvent(this, "note updated successfully", null);
                             }
                         } else {
                             NoteDetailsActivity.this.noteDetailsFragment.showLoadingError();
-                            AnalyticsManager.getInstance().fireEvent("error updating note to API", null);
+                            AnalyticsManager.fireEvent(this, "error updating note to API", null);
                         }
                         break;
 
@@ -194,10 +194,10 @@ public class NoteDetailsActivity extends Activity implements NoteDetailsFragment
                         NoteDetailsActivity.this.noteDetailsFragment.dismissDialog();
                         if (responseObject.getStatus() == ResponseObject.RequestStatus.STATUS_SUCCESS) {
                             dismissNote();
-                            AnalyticsManager.getInstance().fireEvent("successfully deleted note from API", null);
+                            AnalyticsManager.fireEvent(this, "successfully deleted note from API", null);
                         } else {
                             NoteDetailsActivity.this.noteDetailsFragment.showLoadingError();
-                            AnalyticsManager.getInstance().fireEvent("error deleting note from API", null);
+                            AnalyticsManager.fireEvent(this, "error deleting note from API", null);
                         }
                         break;
                 }
