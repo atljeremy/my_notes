@@ -9,6 +9,7 @@ import android.view.*;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import com.jeremyfox.My_Notes.Helpers.DataBaseHelper;
 import com.jeremyfox.My_Notes.Interfaces.Note;
 import com.jeremyfox.My_Notes.Managers.AnalyticsManager;
 import com.jeremyfox.My_Notes.Managers.NotesManager;
@@ -36,18 +37,18 @@ public class NoteDetailsFragment extends Fragment {
         /**
          * Delete note.
          *
-         * @param recordID the record iD
+         * @param note the Note to delete
          */
-        public void deleteNote(int recordID);
+        public void deleteNote(Note note);
 
         /**
          * Edit note.
          *
-         * @param recordID the record iD
+         * @param note the note to be edited
          * @param title the title
          * @param details the details
          */
-        public void editNote(int recordID, TextView title, TextView details);
+        public void editNote(Note note, TextView title, TextView details);
 
         /**
          * Share note.
@@ -69,7 +70,6 @@ public class NoteDetailsFragment extends Fragment {
     private TextView noteDetails;
     private String title;
     private String details;
-    private int recordID;
     private ProgressDialog dialog;
     private Note note;
     public static NoteDetailsFragment FRAGMENT;
@@ -77,13 +77,13 @@ public class NoteDetailsFragment extends Fragment {
     /**
      * New instance.
      *
-     * @param index the index
+     * @param noteId the Note's id
      * @return the note details fragment
      */
-    public static NoteDetailsFragment newInstance(int index) {
+    public static NoteDetailsFragment newInstance(int noteId) {
         NoteDetailsFragment f = new NoteDetailsFragment();
         Bundle args = new Bundle();
-        args.putInt("index", index);
+        args.putInt(Note.ID_KEY, noteId);
         f.setArguments(args);
         return f;
     }
@@ -139,7 +139,7 @@ public class NoteDetailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 AnalyticsManager.fireEvent(getActivity(), "edit note from note details view", null);
-                listener.editNote(NoteDetailsFragment.this.recordID, NoteDetailsFragment.this.noteTitle, NoteDetailsFragment.this.noteDetails);
+                listener.editNote(getNote(), NoteDetailsFragment.this.noteTitle, NoteDetailsFragment.this.noteDetails);
             }
         });
 
@@ -177,7 +177,7 @@ public class NoteDetailsFragment extends Fragment {
             case R.id.note_details_trash:
                 AnalyticsManager.fireEvent(getActivity(), "delete note from note details view", null);
                 showDeletingNoteDialog();
-                listener.deleteNote(getNote().getRecordID());
+                listener.deleteNote(getNote());
                 break;
 
             case android.R.id.home:
@@ -209,23 +209,15 @@ public class NoteDetailsFragment extends Fragment {
      * @param args the args
      */
     public void setNoteDetails(Bundle args) {
-        Note note = NotesManager.getInstance().getFirstNote();
-        if (null != args) {
-            int index = args.getInt("index", 0);
-            try {
-                JSONArray notes = NotesManager.getInstance().getNotes();
-                if (null != notes && notes.length() > 0 && notes.length() > index) {
-                    note = (Note) notes.get(index);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        Note note = NotesManager.getInstance().getFirstNote(getActivity());
+        if (args != null) {
+            int noteId = args.getInt(Note.ID_KEY, 0);
+            note = NotesManager.getInstance().getNote(getActivity(), noteId);
         }
 
-        if (null != note) {
+        if (note != null) {
             this.title = note.getTitle();
             this.details = note.getDetails();
-            this.recordID = note.getRecordID();
         }
 
         listener.setNote(note);

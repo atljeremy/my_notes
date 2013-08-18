@@ -10,17 +10,15 @@ import android.view.*;
 import android.widget.*;
 import com.jeremyfox.My_Notes.Adapters.NotesAdapter;
 import com.jeremyfox.My_Notes.Helpers.DataBaseHelper;
-import com.jeremyfox.My_Notes.Interfaces.User;
-import com.jeremyfox.My_Notes.Models.BasicNote;
 import com.jeremyfox.My_Notes.Helpers.PrefsHelper;
+import com.jeremyfox.My_Notes.Interfaces.User;
+import com.jeremyfox.My_Notes.Managers.NotesManager;
+import com.jeremyfox.My_Notes.Models.BasicNote;
 import com.jeremyfox.My_Notes.Interfaces.NetworkCallback;
 import com.jeremyfox.My_Notes.Interfaces.Note;
 import com.jeremyfox.My_Notes.Managers.AnalyticsManager;
-import com.jeremyfox.My_Notes.Managers.NotesManager;
 import com.jeremyfox.My_Notes.Models.BasicUser;
 import com.jeremyfox.My_Notes.R;
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,10 +39,10 @@ public class NotesListFragment extends Fragment {
         /**
          * Show note details.
          *
-         * @param index the index
+         * @param note the Note to display
          * @param dualMode the dual mode
          */
-        public void showNoteDetails(int index, boolean dualMode);
+        public void showNoteDetails(Note note, int index, boolean dualMode);
 
         /**
          * New note action.
@@ -73,7 +71,8 @@ public class NotesListFragment extends Fragment {
 
     private NotesListListener listener;
     private boolean dualMode;
-    private int curCheckPosition = 0;
+    private int currentNoteId = 0;
+    private int currentGridIndex = 0;
     private static final int DEFAULT_HOME_VIEW = 0;
     private static final int NOTES_VIEW = 1;
     private ViewFlipper viewFlipper;
@@ -91,7 +90,8 @@ public class NotesListFragment extends Fragment {
         dualMode = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
 
         if (savedInstanceState != null) {
-            curCheckPosition = savedInstanceState.getInt("curNote", 0);
+            currentNoteId = savedInstanceState.getInt("curNote", 0);
+            currentGridIndex = savedInstanceState.getInt("curGridIndex", 0);
             boolean wasShowingDialog = savedInstanceState.getBoolean("dialogVisibility");
             if (wasShowingDialog) {
                 showLoadingDialog();
@@ -101,30 +101,52 @@ public class NotesListFragment extends Fragment {
         if (dualMode) {
             GridView gridView = (GridView)getActivity().findViewById(R.id.gridview);
             gridView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            showNoteDetails(curCheckPosition);
+            Note note = NotesManager.getInstance().getNote(getActivity(), currentNoteId);
+            if (note != null) {
+                showNoteDetails(note, currentGridIndex);
+            }
         }
 
         DataBaseHelper db = new DataBaseHelper(getActivity());
         BasicUser user = db.getCurrentUser();
         if (user == null || user.getApiToken() == null || user.getApiToken().length() == 0) {
-            AnalyticsManager.fireEvent(getActivity(), "new user", null);
-            listener.registerWithAPI(new NetworkCallback() {
 
-                @Override
-                public void onSuccess(Object json) {
-                    requestNotes();
-                }
+            /**
+             * First, check and see if this user was using version 1.0 of the app. '
+             * If so, they probably already have an API token/User account.
+             */
+            String prefsToken = PrefsHelper.getPref(getActivity(), getActivity().getString(R.string.user_id));
+            if (prefsToken != null && prefsToken.length() > 0) {
+                /**
+                 * Is an existing v1.0 user with an existing User account in the API.
+                 * Create a new User row in the local db in the Users Table for this user
+                 */
+                user = new BasicUser();
+                user.setApiToken(prefsToken);
+                db.addUser(user);
+                requestNotes();
 
-                @Override
-                public void onFailure(int statusCode) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle("Sorry!")
-                           .setMessage("We were unable to register you with the API at this time. Please try again later by simply relaunching the application.")
-                           .setNegativeButton("Ok", null)
-                           .create()
-                           .show();
-                }
-            });
+            } else {
+                AnalyticsManager.fireEvent(getActivity(), "new user", null);
+                listener.registerWithAPI(new NetworkCallback() {
+
+                    @Override
+                    public void onSuccess(Object json) {
+                        requestNotes();
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle("Sorry!")
+                                .setMessage("We were unable to register you with the API at this time. Please try again later by simply relaunching the application.")
+                                .setNegativeButton("Ok", null)
+                                .create()
+                                .show();
+                    }
+                });
+            }
+
         } else {
             AnalyticsManager.fireEvent(getActivity(), "returning user", null);
             requestNotes();
@@ -140,15 +162,13 @@ public class NotesListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        if (NotesManager.getInstance().getNotes().length() > 0)
-            requestNotes();
+        createGridView();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("curNote", curCheckPosition);
+        outState.putInt("curNote", currentNoteId);
         outState.putBoolean("dialogVisibility", dialog.isShowing());
         if (null != dialog && dialog.isShowing()) {
             dialog.dismiss();
@@ -194,9 +214,9 @@ public class NotesListFragment extends Fragment {
         return true;
     }
 
-    private void showNoteDetails(int index) {
-        curCheckPosition = index;
-        listener.showNoteDetails(index, dualMode);
+    private void showNoteDetails(Note note, int index) {
+        currentNoteId = note.getId();
+        listener.showNoteDetails(note, index, dualMode);
     }
 
     /**
@@ -264,7 +284,8 @@ public class NotesListFragment extends Fragment {
 
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showNoteDetails(position);
+                Note note = (Note) grid.getAdapter().getItem(position);
+                showNoteDetails(note, position);
             }
         });
 

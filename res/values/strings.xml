@@ -26,6 +26,7 @@
     <string name="error_saving_note">There was an error saving your note. Please try again.</string>
     <string name="unexpected_error">Sorry, an unexpected error has occurred. Please try again.</string>
     <string name="error_deleting_note">An error occurred and your note was not deleted. Please try agian.</string>
+    <string name="error_deleting_notes">An error occurred and some of your notes were not deleted. Please try agian.</string>
     <string name="deleting_note">Deleting Note</string><string name="note_title">Note Title</string><string name="note_details">Note Details</string>
     <string name="myNotesAPIServie">MyNotesAPIService</string>
     <string name="notesUpdated">Notes Updated</string>

@@ -38,21 +38,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static String DATABASE_NAME              = "MyNotes";
 
-    private static final String USERS_TABLE          = "users";
-    private static final String USER_ID              = "id";           // INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
-    private static final String USER_API_TOKEN       = "apiToken";     // TEXT
-    private static final String USER_EMAIL_ADDRESS   = "email";        // TEXT
-    private static final String USER_LAST_SYNC_DATE  = "lastSyncDate"; // TEXT
-    private static final String USER_API_ID          = "apiUserId";    // INTEGER
+    public static final String USERS_TABLE          = "users";
+    public static final String USER_ID              = "id";           // INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
+    public static final String USER_API_TOKEN       = "apiToken";     // TEXT
+    public static final String USER_EMAIL_ADDRESS   = "email";        // TEXT
+    public static final String USER_LAST_SYNC_DATE  = "lastSyncDate"; // TEXT
+    public static final String USER_API_ID          = "apiUserId";    // INTEGER
 
-    private static final String NOTES_TABLE          = "results";
-    private static final String NOTE_ID              = "id";        // INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
-    private static final String NOTE_TITLE           = "title";     // TEXT
-    private static final String NOTE_DETAILS         = "details";   // TEXT
-    private static final String NOTE_CREATED_AT      = "createdAt"; // TEXT
-    private static final String NOTE_UPDATED_AT      = "updatedAt"; // TEXT
-    public  static final String NOTE_API_ID          = "apiNoteId"; // INTEGER
-    private static final String NOTE_USER_ID         = "userId";    // INTEGER
+    public static final String NOTES_TABLE          = "results";
+    public static final String NOTE_ID              = "id";        // INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
+    public static final String NOTE_TITLE           = "title";     // TEXT
+    public static final String NOTE_DETAILS         = "details";   // TEXT
+    public static final String NOTE_CREATED_AT      = "createdAt"; // TEXT
+    public static final String NOTE_UPDATED_AT      = "updatedAt"; // TEXT
+    public static final String NOTE_API_ID          = "apiNoteId"; // INTEGER
+    public static final String NOTE_USER_ID         = "userId";    // INTEGER
 
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DB_VERSION_ONE);
@@ -60,7 +60,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String usersSql = "CREATE TABLE IF NOT EXISTS" + USERS_TABLE + "" +
+        String usersSql = "CREATE TABLE IF NOT EXISTS " + USERS_TABLE + "" +
                 "("+USER_ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
                 ""+USER_API_TOKEN+" TEXT, " +
                 ""+USER_EMAIL_ADDRESS+" TEXT, " +
@@ -96,6 +96,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 // Code for migrating from version 2 to version 3
         }
     }
+
+    /*******************************************************************
+     * SELECT
+     *******************************************************************/
 
     public BasicUser getUser(int id, String notesFilter, String notesFilterWHERE) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -178,17 +182,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return userList;
     }
 
-    public void addUser(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(USER_API_TOKEN, user.getApiToken());
-        values.put(USER_EMAIL_ADDRESS, user.getEmailAddress());
-        values.put(USER_LAST_SYNC_DATE, String.valueOf(new DateTime()));
-        values.put(USER_API_ID, user.getAPIUserId());
-        long searchId = db.insert(USERS_TABLE, null, values);
-        db.close();
-        user.setId(Integer.parseInt(String.valueOf(searchId)));
-    }
+
 
     public ArrayList<Note> getNotes(int userId, String filter, String filterWHERE) {
         ArrayList<Note> notesList = new ArrayList<Note>();
@@ -232,21 +226,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return notesList;
     }
 
-    public void addNote(Note note) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(NOTE_TITLE,      note.getTitle());
-        values.put(NOTE_DETAILS,    note.getDetails());
-        values.put(NOTE_API_ID,     note.getAPINoteId());
-        values.put(NOTE_CREATED_AT, note.getCreatedAt());
-        values.put(NOTE_UPDATED_AT, note.getUpdatedAt());
-        values.put(NOTE_USER_ID,    note.getUserId());
-        long noteId = db.insert(NOTES_TABLE, null, values);
-        note.setId((int) noteId);
-        Log.d("DataBaseHelper", "New Note ID: " + String.valueOf(noteId));
-        db.close();
-    }
-
     public Note getNote(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -283,16 +262,90 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return note;
     }
 
-    public void dropAllData() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DROP TABLE IF EXISTS " + USERS_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + NOTES_TABLE);
-        onCreate(db);
+    public BasicNote getFirstNote() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM "+NOTES_TABLE+" WHERE "+NOTE_ID+" = (SELECT MIN("+NOTE_ID+") FROM "+NOTES_TABLE+");", null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        BasicNote note = null;
+        try {
+            int noteId           = cursor.getInt(0);
+            String noteTitle     = cursor.getString(1);
+            String noteDetails   = cursor.getString(2);
+            String noteCreatedAt = cursor.getString(3);
+            String noteUpdatedAt = cursor.getString(4);
+            int apiNoteId        = cursor.getInt(5);
+            int noteUserId       = cursor.getInt(6);
+
+            note = new BasicNote(noteId, noteTitle, noteDetails, noteCreatedAt, noteUpdatedAt, apiNoteId, noteUserId);
+
+        } catch (CursorIndexOutOfBoundsException e) {
+            // Tried to access an index that doesn't exist in the cursor
+        }
+
+        return note;
     }
+
+    /*******************************************************************
+     * INSERT
+     *******************************************************************/
+
+    public void addUser(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(USER_API_TOKEN, user.getApiToken());
+        values.put(USER_EMAIL_ADDRESS, user.getEmailAddress());
+        values.put(USER_LAST_SYNC_DATE, String.valueOf(new DateTime()));
+        values.put(USER_API_ID, user.getAPIUserId());
+        long searchId = db.insert(USERS_TABLE, null, values);
+        db.close();
+        user.setId(Integer.parseInt(String.valueOf(searchId)));
+    }
+
+    public void addNote(Note note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(NOTE_TITLE,      note.getTitle());
+        values.put(NOTE_DETAILS,    note.getDetails());
+        values.put(NOTE_API_ID,     note.getAPINoteId());
+        values.put(NOTE_CREATED_AT, note.getCreatedAt());
+        values.put(NOTE_UPDATED_AT, note.getUpdatedAt());
+        values.put(NOTE_USER_ID,    note.getUserId());
+        long noteId = db.insert(NOTES_TABLE, null, values);
+        note.setId((int) noteId);
+        Log.d("DataBaseHelper", "New Note ID: " + String.valueOf(noteId));
+        db.close();
+    }
+
+    /*******************************************************************
+     * UPDATE
+     *******************************************************************/
+
+    public void updateNote(int id, String[] columns, String[] values) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        for (int i = 0; i < columns.length; i++) {
+            String column = columns[i];
+            String value = values[i];
+            contentValues.put(column, value);
+        }
+        db.update(NOTES_TABLE, contentValues, NOTE_ID + " = ?", new String[] { String.valueOf(id) });
+    }
+
+    /*******************************************************************
+     * DELETE
+     *******************************************************************/
 
     public void clearNotesTable() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE * FROM " + NOTES_TABLE);
+        db.execSQL("DELETE FROM " + NOTES_TABLE);
+    }
+
+    public boolean deleteNote(Note note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(NOTES_TABLE, NOTE_ID + " = " + note.getId(), null) > 0;
     }
 
 }

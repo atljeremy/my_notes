@@ -14,7 +14,9 @@ import com.jeremyfox.My_Notes.Classes.MyNotesAPIResultReceiver;
 import com.jeremyfox.My_Notes.Classes.ResponseObject;
 import com.jeremyfox.My_Notes.Dialogs.NewNoteDialog;
 import com.jeremyfox.My_Notes.Fragments.NoteDetailsFragment;
+import com.jeremyfox.My_Notes.Helpers.DataBaseHelper;
 import com.jeremyfox.My_Notes.Interfaces.Note;
+import com.jeremyfox.My_Notes.Interfaces.User;
 import com.jeremyfox.My_Notes.Managers.AnalyticsManager;
 import com.jeremyfox.My_Notes.Managers.NotesManager;
 import com.jeremyfox.My_Notes.R;
@@ -62,8 +64,7 @@ public class NoteDetailsActivity extends Activity implements NoteDetailsFragment
     }
 
     @Override
-    public void editNote(int recordID, final TextView title, final TextView details) {
-        final Note note = NotesManager.getInstance().getNote(recordID);
+    public void editNote(final Note note, final TextView title, final TextView details) {
         if (null != note) {
             final EditText titleInput = new EditText(this);
             titleInput.setText(note.getTitle());
@@ -81,7 +82,7 @@ public class NoteDetailsActivity extends Activity implements NoteDetailsFragment
                     } else {
                         final String title = titleInput.getText().toString();
                         final String details = detailsInput.getText().toString();
-                        updateNoteToAPI(note.getRecordID(), title, details);
+                        updateNoteToAPI(note.getId(), note.getAPINoteId(), title, details);
                     }
                 }
             });
@@ -102,9 +103,8 @@ public class NoteDetailsActivity extends Activity implements NoteDetailsFragment
     }
 
     @Override
-    public void deleteNote(int recordID) {
+    public void deleteNote(Note note) {
         AnalyticsManager.fireEvent(this, "delete note from note details view", null);
-        final Note note = NotesManager.getInstance().getNote(recordID);
         ArrayList<Note> notesArray = new ArrayList<Note>();
         notesArray.add(note);
         deleteNotes(notesArray);
@@ -124,37 +124,42 @@ public class NoteDetailsActivity extends Activity implements NoteDetailsFragment
         this.receiver.setReceiver(this);
         final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, MyNotesAPIService.class);
         intent.putParcelableArrayListExtra("notesArray", notesArray);
-        intent.putExtra("receiver", this.receiver);
-        intent.putExtra("action", MyNotesAPIService.DELETE_NOTES);
+        intent.putExtra(MyNotesAPIService.RECEIVER_KEY, this.receiver);
+        intent.putExtra(MyNotesAPIService.ACTION_KEY, MyNotesAPIService.DELETE_NOTES);
         startService(intent);
     }
 
     /**
      * MyNotesAPIService PUT edited note request
      */
-    public void updateNoteToAPI(int recordID, String title, String details) {
-        this.receiver = new MyNotesAPIResultReceiver(new Handler());
-        this.receiver.setReceiver(this);
+    public void updateNoteToAPI(int id, int apiId, String title, String details) {
+        if (this.receiver == null) {
+            this.receiver = new MyNotesAPIResultReceiver(new Handler());
+            this.receiver.setReceiver(this);
+        }
         final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, MyNotesAPIService.class);
-        intent.putExtra("title", title);
-        intent.putExtra("details", details);
-        intent.putExtra("recordID", recordID);
-        intent.putExtra("receiver", this.receiver);
-        intent.putExtra("action", MyNotesAPIService.EDIT_NOTES);
+        DataBaseHelper db = new DataBaseHelper(this);
+        intent.putExtra(User.API_TOKEN_KEY, db.getCurrentUser().getApiToken());
+        intent.putExtra(Note.TITLE_KEY, title);
+        intent.putExtra(Note.DETAILS_KEY, details);
+        intent.putExtra(Note.ID_KEY, id);
+        intent.putExtra(Note.API_ID_KEY, apiId);
+        intent.putExtra(MyNotesAPIService.RECEIVER_KEY, this.receiver);
+        intent.putExtra(MyNotesAPIService.ACTION_KEY, MyNotesAPIService.EDIT_NOTES);
         startService(intent);
     }
 
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData) {
         ResponseObject responseObject;
-        int action = resultData.getInt("action");
+        int action = resultData.getInt(MyNotesAPIService.ACTION_KEY);
         switch (resultCode) {
             case MyNotesAPIService.STATUS_RUNNING:
                 Log.d("MainActivity", "STATUS_RUNNING");
                 break;
 
             case MyNotesAPIService.STATUS_FINISHED:
-                responseObject = (ResponseObject)resultData.getSerializable("result");
+                responseObject = (ResponseObject)resultData.getSerializable(MyNotesAPIService.RESULT_KEY);
                 switch (action) {
                     case MyNotesAPIService.GET_NOTES:
                         break;
@@ -169,14 +174,19 @@ public class NoteDetailsActivity extends Activity implements NoteDetailsFragment
                                 JSONObject jsonObject = (JSONObject)responseObject.getObject();
                                 String title = null;
                                 String details = null;
+                                int id = -1;
                                 try {
-                                    title = jsonObject.getString("title");
-                                    details = jsonObject.getString("details");
+                                    title = jsonObject.getString(Note.TITLE_KEY);
+                                    details = jsonObject.getString(Note.DETAILS_KEY);
+                                    id = jsonObject.getInt(Note.ID_KEY);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
 
-                                if (null != title && null != details) {
+                                if (null != title && null != details && -1 != id) {
+                                    String[] columns = new String[] { DataBaseHelper.NOTE_TITLE, DataBaseHelper.NOTE_DETAILS };
+                                    String[] values = new String[] { title, details };
+                                    NotesManager.getInstance().updateNote(NoteDetailsActivity.this, id, columns, values);
                                     NoteDetailsActivity.this.noteDetailsFragment.updateCurrentNote(title, details);
                                     dismissNote();
                                 }

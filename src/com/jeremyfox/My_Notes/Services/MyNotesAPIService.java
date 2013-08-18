@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
 import com.jeremyfox.My_Notes.Classes.ResponseObject;
+import com.jeremyfox.My_Notes.Helpers.DataBaseHelper;
 import com.jeremyfox.My_Notes.Helpers.PrefsHelper;
 import com.jeremyfox.My_Notes.Interfaces.Note;
+import com.jeremyfox.My_Notes.Interfaces.User;
 import com.jeremyfox.My_Notes.Managers.NetworkManager;
 import com.jeremyfox.My_Notes.Managers.NotesManager;
 import com.jeremyfox.My_Notes.R;
@@ -60,7 +62,7 @@ public class MyNotesAPIService extends IntentService {
 
         switch (action) {
             case GET_NOTES:
-                getNotes(resultBundle, receiver);
+                getNotes(extras, resultBundle, receiver);
                 break;
 
             case SAVE_NOTE:
@@ -84,11 +86,11 @@ public class MyNotesAPIService extends IntentService {
         this.stopSelf();
     }
 
-    private void getNotes(Bundle resultBundle, ResultReceiver receiver) {
-        String user_id  = PrefsHelper.getPref(this, this.getString(R.string.user_id));
-        String query    = NetworkManager.API_HOST + "/notes.json?unique_id=" + user_id;
-        String response = processRequest(query, null, NetworkManager.RequestType.GET);
-        Object result   = processResult(response);
+    private void getNotes(Bundle extras, Bundle resultBundle, ResultReceiver receiver) {
+        String userToken = extras.getString(User.API_TOKEN_KEY);
+        String query     = NetworkManager.getInstance().getApiHost() + "/notes.json?unique_id=" + userToken;
+        String response  = processRequest(query, null, NetworkManager.RequestType.GET);
+        Object result    = processResult(response);
         ResponseObject.RequestStatus status = (null != result) ? ResponseObject.RequestStatus.STATUS_SUCCESS : ResponseObject.RequestStatus.STATUS_FAILED;
 
         resultBundle.putSerializable(RESULT_KEY, new ResponseObject(result, status));
@@ -100,15 +102,16 @@ public class MyNotesAPIService extends IntentService {
         try {
             String title           = extras.getString(Note.TITLE_KEY);
             String details         = extras.getString(Note.DETAILS_KEY);
+            String userToken       = extras.getString(User.API_TOKEN_KEY);
             JSONObject innerParams = new JSONObject();
             JSONObject params      = new JSONObject();
 
             innerParams.put(Note.TITLE_KEY, title);
             innerParams.put(Note.DETAILS_KEY, details);
             params.put(Note.NOTE_KEY, innerParams);
-            params.put(getString(R.string.unique_id), PrefsHelper.getPref(this, getString(R.string.user_id)));
+            params.put(User.API_TOKEN_KEY, userToken);
 
-            String query    = NetworkManager.API_HOST + "/notes.json";
+            String query    = NetworkManager.getInstance().getApiHost() + "/notes.json";
             String response = processRequest(query, params, NetworkManager.RequestType.POST);
             Object result   = processResult(response);
             ResponseObject.RequestStatus status = (null != result) ? ResponseObject.RequestStatus.STATUS_SUCCESS : ResponseObject.RequestStatus.STATUS_FAILED;
@@ -126,18 +129,22 @@ public class MyNotesAPIService extends IntentService {
         ResponseObject.RequestStatus status = ResponseObject.RequestStatus.STATUS_FAILED;
         Object result = null;
         ArrayList<Note> notesArray = extras.getParcelableArrayList("notesArray");
+        String userToken = extras.getString(User.API_TOKEN_KEY);
+
+        ArrayList<Note> notesNotDeleted = new ArrayList<Note>();
+
         for (Note note : notesArray) {
-            String query    = NetworkManager.API_HOST+"/notes/"+note.getRecordID()+".json?unique_id="+PrefsHelper.getPref(this, getString(R.string.user_id));
+            String query = NetworkManager.getInstance().getApiHost()+"/notes/"+note.getAPINoteId()+".json?unique_id="+userToken;
             String response = processRequest(query, null, NetworkManager.RequestType.DELETE);
             result = processResult(response);
             status = (null != result) ? ResponseObject.RequestStatus.STATUS_SUCCESS : ResponseObject.RequestStatus.STATUS_FAILED;
-            if (status == ResponseObject.RequestStatus.STATUS_SUCCESS) {
-                NotesManager.getInstance().removeNote(note);
-            } else {
-                break;
+            if (status != ResponseObject.RequestStatus.STATUS_SUCCESS) {
+                notesNotDeleted.add(note);
             }
         }
 
+        resultBundle.putParcelableArrayList("notesArray", notesArray);
+        resultBundle.putParcelableArrayList("notDeletedNotesArray", notesNotDeleted);
         resultBundle.putSerializable(RESULT_KEY, new ResponseObject(result, status));
         resultBundle.putInt(ACTION_KEY, DELETE_NOTES);
         receiver.send(STATUS_FINISHED, resultBundle);
@@ -145,28 +152,30 @@ public class MyNotesAPIService extends IntentService {
 
     private void editNotes(Bundle extras, Bundle resultBundle, ResultReceiver receiver) {
         try {
+            int id                 = extras.getInt(Note.ID_KEY);
             String title           = extras.getString(Note.TITLE_KEY);
             String details         = extras.getString(Note.DETAILS_KEY);
-            int recordID           = extras.getInt("recordID");
+            int noteAPIId          = extras.getInt(Note.API_ID_KEY);
+            String userToken       = extras.getString(User.API_TOKEN_KEY);
             JSONObject innerParams = new JSONObject();
             JSONObject params      = new JSONObject();
 
+            innerParams.put(Note.TITLE_KEY, title);
+            innerParams.put(Note.DETAILS_KEY, details);
+            params.put(Note.NOTE_KEY, innerParams);
+            params.put(User.API_TOKEN_KEY, userToken);
 
-            innerParams.put("title", title);
-            innerParams.put("details", details);
-            params.put("note", innerParams);
-            params.put(getString(R.string.unique_id), PrefsHelper.getPref(this, getString(R.string.user_id)));
-
-            String query    = NetworkManager.API_HOST + "/notes/" + recordID + ".json";
+            String query    = NetworkManager.getInstance().getApiHost() + "/notes/" + noteAPIId + ".json";
             String response = processRequest(query, params, NetworkManager.RequestType.PUT);
             Object result   = processResult(response);
             ResponseObject.RequestStatus status = (null != result) ? ResponseObject.RequestStatus.STATUS_SUCCESS : ResponseObject.RequestStatus.STATUS_FAILED;
 
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("title", title);
-            jsonObject.put("details", details);
-            resultBundle.putSerializable("result", new ResponseObject(jsonObject, status));
-            resultBundle.putInt("action", EDIT_NOTES);
+            jsonObject.put(Note.TITLE_KEY, title);
+            jsonObject.put(Note.DETAILS_KEY, details);
+            jsonObject.put(Note.ID_KEY, id);
+            resultBundle.putSerializable(RESULT_KEY, new ResponseObject(jsonObject, status));
+            resultBundle.putInt(ACTION_KEY, EDIT_NOTES);
             receiver.send(STATUS_FINISHED, resultBundle);
         } catch(JSONException e) {
             resultBundle.putString(Intent.EXTRA_TEXT, e.toString());

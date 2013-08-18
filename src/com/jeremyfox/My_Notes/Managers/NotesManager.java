@@ -4,6 +4,7 @@ import android.content.Context;
 import com.jeremyfox.My_Notes.Helpers.DataBaseHelper;
 import com.jeremyfox.My_Notes.Models.BasicNote;
 import com.jeremyfox.My_Notes.Interfaces.Note;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,12 +52,22 @@ public class NotesManager {
         return db.getNotes(userId, filter, filterWHERE);
     }
 
+    public void addNote(Context context, Note note) {
+        DataBaseHelper db = new DataBaseHelper(context);
+        note.setUserId(db.getCurrentUser().getId());
+        String date = String.valueOf(new DateTime());
+        note.setCreatedAt(date);
+        note.setUpdatedAt(date);
+        note.setAPINoteId(-1);
+        db.addNote(note);
+    }
+
     /**
      * Sets notes.
      *
      * @param notes the notes
      */
-    public void setNotes(Context context, JSONArray notes) {
+    public void addNotes(Context context, JSONArray notes) {
         DataBaseHelper db = new DataBaseHelper(context);
         int userId = db.getCurrentUser().getId();
 
@@ -113,45 +124,29 @@ public class NotesManager {
 
     public Note getNote(Context context, int id) {
         DataBaseHelper db = new DataBaseHelper(context);
-        db.getNote(id);
-        return null;
+        return db.getNote(id);
     }
 
-    public Note getFirstNote() {
-        Note note = null;
-        try {
-            note = (Note)getNotes().get(0);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return note;
+    public Note getFirstNote(Context context) {
+        return new DataBaseHelper(context).getFirstNote();
+    }
+
+    public void updateNote(Context context, int id, String[] columns, String[] values) {
+        DataBaseHelper db = new DataBaseHelper(context);
+        db.updateNote(id, columns, values);
     }
 
     /**
-     * Removes the supplied note from the "notes" array.
+     * Removes the supplied note from the Notes Table.
      *
      * @param note the note to remove
      * @return the boolean
      */
-    public boolean removeNote(Note note) {
+    public boolean removeNote(Context context, Note note) {
         boolean removed = false;
-        if (null != note) {
-            JSONArray newArray = new JSONArray();
-            for (int i=0; i<this.notes.length(); i++) {
-                try {
-                    BasicNote currentNote = ((BasicNote)this.notes.get(i));
-                    if (note.getRecordID() != currentNote.getRecordID()) {
-                        newArray.put(currentNote);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (newArray.length() == (this.notes.length() - 1)) {
-                removed = true;
-                this.notes = newArray;
-            }
+        if (note != null) {
+            DataBaseHelper db = new DataBaseHelper(context);
+            removed = db.deleteNote(note);
         }
         return removed;
     }
