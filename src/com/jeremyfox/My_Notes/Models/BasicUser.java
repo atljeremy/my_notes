@@ -2,8 +2,6 @@ package com.jeremyfox.My_Notes.Models;
 
 import com.jeremyfox.My_Notes.Interfaces.Note;
 import com.jeremyfox.My_Notes.Interfaces.User;
-
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,17 +13,21 @@ import java.util.List;
 public class BasicUser implements User {
 
     private int id;
+    private int apiUserId;
     private String apiToken;
     private String email;
     private String lastSyncDate;
     private List<Note> notes;
 
-    public BasicUser(int id, String apiToken, String email, String lastSyncDate) {
+    public BasicUser(int id, String apiToken, String email, String lastSyncDate, int apiUserId) {
         this.id = id;
         this.apiToken = apiToken;
         this.email = email;
         this.lastSyncDate = lastSyncDate;
+        this.apiUserId = apiUserId;
     }
+
+    public BasicUser() {}
 
     @Override
     public int getId() {
@@ -75,5 +77,15 @@ public class BasicUser implements User {
     @Override
     public void setNotes(List<Note> notes) {
         this.notes = notes;
+    }
+
+    @Override
+    public int getAPIUserId() {
+        return this.apiUserId;
+    }
+
+    @Override
+    public void setAPIUserId(int apiUserId) {
+        this.apiUserId = apiUserId;
     }
 }

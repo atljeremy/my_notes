@@ -16,6 +16,7 @@ public class BasicNote implements Note {
     private String details;
     private boolean selected;
     private int id;
+    private int apiNoteId;
     private int userId;
     private String createdAt;
     private String updatedAt;
@@ -28,7 +29,7 @@ public class BasicNote implements Note {
      * @param details the details
      * @param userId the user ID of the user in the Users database that owns this note
      */
-    public BasicNote(int id, String title, String details, String createdAt, String updatedAt, int userId) {
+    public BasicNote(int id, String title, String details, String createdAt, String updatedAt, int apiNoteId, int userId) {
         this.title     = title;
         this.details   = details;
         this.id        = id;
@@ -36,7 +37,10 @@ public class BasicNote implements Note {
         this.userId    = userId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.apiNoteId = apiNoteId;
     }
+
+    public BasicNote() {}
 
     /**
      *
@@ -117,6 +121,16 @@ public class BasicNote implements Note {
     @Override
     public String getUpdatedAt() {
         return this.updatedAt;
+    }
+
+    @Override
+    public void setAPINoteId(int apiNoteId) {
+        this.apiNoteId = apiNoteId;
+    }
+
+    @Override
+    public int getAPINoteId() {
+        return this.apiNoteId;
     }
 
     @Override

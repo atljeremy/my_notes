@@ -12,7 +12,8 @@ import java.util.List;
 public interface User {
 
     public static final String ID_KEY              = "id";
-    public static final String API_TOKEN_KEY       = "apiToken";
+    public static final String API_ID_KEY          = "apiId";
+    public static final String API_TOKEN_KEY       = "unique_id";
     public static final String EMAIL_ADDRESS_KEY   = "email";
     public static final String LAST_SYNC_DATE_KEY  = "lastSyncDate";
 
@@ -30,5 +31,8 @@ public interface User {
 
     public List<Note> getNotes();
     public void setNotes(List<Note> notes);
+
+    public int getAPIUserId();
+    public void setAPIUserId(int apiUserId);
 
 }

@@ -8,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.jeremyfox.My_Notes.Interfaces.Note;
 import com.jeremyfox.My_Notes.Models.BasicNote;
 import com.jeremyfox.My_Notes.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,13 +21,13 @@ import java.util.ArrayList;
  * Date: 3/20/13
  * Time: 10:27 PM
  */
-public class NotesAdapter extends ArrayAdapter<BasicNote> {
+public class NotesAdapter extends ArrayAdapter<Note> {
 
-    private ArrayList<BasicNote> notes;
+    private List<Note> notes;
     private boolean shouldIncrementCounter;
     private int counter;
 
-    public NotesAdapter(Context context, int textViewResourceId, ArrayList<BasicNote> notes) {
+    public NotesAdapter(Context context, int textViewResourceId, List<Note> notes) {
         super(context, textViewResourceId, notes);
         this.notes = notes;
         setShouldIncrementCounter(true);
@@ -50,7 +52,7 @@ public class NotesAdapter extends ArrayAdapter<BasicNote> {
             }
         }
 
-        BasicNote note = notes.get(position);
+        Note note = notes.get(position);
         if (note != null) {
             ImageView checkmark = (ImageView)view.findViewById(R.id.checkmark);
             if (note.isSelected()) {

@@ -12,6 +12,8 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.jeremyfox.My_Notes.Adapters.NotesAdapter;
+import com.jeremyfox.My_Notes.Helpers.DataBaseHelper;
+import com.jeremyfox.My_Notes.Interfaces.User;
 import com.jeremyfox.My_Notes.Models.BasicNote;
 import com.jeremyfox.My_Notes.Classes.MyNotesAPIResultReceiver;
 import com.jeremyfox.My_Notes.Classes.ResponseObject;
@@ -24,6 +26,7 @@ import com.jeremyfox.My_Notes.Interfaces.Note;
 import com.jeremyfox.My_Notes.Managers.AnalyticsManager;
 import com.jeremyfox.My_Notes.Managers.NetworkManager;
 import com.jeremyfox.My_Notes.Managers.NotesManager;
+import com.jeremyfox.My_Notes.Models.BasicUser;
 import com.jeremyfox.My_Notes.R;
 import com.jeremyfox.My_Notes.Services.MyNotesAPIService;
 import org.json.JSONArray;
@@ -88,9 +91,12 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
             @Override
             public void onSuccess(Object json) {
                 try {
-                    String unique_id = ((JSONObject)json).getString(getString(R.string.unique_id));
-                    PrefsHelper.setPref(getBaseContext(), getString(R.string.user_id), unique_id);
-                    AnalyticsManager.registerSuperProperty(MainActivity.this, "user API key", unique_id);
+                    String token = ((JSONObject)json).getString(User.API_TOKEN_KEY);
+                    BasicUser user = new BasicUser();
+                    user.setApiToken(token);
+                    DataBaseHelper db = new DataBaseHelper(MainActivity.this);
+                    db.addUser(user);
+                    AnalyticsManager.registerSuperProperty(MainActivity.this, "user API key", token);
                     callback.onSuccess(null);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -119,8 +125,8 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
             this.receiver.setReceiver(this);
         }
         final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, MyNotesAPIService.class);
-        intent.putExtra("receiver", this.receiver);
-        intent.putExtra("action", MyNotesAPIService.GET_NOTES);
+        intent.putExtra(MyNotesAPIService.RECEIVER_KEY, this.receiver);
+        intent.putExtra(MyNotesAPIService.ACTION_KEY, MyNotesAPIService.GET_NOTES);
         startService(intent);
     }
 
@@ -135,10 +141,10 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
             this.receiver.setReceiver(this);
         }
         final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, MyNotesAPIService.class);
-        intent.putExtra("title", title);
-        intent.putExtra("details", details);
-        intent.putExtra("receiver", this.receiver);
-        intent.putExtra("action", MyNotesAPIService.SAVE_NOTE);
+        intent.putExtra(Note.TITLE_KEY, title);
+        intent.putExtra(Note.DETAILS_KEY, details);
+        intent.putExtra(MyNotesAPIService.RECEIVER_KEY, this.receiver);
+        intent.putExtra(MyNotesAPIService.ACTION_KEY, MyNotesAPIService.SAVE_NOTE);
         startService(intent);
     }
 
@@ -154,8 +160,8 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
         }
         final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, MyNotesAPIService.class);
         intent.putParcelableArrayListExtra("notesArray", notesArray);
-        intent.putExtra("receiver", this.receiver);
-        intent.putExtra("action", MyNotesAPIService.DELETE_NOTES);
+        intent.putExtra(MyNotesAPIService.RECEIVER_KEY, this.receiver);
+        intent.putExtra(MyNotesAPIService.ACTION_KEY, MyNotesAPIService.DELETE_NOTES);
         startService(intent);
     }
 
@@ -171,9 +177,9 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
             this.receiver.setReceiver(this);
         }
         final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, MyNotesAPIService.class);
-        intent.putExtra("title", title);
-        intent.putExtra("details", details);
-        intent.putExtra("recordID", recordID);
+        intent.putExtra(Note.TITLE_KEY, title);
+        intent.putExtra(Note.DETAILS_KEY, details);
+        intent.putExtra(Note.ID_KEY, recordID);
         intent.putExtra("receiver", this.receiver);
         intent.putExtra("action", MyNotesAPIService.EDIT_NOTES);
         startService(intent);
@@ -200,8 +206,8 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
                     case MyNotesAPIService.GET_NOTES:
                         if (responseObject.getStatus() == ResponseObject.RequestStatus.STATUS_SUCCESS) {
                             if (responseObject.getObject() instanceof JSONArray) {
-                                JSONArray array = (JSONArray)responseObject.getObject();
-                                NotesManager.getInstance().setNotes(this, array);
+                                JSONArray notes = (JSONArray)responseObject.getObject();
+                                NotesManager.getInstance().setNotes(this, notes);
                                 MainActivity.this.notesListFragment.createGridView();
                                 AnalyticsManager.fireEvent(this, "successfully retrieved notes from API", null);
                             }

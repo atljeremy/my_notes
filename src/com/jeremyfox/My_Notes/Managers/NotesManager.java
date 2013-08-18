@@ -57,22 +57,57 @@ public class NotesManager {
      * @param notes the notes
      */
     public void setNotes(Context context, JSONArray notes) {
+        DataBaseHelper db = new DataBaseHelper(context);
+        int userId = db.getCurrentUser().getId();
+
+        /**
+         * First check to see if there are local Notes that have not been synced to the API yet
+         * If so, set them aside so they can be re-added to the database after all notes from the
+         * API have been stored
+         */
+        String filterValue = "-1";
+        String filterWHERE = "AND "+DataBaseHelper.NOTE_API_ID+" = ?";
+        List<Note> unsyncedNotes = db.getNotes(userId, filterValue, filterWHERE);
+
+        /**
+         * Next, dump all notes currently in the Notes Table
+         */
+        db.clearNotesTable();
+
+        /**
+         * Then store all notes that came back from the API in the Notes Table
+         */
         try {
             for (int i=0; i<notes.length(); i++) {
                 JSONObject currentNote = notes.getJSONObject(i);
 
-                int id           = currentNote.getInt(Note.ID_KEY);
+                int apiNoteID    = currentNote.getInt(Note.ID_KEY); // This is from the API JSON response, "id" is the API's Note ID
                 String title     = currentNote.getString(Note.TITLE_KEY);
                 String details   = currentNote.getString(Note.DETAILS_KEY);
                 String createdAt = currentNote.getString(Note.CREATED_AT_KEY);
                 String updatedAt = currentNote.getString(Note.UPDATED_AT_KEY);
 
-                BasicNote basicNote = new BasicNote(id, title, details, createdAt, updatedAt);
+                BasicNote basicNote = new BasicNote();
+                basicNote.setAPINoteId(apiNoteID);
+                basicNote.setCreatedAt(createdAt);
+                basicNote.setUpdatedAt(updatedAt);
+                basicNote.setTitle(title);
+                basicNote.setDetails(details);
+                basicNote.setUserId(userId);
 
-                NotesManager.this.notes.put(basicNote);
+                db.addNote(basicNote);
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+
+        /**
+         * last, append any un-synced notes to the Notes Table
+         */
+        if (unsyncedNotes != null && unsyncedNotes.size() > 0) {
+            for (Note note : unsyncedNotes) {
+                db.addNote(note);
+            }
         }
     }
 

@@ -9,18 +9,22 @@ import android.util.SparseBooleanArray;
 import android.view.*;
 import android.widget.*;
 import com.jeremyfox.My_Notes.Adapters.NotesAdapter;
+import com.jeremyfox.My_Notes.Helpers.DataBaseHelper;
+import com.jeremyfox.My_Notes.Interfaces.User;
 import com.jeremyfox.My_Notes.Models.BasicNote;
 import com.jeremyfox.My_Notes.Helpers.PrefsHelper;
 import com.jeremyfox.My_Notes.Interfaces.NetworkCallback;
 import com.jeremyfox.My_Notes.Interfaces.Note;
 import com.jeremyfox.My_Notes.Managers.AnalyticsManager;
 import com.jeremyfox.My_Notes.Managers.NotesManager;
+import com.jeremyfox.My_Notes.Models.BasicUser;
 import com.jeremyfox.My_Notes.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -100,10 +104,12 @@ public class NotesListFragment extends Fragment {
             showNoteDetails(curCheckPosition);
         }
 
-        String user_id = PrefsHelper.getPref(getActivity(), getActivity().getString(R.string.user_id));
-        if (null == user_id || user_id.length() == 0) {
+        DataBaseHelper db = new DataBaseHelper(getActivity());
+        BasicUser user = db.getCurrentUser();
+        if (user == null || user.getApiToken() == null || user.getApiToken().length() == 0) {
             AnalyticsManager.fireEvent(getActivity(), "new user", null);
             listener.registerWithAPI(new NetworkCallback() {
+
                 @Override
                 public void onSuccess(Object json) {
                     requestNotes();
@@ -113,10 +119,10 @@ public class NotesListFragment extends Fragment {
                 public void onFailure(int statusCode) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle("Sorry!")
-                            .setMessage("We were unable to register you with the API at this time. Please try again later by simply relaunching the application.")
-                            .setNegativeButton("Ok", null)
-                            .create()
-                            .show();
+                           .setMessage("We were unable to register you with the API at this time. Please try again later by simply relaunching the application.")
+                           .setNegativeButton("Ok", null)
+                           .create()
+                           .show();
                 }
             });
         } else {
@@ -278,25 +284,16 @@ public class NotesListFragment extends Fragment {
      */
     public void setGridViewItems() {
         dialog.dismiss();
-        JSONArray jsonArray = NotesManager.getInstance().getNotes();
-        if (jsonArray.length() > 0) {
-            ArrayList<BasicNote> notes = new ArrayList<BasicNote>(jsonArray.length());
-            for (int i=0; i<jsonArray.length(); i++) {
-                try {
-                    BasicNote note = (BasicNote)jsonArray.get(i);
-                    notes.add(note);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (null == notes) notes = new ArrayList<BasicNote>();
+        DataBaseHelper db = new DataBaseHelper(getActivity());
+        User user = db.getCurrentUser();
+        List<Note> notes = user.getNotes();
+        if (user != null && notes != null && notes.size() > 0) {
             NotesAdapter notesAdapter = new NotesAdapter(getActivity(), R.id.title, notes);
             this.gridView.setAdapter(notesAdapter);
             this.viewFlipper.setDisplayedChild(NOTES_VIEW);
             AnalyticsManager.fireEvent(getActivity(), "showed notes view", null);
         } else {
-            NotesAdapter notesAdapter = new NotesAdapter(getActivity(), R.id.title, new ArrayList<BasicNote>());
+            NotesAdapter notesAdapter = new NotesAdapter(getActivity(), R.id.title, new ArrayList<Note>());
             this.gridView.setAdapter(notesAdapter);
             this.viewFlipper.setDisplayedChild(DEFAULT_HOME_VIEW);
             AnalyticsManager.fireEvent(getActivity(), "showed default home view", null);
