@@ -62,6 +62,11 @@ public class NotesListFragment extends Fragment {
         public void requestNotesFromAPI();
 
         /**
+         * Send all un-synced notes to the API.
+         */
+        public void sendUnsyncedNotesToAPI();
+
+        /**
          * Delete notes.
          *
          * @param notesArray the notes array
@@ -211,6 +216,7 @@ public class NotesListFragment extends Fragment {
             case R.id.sync_notes:
                 AnalyticsManager.fireEvent(getActivity(), "selected sync notes option", null);
                 showLoadingDialog();
+                sendUnsyncedNotesToAPI();
                 requestNotes();
                 break;
         }
@@ -299,7 +305,18 @@ public class NotesListFragment extends Fragment {
      * Request notes from the API.
      */
     public void requestNotes() {
-        listener.requestNotesFromAPI();
+        if (listener != null) {
+            listener.requestNotesFromAPI();
+        }
+    }
+
+    /**
+     * Send all un-synced notes to the API.
+     */
+    public void sendUnsyncedNotesToAPI() {
+        if (listener != null) {
+            listener.sendUnsyncedNotesToAPI();
+        }
     }
 
     /**
@@ -375,7 +392,7 @@ public class NotesListFragment extends Fragment {
 
         new AlertDialog.Builder(getActivity())
                 .setTitle("Error")
-                .setMessage("Couldn't load your notes. Please check your network connection and try again.")
+                .setMessage("Couldn't sync your notes at this time. Please check your network connection and try again.")
                 .setNegativeButton("Ok", null)
                 .create()
                 .show();

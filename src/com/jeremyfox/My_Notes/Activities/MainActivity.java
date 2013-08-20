@@ -35,6 +35,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * The Main activity.
@@ -130,6 +131,20 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
         intent.putExtra(MyNotesAPIService.RECEIVER_KEY, this.receiver);
         intent.putExtra(MyNotesAPIService.ACTION_KEY, MyNotesAPIService.GET_NOTES);
         startService(intent);
+    }
+
+    @Override
+    public void sendUnsyncedNotesToAPI() {
+        DataBaseHelper db = new DataBaseHelper(this);
+        int userId = db.getCurrentUser().getId();
+        String filterValue = Note.UNSYNCED_NOTE;
+        String filterWHERE = "AND "+DataBaseHelper.NOTE_API_ID+" = ?";
+        List<Note> unsyncedNotes = db.getNotes(userId, filterValue, filterWHERE);
+        if (unsyncedNotes != null && unsyncedNotes.size() > 0) {
+            for (Note note : unsyncedNotes) {
+                saveNoteToAPI(note);
+            }
+        }
     }
 
     /**

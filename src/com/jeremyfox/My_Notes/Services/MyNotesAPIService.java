@@ -58,29 +58,35 @@ public class MyNotesAPIService extends IntentService {
         int action = intent.getIntExtra(ACTION_KEY, GET_NOTES);
         Bundle resultBundle = new Bundle();
 
-        receiver.send(STATUS_RUNNING, Bundle.EMPTY);
+        if (NetworkManager.isConnected(getApplicationContext())) {
 
-        switch (action) {
-            case GET_NOTES:
-                getNotes(extras, resultBundle, receiver);
-                break;
+            receiver.send(STATUS_RUNNING, Bundle.EMPTY);
 
-            case SAVE_NOTE:
-                saveNote(extras, resultBundle, receiver);
-                break;
+            switch (action) {
+                case GET_NOTES:
+                    getNotes(extras, resultBundle, receiver);
+                    break;
 
-            case DELETE_NOTES:
-                deleteNotes(extras, resultBundle, receiver);
-                break;
+                case SAVE_NOTE:
+                    saveNote(extras, resultBundle, receiver);
+                    break;
 
-            case EDIT_NOTES:
-                editNotes(extras, resultBundle, receiver);
-                break;
+                case DELETE_NOTES:
+                    deleteNotes(extras, resultBundle, receiver);
+                    break;
 
-            default:
-                receiver.send(STATUS_ERROR, resultBundle);
-                break;
+                case EDIT_NOTES:
+                    editNotes(extras, resultBundle, receiver);
+                    break;
 
+                default:
+                    receiver.send(STATUS_ERROR, resultBundle);
+                    break;
+
+            }
+        } else {
+            resultBundle.putInt(ACTION_KEY, action);
+            receiver.send(STATUS_ERROR, resultBundle);
         }
 
         this.stopSelf();

@@ -76,7 +76,7 @@ public class NotesManager {
          * If so, set them aside so they can be re-added to the database after all notes from the
          * API have been stored
          */
-        String filterValue = "-1";
+        String filterValue = Note.UNSYNCED_NOTE;
         String filterWHERE = "AND "+DataBaseHelper.NOTE_API_ID+" = ?";
         List<Note> unsyncedNotes = db.getNotes(userId, filterValue, filterWHERE);
 
