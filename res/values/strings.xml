@@ -34,4 +34,10 @@
     <string name="recordIDKey">recordIDKey</string>
     <string name="savingNote">saving note</string>
     <string name="testingContentProvider">Testing Content Provider</string>
+
+    <string-array name="sortOptions">
+        <item>Date Created</item>
+        <item>Date Updated</item>
+        <item>Alphabetical</item>
+    </string-array>
 </resources>

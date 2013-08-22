@@ -11,9 +11,15 @@ import android.widget.TextView;
 import com.jeremyfox.My_Notes.Interfaces.Note;
 import com.jeremyfox.My_Notes.Models.BasicNote;
 import com.jeremyfox.My_Notes.R;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created with IntelliJ IDEA.
@@ -61,9 +67,17 @@ public class NotesAdapter extends ArrayAdapter<Note> {
                 checkmark.setVisibility(View.GONE);
             }
             TextView title = (TextView) view.findViewById(R.id.title);
+            TextView date = (TextView) view.findViewById(R.id.date);
+
             Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/Dakota-Regular.ttf");
             title.setTypeface(typeface);
+            date.setTypeface(typeface);
+
             title.setText(note.getTitle());
+            DateTime realDate = new DateTime(note.getCreatedAt());
+            DateTimeFormatter fmt = DateTimeFormat.forPattern("MMM, dd yyyy hh:mm");
+            String visualDate = fmt.print(realDate);
+            date.setText(visualDate);
         }
         return view;
     }

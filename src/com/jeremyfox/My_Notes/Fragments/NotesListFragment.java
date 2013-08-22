@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.*;
 import android.widget.*;
@@ -30,7 +31,7 @@ import java.util.List;
  * Date: 4/14/13
  * Time: 12:47 PM
  */
-public class NotesListFragment extends Fragment {
+public class NotesListFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     /**
      * The interface Notes list listener.
@@ -83,13 +84,19 @@ public class NotesListFragment extends Fragment {
     private ViewFlipper viewFlipper;
     private GridView gridView;
     private ProgressDialog dialog;
+    private Spinner sortSpinner;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        this.gridView = (GridView)getActivity().findViewById(R.id.gridview);
-        this.viewFlipper = (ViewFlipper)getActivity().findViewById(R.id.ViewFlipper);
+        gridView = (GridView)getActivity().findViewById(R.id.gridview);
+        viewFlipper = (ViewFlipper)getActivity().findViewById(R.id.ViewFlipper);
+        sortSpinner = (Spinner)getActivity().findViewById(R.id.sortSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.sortOptions, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sortSpinner.setAdapter(adapter);
+        sortSpinner.setOnItemSelectedListener(this);
 
         View detailsFrame = getActivity().findViewById(R.id.note_details_fragment);
         dualMode = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
@@ -104,7 +111,6 @@ public class NotesListFragment extends Fragment {
         }
 
         if (dualMode) {
-            GridView gridView = (GridView)getActivity().findViewById(R.id.gridview);
             gridView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
             Note note = NotesManager.getInstance().getNote(getActivity(), currentNoteId);
             if (note != null) {
@@ -113,7 +119,7 @@ public class NotesListFragment extends Fragment {
         }
 
         DataBaseHelper db = new DataBaseHelper(getActivity());
-        BasicUser user = db.getCurrentUser();
+        BasicUser user = db.getCurrentUser(null, null, null);
         if (user == null || user.getApiToken() == null || user.getApiToken().length() == 0) {
 
             /**
@@ -223,6 +229,37 @@ public class NotesListFragment extends Fragment {
         return true;
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+        String filterChosen = (String) sortSpinner.getAdapter().getItem(pos);
+        Log.d("NotesListFragment", filterChosen);
+
+        String sort = null;
+        switch (pos) {
+            case 0: // Date Created
+                sort = DataBaseHelper.NOTE_CREATED_AT;
+                break;
+            case 1: // Date Updated
+                sort = DataBaseHelper.NOTE_UPDATED_AT;
+                break;
+            case 2: // Alphabetical
+                sort = DataBaseHelper.NOTE_TITLE;
+                break;
+            default:
+                // No filters
+                break;
+        }
+
+        DataBaseHelper db = new DataBaseHelper(getActivity());
+        User user = db.getCurrentUser(null, null, sort);
+        if (user != null) {
+            gridView.setAdapter(new NotesAdapter(getActivity(), R.id.title, user.getNotes()));
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {}
+
     private void showNoteDetails(Note note, int index) {
         currentNoteId = note.getId();
         listener.showNoteDetails(note, index, dualMode);
@@ -232,28 +269,27 @@ public class NotesListFragment extends Fragment {
      * Creates the notes grid view, retrieves notes from API, then displays the grid view of notes
      */
     public void createGridView() {
-        final GridView grid = NotesListFragment.this.gridView;
         if (dualMode) {
-            grid.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            gridView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         } else {
-            grid.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+            gridView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         }
 
-        grid.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+        gridView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
 
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-                NotesAdapter notesAdapter = (NotesAdapter)grid.getAdapter();
-                int count = grid.getCheckedItemCount();
+                NotesAdapter notesAdapter = (NotesAdapter)gridView.getAdapter();
+                int count = gridView.getCheckedItemCount();
                 if (count > 0) {
                     notesAdapter.setShouldIncrementCounter(false);
                 } else {
                     notesAdapter.setShouldIncrementCounter(true);
                 }
                 mode.setTitle(count + " selected");
-                BasicNote note = (BasicNote)grid.getItemAtPosition(position);
+                BasicNote note = (BasicNote)gridView.getItemAtPosition(position);
                 note.setSelected(checked);
-                grid.invalidateViews();
+                gridView.invalidateViews();
             }
 
             @Override
@@ -291,9 +327,9 @@ public class NotesListFragment extends Fragment {
 
         setGridViewItems();
 
-        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Note note = (Note) grid.getAdapter().getItem(position);
+                Note note = (Note) gridView.getAdapter().getItem(position);
                 showNoteDetails(note, position);
             }
         });
@@ -325,21 +361,21 @@ public class NotesListFragment extends Fragment {
     public void setGridViewItems() {
         dismissDialog();
         DataBaseHelper db = new DataBaseHelper(getActivity());
-        User user = db.getCurrentUser();
+        User user = db.getCurrentUser(null, null, null);
         List<Note> notes = user.getNotes();
         if (user != null && notes != null && notes.size() > 0) {
             NotesAdapter notesAdapter = new NotesAdapter(getActivity(), R.id.title, notes);
-            this.gridView.setAdapter(notesAdapter);
-            this.viewFlipper.setDisplayedChild(NOTES_VIEW);
+            gridView.setAdapter(notesAdapter);
+            viewFlipper.setDisplayedChild(NOTES_VIEW);
             AnalyticsManager.fireEvent(getActivity(), "showed notes view", null);
         } else {
             NotesAdapter notesAdapter = new NotesAdapter(getActivity(), R.id.title, new ArrayList<Note>());
-            this.gridView.setAdapter(notesAdapter);
-            this.viewFlipper.setDisplayedChild(DEFAULT_HOME_VIEW);
+            gridView.setAdapter(notesAdapter);
+            viewFlipper.setDisplayedChild(DEFAULT_HOME_VIEW);
             AnalyticsManager.fireEvent(getActivity(), "showed default home view", null);
         }
 
-        this.gridView.invalidateViews();
+        gridView.invalidateViews();
     }
 
     /**

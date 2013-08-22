@@ -127,7 +127,7 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
         }
         final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, MyNotesAPIService.class);
         DataBaseHelper db = new DataBaseHelper(this);
-        intent.putExtra(User.API_TOKEN_KEY, db.getCurrentUser().getApiToken());
+        intent.putExtra(User.API_TOKEN_KEY, db.getCurrentUser(null, null, null).getApiToken());
         intent.putExtra(MyNotesAPIService.RECEIVER_KEY, this.receiver);
         intent.putExtra(MyNotesAPIService.ACTION_KEY, MyNotesAPIService.GET_NOTES);
         startService(intent);
@@ -136,10 +136,10 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
     @Override
     public void sendUnsyncedNotesToAPI() {
         DataBaseHelper db = new DataBaseHelper(this);
-        int userId = db.getCurrentUser().getId();
+        int userId = db.getCurrentUser(null, null, null).getId();
         String filterValue = Note.UNSYNCED_NOTE;
         String filterWHERE = "AND "+DataBaseHelper.NOTE_API_ID+" = ?";
-        List<Note> unsyncedNotes = db.getNotes(userId, filterValue, filterWHERE);
+        List<Note> unsyncedNotes = db.getNotes(userId, filterValue, filterWHERE, null);
         if (unsyncedNotes != null && unsyncedNotes.size() > 0) {
             for (Note note : unsyncedNotes) {
                 saveNoteToAPI(note);
@@ -158,7 +158,7 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
         }
         final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, MyNotesAPIService.class);
         DataBaseHelper db = new DataBaseHelper(this);
-        intent.putExtra(User.API_TOKEN_KEY, db.getCurrentUser().getApiToken());
+        intent.putExtra(User.API_TOKEN_KEY, db.getCurrentUser(null, null, null).getApiToken());
         intent.putExtra(Note.TITLE_KEY, note.getTitle());
         intent.putExtra(Note.DETAILS_KEY, note.getDetails());
         intent.putExtra(Note.ID_KEY, note.getId());
@@ -179,7 +179,7 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
         }
         final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, MyNotesAPIService.class);
         DataBaseHelper db = new DataBaseHelper(this);
-        intent.putExtra(User.API_TOKEN_KEY, db.getCurrentUser().getApiToken());
+        intent.putExtra(User.API_TOKEN_KEY, db.getCurrentUser(null, null, null).getApiToken());
         intent.putParcelableArrayListExtra("notesArray", notesArray);
         intent.putExtra(MyNotesAPIService.RECEIVER_KEY, this.receiver);
         intent.putExtra(MyNotesAPIService.ACTION_KEY, MyNotesAPIService.DELETE_NOTES);
@@ -199,7 +199,7 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
         }
         final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, MyNotesAPIService.class);
         DataBaseHelper db = new DataBaseHelper(this);
-        intent.putExtra(User.API_TOKEN_KEY, db.getCurrentUser().getApiToken());
+        intent.putExtra(User.API_TOKEN_KEY, db.getCurrentUser(null, null, null).getApiToken());
         intent.putExtra(Note.TITLE_KEY, title);
         intent.putExtra(Note.DETAILS_KEY, details);
         intent.putExtra(Note.ID_KEY, id);

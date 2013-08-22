@@ -21,6 +21,7 @@ import com.jeremyfox.My_Notes.Managers.AnalyticsManager;
 import com.jeremyfox.My_Notes.Managers.NotesManager;
 import com.jeremyfox.My_Notes.R;
 import com.jeremyfox.My_Notes.Services.MyNotesAPIService;
+import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -82,6 +83,13 @@ public class NoteDetailsActivity extends Activity implements NoteDetailsFragment
                     } else {
                         final String title = titleInput.getText().toString();
                         final String details = detailsInput.getText().toString();
+
+                        /** Update in local DB */
+                        String[] columns = new String[]{DataBaseHelper.NOTE_UPDATED_AT};
+                        String[] values = new String[]{String.valueOf(new DateTime())};
+                        NotesManager.getInstance().updateNote(NoteDetailsActivity.this, note.getId(), columns, values);
+
+                        /** Update in API */
                         updateNoteToAPI(note.getId(), note.getAPINoteId(), title, details);
                     }
                 }
@@ -126,7 +134,7 @@ public class NoteDetailsActivity extends Activity implements NoteDetailsFragment
         }
         final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, MyNotesAPIService.class);
         DataBaseHelper db = new DataBaseHelper(this);
-        intent.putExtra(User.API_TOKEN_KEY, db.getCurrentUser().getApiToken());
+        intent.putExtra(User.API_TOKEN_KEY, db.getCurrentUser(null, null, null).getApiToken());
         intent.putParcelableArrayListExtra("notesArray", notesArray);
         intent.putExtra(MyNotesAPIService.RECEIVER_KEY, this.receiver);
         intent.putExtra(MyNotesAPIService.ACTION_KEY, MyNotesAPIService.DELETE_NOTES);
@@ -143,7 +151,7 @@ public class NoteDetailsActivity extends Activity implements NoteDetailsFragment
         }
         final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, MyNotesAPIService.class);
         DataBaseHelper db = new DataBaseHelper(this);
-        intent.putExtra(User.API_TOKEN_KEY, db.getCurrentUser().getApiToken());
+        intent.putExtra(User.API_TOKEN_KEY, db.getCurrentUser(null, null, null).getApiToken());
         intent.putExtra(Note.TITLE_KEY, title);
         intent.putExtra(Note.DETAILS_KEY, details);
         intent.putExtra(Note.ID_KEY, id);

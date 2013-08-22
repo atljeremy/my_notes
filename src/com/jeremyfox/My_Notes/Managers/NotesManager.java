@@ -47,18 +47,24 @@ public class NotesManager {
      *
      * @return the notes object
      */
-    public ArrayList<Note> getNotes(Context context, int userId, String filter, String filterWHERE) {
+    public ArrayList<Note> getNotes(Context context, int userId, String filter, String filterWHERE, String sort) {
         DataBaseHelper db = new DataBaseHelper(context);
-        return db.getNotes(userId, filter, filterWHERE);
+        return db.getNotes(userId, filter, filterWHERE, sort);
     }
 
     public void addNote(Context context, Note note) {
         DataBaseHelper db = new DataBaseHelper(context);
-        note.setUserId(db.getCurrentUser().getId());
-        String date = String.valueOf(new DateTime());
-        note.setCreatedAt(date);
-        note.setUpdatedAt(date);
-        note.setAPINoteId(-1);
+        note.setUserId(db.getCurrentUser(null, null, null).getId());
+        if (note.getCreatedAt() == null || note.getCreatedAt().length() == 0) {
+            String date = String.valueOf(new DateTime());
+            note.setCreatedAt(date);
+        }
+        if (note.getUpdatedAt() == null || note.getUpdatedAt().length() == 0) {
+            note.setUpdatedAt(note.getCreatedAt());
+        }
+        if (note.getAPINoteId() <= 0) {
+            note.setAPINoteId(-1);
+        }
         db.addNote(note);
     }
 
@@ -69,7 +75,7 @@ public class NotesManager {
      */
     public void addNotes(Context context, JSONArray notes) {
         DataBaseHelper db = new DataBaseHelper(context);
-        int userId = db.getCurrentUser().getId();
+        int userId = db.getCurrentUser(null, null, null).getId();
 
         /**
          * First check to see if there are local Notes that have not been synced to the API yet
@@ -78,7 +84,7 @@ public class NotesManager {
          */
         String filterValue = Note.UNSYNCED_NOTE;
         String filterWHERE = "AND "+DataBaseHelper.NOTE_API_ID+" = ?";
-        List<Note> unsyncedNotes = db.getNotes(userId, filterValue, filterWHERE);
+        List<Note> unsyncedNotes = db.getNotes(userId, filterValue, filterWHERE, null);
 
         /**
          * Next, dump all notes currently in the Notes Table

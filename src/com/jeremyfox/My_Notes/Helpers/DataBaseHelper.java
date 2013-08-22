@@ -101,7 +101,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * SELECT
      *******************************************************************/
 
-    public BasicUser getUser(int id, String notesFilter, String notesFilterWHERE) {
+    public BasicUser getUser(int id, String notesFilter, String notesFilterWHERE, String noteSort) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(USERS_TABLE, new String[] {USER_ID}, USER_ID + "=?", new String[] { String.valueOf(id) }, null, null, null, null);
@@ -118,7 +118,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             int apiUserId       = cursor.getInt(4);
 
             user = new BasicUser(userId, apiToken, email, lastSyncDate, apiUserId);
-            ArrayList<Note> notes = getNotes(user.getId(), notesFilter, notesFilterWHERE);
+            ArrayList<Note> notes = getNotes(user.getId(), notesFilter, notesFilterWHERE, noteSort);
 
             user.setNotes(notes);
 
@@ -129,7 +129,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return user;
     }
 
-    public BasicUser getCurrentUser() {
+    public BasicUser getCurrentUser(String notesFilter, String notesFilterWHERE, String notesSort) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM "+USERS_TABLE+" WHERE "+USER_ID+" = (SELECT MAX("+USER_ID+") FROM "+USERS_TABLE+");", null);
         if (cursor != null) {
@@ -145,7 +145,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             int apiUserId       = cursor.getInt(4);
 
             user = new BasicUser(userId, apiToken, email, lastSyncDate, apiUserId);
-            ArrayList<Note> notes = getNotes(user.getId(), null, null);
+            ArrayList<Note> notes = getNotes(user.getId(), notesFilter, notesFilterWHERE, notesSort);
 
             user.setNotes(notes);
 
@@ -171,7 +171,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 int apiUserId       = cursor.getInt(4);
 
                 BasicUser user = new BasicUser(userId, apiToken, email, lastSyncDate, apiUserId);
-                ArrayList<Note> notes = getNotes(userId, null, null);
+                ArrayList<Note> notes = getNotes(userId, null, null, null);
                 user.setNotes(notes);
 
                 userList.add(user);
@@ -184,7 +184,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
 
-    public ArrayList<Note> getNotes(int userId, String filter, String filterWHERE) {
+    public ArrayList<Note> getNotes(int userId, String filter, String filterWHERE, String sort) {
         ArrayList<Note> notesList = new ArrayList<Note>();
         SQLiteDatabase db = this.getWritableDatabase();
         String[] columns = {
@@ -196,12 +196,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 NOTE_API_ID,
                 NOTE_USER_ID
         };
-        String[] whereArguments = { String.valueOf(userId) };
-        Cursor cursor = db.query(NOTES_TABLE, columns, NOTE_USER_ID + "= ?", whereArguments, null, null, null);
-        if (filter != null && filterWHERE != null) {
-            whereArguments = new String[] { String.valueOf(userId), filter };
-            cursor = db.query(NOTES_TABLE, columns, NOTE_USER_ID + "= ? " + filterWHERE, whereArguments, null, null, null);
-        }
+
+        String filterString = (filter != null && filter.length() > 0)
+                ? NOTE_USER_ID + "= ? " + filterWHERE
+                : NOTE_USER_ID + "= ?";
+
+        String[] whereArguments = (filterWHERE != null && filterWHERE.length() > 0)
+                ? new String[] { String.valueOf(userId), filter }
+                : new String[] { String.valueOf(userId) };
+
+        String arrangeBy = (sort != null && sort.equals(NOTE_TITLE)) ? " ASC" : " DESC" ;
+
+        String orderBy = ((sort != null && sort.length() > 0) ? sort : NOTE_CREATED_AT) + arrangeBy;
+
+        Cursor cursor = db.query(NOTES_TABLE, columns, filterString, whereArguments, null, null, orderBy);
 
         if (cursor.moveToFirst()) {
             do {
