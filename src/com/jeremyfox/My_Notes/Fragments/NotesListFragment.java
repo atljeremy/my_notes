@@ -123,7 +123,7 @@ public class NotesListFragment extends Fragment implements AdapterView.OnItemSel
         if (user == null || user.getApiToken() == null || user.getApiToken().length() == 0) {
 
             /**
-             * First, check and see if this user was using version 1.0 of the app. '
+             * First, check and see if this user was using version 1.0 of the app.
              * If so, they probably already have an API token/User account.
              */
             String prefsToken = PrefsHelper.getPref(getActivity(), getActivity().getString(R.string.user_id));

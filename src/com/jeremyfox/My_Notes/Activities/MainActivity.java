@@ -29,6 +29,7 @@ import com.jeremyfox.My_Notes.Managers.NotesManager;
 import com.jeremyfox.My_Notes.Models.BasicUser;
 import com.jeremyfox.My_Notes.R;
 import com.jeremyfox.My_Notes.Services.MyNotesAPIService;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -127,7 +128,8 @@ public class MainActivity extends Activity implements NotesListFragment.NotesLis
         }
         final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, MyNotesAPIService.class);
         DataBaseHelper db = new DataBaseHelper(this);
-        intent.putExtra(User.API_TOKEN_KEY, db.getCurrentUser(null, null, null).getApiToken());
+        String apiToken = db.getCurrentUser(null, null, null).getApiToken();
+        intent.putExtra(User.API_TOKEN_KEY, apiToken);
         intent.putExtra(MyNotesAPIService.RECEIVER_KEY, this.receiver);
         intent.putExtra(MyNotesAPIService.ACTION_KEY, MyNotesAPIService.GET_NOTES);
         startService(intent);
