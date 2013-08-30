@@ -138,6 +138,7 @@ public class NotesListFragment extends Fragment implements AdapterView.OnItemSel
                 requestNotes();
 
             } else {
+                showLoadingDialog();
                 AnalyticsManager.fireEvent(getActivity(), "new user", null);
                 listener.registerWithAPI(new NetworkCallback() {
 
@@ -148,6 +149,7 @@ public class NotesListFragment extends Fragment implements AdapterView.OnItemSel
 
                     @Override
                     public void onFailure(int statusCode) {
+                        dismissDialog();
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setTitle("Sorry!")
                                 .setMessage("We were unable to register you with the API at this time. Please try again later by simply relaunching the application.")
@@ -173,7 +175,11 @@ public class NotesListFragment extends Fragment implements AdapterView.OnItemSel
     @Override
     public void onResume() {
         super.onResume();
-        createGridView();
+        DataBaseHelper db = new DataBaseHelper(getActivity());
+        BasicUser user = db.getCurrentUser(null, null, null);
+        if (user != null) {
+            createGridView();
+        }
     }
 
     @Override
